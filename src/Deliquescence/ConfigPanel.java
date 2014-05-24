@@ -141,7 +141,7 @@ public class ConfigPanel extends JPanel implements Refreshable {
             textArea.setText(value);
             Config.setString(key, value);
         }
-        Config.refresh();//TODO DRY maybe fdsa
+        Config.refresh();//TODO DRY maybe
     }
 
     @Override
