@@ -44,7 +44,6 @@ public class LocalGameSetupPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        RNGCheck = new javax.swing.JCheckBox();
         SplitPane = new javax.swing.JSplitPane();
         NumbersPanel = new javax.swing.JPanel();
         gameSlidersPanel = new Deliquescence.GameSlidersPanel();
@@ -52,13 +51,6 @@ public class LocalGameSetupPanel extends javax.swing.JPanel {
         PlayerNamesPanel = new javax.swing.JPanel();
         gameSettingsPanel = new Deliquescence.GameSettingsPanel();
         PlayerNamesLabel = new javax.swing.JLabel();
-
-        RNGCheck.setText("Enable RNG Button");
-        RNGCheck.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RNGCheckActionPerformed(evt);
-            }
-        });
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
@@ -138,20 +130,15 @@ public class LocalGameSetupPanel extends javax.swing.JPanel {
             timerAction = 1;
         }
 
-        GamePanel gamePanel = new GamePanel(this.gameManager, gameSlidersPanel.getPlayers(), gameSlidersPanel.getRows(), gameSlidersPanel.getColumns(), names, RNGCheck.isSelected(), gameSettingsPanel.RandomizePlayerCheck(), timerLength, timerAction);
+        GamePanel gamePanel = new GamePanel(this.gameManager, gameSlidersPanel.getPlayers(), gameSlidersPanel.getRows(), gameSlidersPanel.getColumns(), names, gameSettingsPanel.RNGCheck(), gameSettingsPanel.RandomizePlayerCheck(), timerLength, timerAction);
         gameManager.addGameTab(gamePanel);
     }//GEN-LAST:event_StartButtonActionPerformed
-
-    private void RNGCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RNGCheckActionPerformed
-
-    }//GEN-LAST:event_RNGCheckActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel NumbersPanel;
     private javax.swing.JLabel PlayerNamesLabel;
     private JTextField[] playerTextFields;
     private javax.swing.JPanel PlayerNamesPanel;
-    private javax.swing.JCheckBox RNGCheck;
     private javax.swing.JSplitPane SplitPane;
     private javax.swing.JButton StartButton;
     private javax.swing.ButtonGroup buttonGroup1;
