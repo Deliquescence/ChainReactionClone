@@ -6,6 +6,7 @@
 package Deliquescence;
 
 /**
+ * This panel is meant to be a subpanel and settings for use in games
  *
  * @author Josh
  */
@@ -18,24 +19,48 @@ public class GameSettingsPanel extends javax.swing.JPanel {
         initComponents();
     }
 
-    public boolean RNGCheck() {
+    /**
+     * Setting for the RNG button.
+     *
+     * @return True if the RNG button should be enabled
+     */
+    public boolean EnableRNGButton() {
         return RNGCheck.isSelected();
     }
 
-    public boolean TimerCheck() {
+    /**
+     * Setting for the turn timer.
+     *
+     * @return True if the turn timer should be enabled.
+     */
+    public boolean EnableTurnTimer() {
         return TimerCheck.isSelected();
     }
-//todo rename these to something else
 
-    public int TimerSlider() {
+    /**
+     * Setting for the length of the turn timer, if it is enabled.
+     *
+     * @return The length of the timer in seconds.
+     */
+    public int TimerLength() {
         return TimerSlider.getValue();
     }
 
-    public boolean RandomizePlayerCheck() {
+    /**
+     * Setting to randomize the starting player.
+     *
+     * @return True if the starting player should be random.
+     */
+    public boolean RandomStartPlayer() {
         return RandomizePlayerCheck.isSelected();
     }
 
-    public boolean timerExpireRadio2() {
+    /**
+     * Setting for what should happen when the turn timer expires.
+     *
+     * @return True if the turn should RNG when timer expires.
+     */
+    public boolean timerExpireRNG() {
         return timerExpireRadio2.isSelected();
     }
 
