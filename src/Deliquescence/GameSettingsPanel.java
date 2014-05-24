@@ -18,6 +18,10 @@ public class GameSettingsPanel extends javax.swing.JPanel {
         initComponents();
     }
 
+    public boolean RNGCheck() {
+        return RNGCheck.isSelected();
+    }
+
     public boolean TimerCheck() {
         return TimerCheck.isSelected();
     }
@@ -45,7 +49,9 @@ public class GameSettingsPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         RandomizePlayerCheck = new javax.swing.JCheckBox();
+        RNGCheck = new javax.swing.JCheckBox();
         TimerCheck = new javax.swing.JCheckBox();
         TimerLabel1 = new javax.swing.JLabel();
         timerExpireRadio1 = new javax.swing.JRadioButton();
@@ -64,15 +70,25 @@ public class GameSettingsPanel extends javax.swing.JPanel {
         });
         add(RandomizePlayerCheck);
 
+        RNGCheck.setText("Enable RNG Button");
+        RNGCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RNGCheckActionPerformed(evt);
+            }
+        });
+        add(RNGCheck);
+
         TimerCheck.setText("Enable turn timer");
         add(TimerCheck);
 
         TimerLabel1.setText("When timer expire:");
         add(TimerLabel1);
 
+        buttonGroup1.add(timerExpireRadio1);
         timerExpireRadio1.setText("Skip turn");
         add(timerExpireRadio1);
 
+        buttonGroup1.add(timerExpireRadio2);
         timerExpireRadio2.setSelected(true);
         timerExpireRadio2.setText("RNG");
         timerExpireRadio2.setToolTipText("");
@@ -97,12 +113,18 @@ public class GameSettingsPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_RandomizePlayerCheckActionPerformed
 
+    private void RNGCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RNGCheckActionPerformed
+
+    }//GEN-LAST:event_RNGCheckActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox RNGCheck;
     private javax.swing.JCheckBox RandomizePlayerCheck;
     private javax.swing.JCheckBox TimerCheck;
     private javax.swing.JLabel TimerLabel1;
     private javax.swing.JLabel TimerLabel2;
     private javax.swing.JSlider TimerSlider;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JRadioButton timerExpireRadio1;
     private javax.swing.JRadioButton timerExpireRadio2;
     // End of variables declaration//GEN-END:variables
