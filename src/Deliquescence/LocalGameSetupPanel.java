@@ -84,18 +84,6 @@ public class LocalGameSetupPanel extends javax.swing.JPanel {
         PlayerNamesPanel.setMaximumSize(new java.awt.Dimension(175, 60));
         PlayerNamesPanel.setMinimumSize(new java.awt.Dimension(175, 60));
         PlayerNamesPanel.setLayout(new javax.swing.BoxLayout(PlayerNamesPanel, javax.swing.BoxLayout.Y_AXIS));
-
-        javax.swing.GroupLayout gameSettingsPanelLayout = new javax.swing.GroupLayout(gameSettingsPanel);
-        gameSettingsPanel.setLayout(gameSettingsPanelLayout);
-        gameSettingsPanelLayout.setHorizontalGroup(
-            gameSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 187, Short.MAX_VALUE)
-        );
-        gameSettingsPanelLayout.setVerticalGroup(
-            gameSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 284, Short.MAX_VALUE)
-        );
-
         PlayerNamesPanel.add(gameSettingsPanel);
 
         PlayerNamesLabel.setText("Player Names:");
