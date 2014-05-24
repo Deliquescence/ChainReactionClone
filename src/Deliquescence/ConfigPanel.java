@@ -152,7 +152,7 @@ public class ConfigPanel extends JPanel implements Refreshable {
         }
     }
 
-    public Component getComponentByName(String name) {
+    private Component getComponentByName(String name) {
         if (componentMap.containsKey(name)) {
             return (Component) componentMap.get(name);
         } else {

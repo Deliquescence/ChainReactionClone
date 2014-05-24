@@ -15,6 +15,7 @@ import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 /**
+ * This panel has the game board, as well as the other display features and buttons for playing the game.
  *
  * @author Josh
  */
@@ -72,31 +73,47 @@ public class GamePanel extends javax.swing.JPanel {
         }
     }
 
-//    @Override
-//    public void refreshConfig() {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
+    /**
+     * Reset the turn timer to its starting value.
+     */
     public void resetTimer() {//TODO glitch when turn done near end of timer
         currentTime = totalTime;
     }
 
+    /**
+     * End the turn timer.
+     */
     public void stopTimer() {
         if (totalTime != 0) {
             timer.stop();
         }
     }
 
+    /**
+     * Start the turn timer.
+     */
     public void startTimer() {
         if (totalTime != 0) {
             timer.start();
         }
     }
 
+    /**
+     * Set the color and text of the large player turn label.
+     *
+     * @param color The color of the label .
+     * @param text The text of the label, usually "Player _'s turn"
+     */
     public void setPlayerStatus(Color color, String text) {
         PlayerStatusLabel.setForeground(color);
         PlayerStatusLabel.setText(text);
     }
 
+    /**
+     * Update teh list of players on the side so it displays if a player has died.
+     *
+     * @param players Array of all the players that are/were part of this game.
+     */
     @SuppressWarnings("unchecked") //attributes.put()
     public void refreshPlayerList(Player[] players) {
         PlayerListPanel.removeAll();
