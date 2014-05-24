@@ -44,20 +44,21 @@ public class LocalGameSetupPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        RNGCheck = new javax.swing.JCheckBox();
         SplitPane = new javax.swing.JSplitPane();
         NumbersPanel = new javax.swing.JPanel();
         gameSlidersPanel = new Deliquescence.GameSlidersPanel();
         StartButton = new javax.swing.JButton();
         PlayerNamesPanel = new javax.swing.JPanel();
-        RNGCheck = new javax.swing.JCheckBox();
-        RandomizePlayerCheck = new javax.swing.JCheckBox();
-        TimerCheck = new javax.swing.JCheckBox();
-        TimerLabel1 = new javax.swing.JLabel();
-        timerExpireRadio1 = new javax.swing.JRadioButton();
-        timerExpireRadio2 = new javax.swing.JRadioButton();
-        TimerLabel2 = new javax.swing.JLabel();
-        TimerSlider = new javax.swing.JSlider();
+        gameSettingsPanel = new Deliquescence.GameSettingsPanel();
         PlayerNamesLabel = new javax.swing.JLabel();
+
+        RNGCheck.setText("Enable RNG Button");
+        RNGCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RNGCheckActionPerformed(evt);
+            }
+        });
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
@@ -84,52 +85,18 @@ public class LocalGameSetupPanel extends javax.swing.JPanel {
         PlayerNamesPanel.setMinimumSize(new java.awt.Dimension(175, 60));
         PlayerNamesPanel.setLayout(new javax.swing.BoxLayout(PlayerNamesPanel, javax.swing.BoxLayout.Y_AXIS));
 
-        RNGCheck.setText("Enable RNG Button");
-        RNGCheck.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RNGCheckActionPerformed(evt);
-            }
-        });
-        PlayerNamesPanel.add(RNGCheck);
+        javax.swing.GroupLayout gameSettingsPanelLayout = new javax.swing.GroupLayout(gameSettingsPanel);
+        gameSettingsPanel.setLayout(gameSettingsPanelLayout);
+        gameSettingsPanelLayout.setHorizontalGroup(
+            gameSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 187, Short.MAX_VALUE)
+        );
+        gameSettingsPanelLayout.setVerticalGroup(
+            gameSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 284, Short.MAX_VALUE)
+        );
 
-        RandomizePlayerCheck.setSelected(true);
-        RandomizePlayerCheck.setText("Random Starting Player");
-        RandomizePlayerCheck.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RandomizePlayerCheckActionPerformed(evt);
-            }
-        });
-        PlayerNamesPanel.add(RandomizePlayerCheck);
-
-        TimerCheck.setText("Enable turn timer");
-        PlayerNamesPanel.add(TimerCheck);
-
-        TimerLabel1.setText("When timer expire:");
-        PlayerNamesPanel.add(TimerLabel1);
-
-        buttonGroup1.add(timerExpireRadio1);
-        timerExpireRadio1.setText("Skip turn");
-        PlayerNamesPanel.add(timerExpireRadio1);
-
-        buttonGroup1.add(timerExpireRadio2);
-        timerExpireRadio2.setSelected(true);
-        timerExpireRadio2.setText("RNG");
-        timerExpireRadio2.setToolTipText("");
-        PlayerNamesPanel.add(timerExpireRadio2);
-
-        TimerLabel2.setText("Timer Length (sec):");
-        PlayerNamesPanel.add(TimerLabel2);
-
-        TimerSlider.setMajorTickSpacing(2);
-        TimerSlider.setMaximum(20);
-        TimerSlider.setMinimum(2);
-        TimerSlider.setMinorTickSpacing(1);
-        TimerSlider.setPaintLabels(true);
-        TimerSlider.setPaintTicks(true);
-        TimerSlider.setSnapToTicks(true);
-        TimerSlider.setValue(5);
-        TimerSlider.setPreferredSize(new java.awt.Dimension(150, 45));
-        PlayerNamesPanel.add(TimerSlider);
+        PlayerNamesPanel.add(gameSettingsPanel);
 
         PlayerNamesLabel.setText("Player Names:");
         PlayerNamesLabel.setPreferredSize(new java.awt.Dimension(100, 14));
@@ -173,23 +140,19 @@ public class LocalGameSetupPanel extends javax.swing.JPanel {
             names[i] = playerTextFields[i].getText();//Todo if MAX_PLAYERS is changed while running and game not restarted, suspect AOB here
         }
         int timerLength;
-        if (TimerCheck.isSelected()) {
-            timerLength = TimerSlider.getValue();
+        if (gameSettingsPanel.TimerCheck()) {
+            timerLength = gameSettingsPanel.TimerSlider();
         } else {
             timerLength = 0;
         }
         int timerAction = 0;//0 skip, 1 rng
-        if (timerExpireRadio2.isSelected()) {
+        if (gameSettingsPanel.timerExpireRadio2()) {
             timerAction = 1;
         }
 
-        GamePanel gamePanel = new GamePanel(this.gameManager, gameSlidersPanel.getPlayers(), gameSlidersPanel.getRows(), gameSlidersPanel.getColumns(), names, RNGCheck.isSelected(), RandomizePlayerCheck.isSelected(), timerLength, timerAction);
+        GamePanel gamePanel = new GamePanel(this.gameManager, gameSlidersPanel.getPlayers(), gameSlidersPanel.getRows(), gameSlidersPanel.getColumns(), names, RNGCheck.isSelected(), gameSettingsPanel.RandomizePlayerCheck(), timerLength, timerAction);
         gameManager.addGameTab(gamePanel);
     }//GEN-LAST:event_StartButtonActionPerformed
-
-    private void RandomizePlayerCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RandomizePlayerCheckActionPerformed
-
-    }//GEN-LAST:event_RandomizePlayerCheckActionPerformed
 
     private void RNGCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RNGCheckActionPerformed
 
@@ -201,16 +164,10 @@ public class LocalGameSetupPanel extends javax.swing.JPanel {
     private JTextField[] playerTextFields;
     private javax.swing.JPanel PlayerNamesPanel;
     private javax.swing.JCheckBox RNGCheck;
-    private javax.swing.JCheckBox RandomizePlayerCheck;
     private javax.swing.JSplitPane SplitPane;
     private javax.swing.JButton StartButton;
-    private javax.swing.JCheckBox TimerCheck;
-    private javax.swing.JLabel TimerLabel1;
-    private javax.swing.JLabel TimerLabel2;
-    private javax.swing.JSlider TimerSlider;
     private javax.swing.ButtonGroup buttonGroup1;
+    private Deliquescence.GameSettingsPanel gameSettingsPanel;
     private Deliquescence.GameSlidersPanel gameSlidersPanel;
-    private javax.swing.JRadioButton timerExpireRadio1;
-    private javax.swing.JRadioButton timerExpireRadio2;
     // End of variables declaration//GEN-END:variables
 }

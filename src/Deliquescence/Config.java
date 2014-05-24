@@ -82,6 +82,7 @@ public class Config {
         p.setProperty("Color_6", "0,255,255");
         p.setProperty("Color_7", "255,128,0");
         p.setProperty("Color_8", "255,255,255");
+        p.setProperty("LAN_PORT", "22222");
 
         return p;
     }
