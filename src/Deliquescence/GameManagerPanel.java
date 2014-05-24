@@ -24,10 +24,6 @@ public class GameManagerPanel extends JPanel {
         initComponents();
     }
 
-//    @Override
-//    public void refreshConfig() {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
     /**
      * Removes a tab in this manager.
      *

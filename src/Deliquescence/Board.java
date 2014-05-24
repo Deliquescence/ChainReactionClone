@@ -14,7 +14,7 @@ import java.util.Random;
 import javax.swing.JPanel;
 
 /**
- * A Board of the game.
+ * A Board of the game. It has the {@link Tile}s that make up gameplay.
  *
  * @author Josh
  */
@@ -238,6 +238,9 @@ public class Board extends JPanel {
         return this.numRows;
     }
 
+    /**
+     * Used for RNG turns.
+     */
     private Tile getRandomTile() {
         Random random = new Random();
         int x = random.nextInt(numCols);
@@ -266,7 +269,7 @@ public class Board extends JPanel {
     }
 
     /**
-     * Attempts to add a particle to the specified {@link Tile}. Can fail if the tile is not owned by the current player or the game is not running.
+     * Attempts to add a particle to the specified {@link Tile}, but may not be successful. For example, will fail if the tile is not owned by the current player or the game is not running.
      *
      * @param onTile The tile that will be added to.
      *
@@ -438,7 +441,6 @@ public class Board extends JPanel {
             if ((x < numCols * Config.getInt("CELL_SIZE")) && (y < numRows * Config.getInt("CELL_SIZE"))) { //in bounds
                 doTurn(tile);
             }
-
         }
     }
 }
