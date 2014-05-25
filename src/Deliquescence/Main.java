@@ -32,14 +32,16 @@ public class Main extends JFrame implements Refreshable {
 
         GameManagerPanel localGamesPanel = new GameManagerPanel();
         GameManagerPanel networkGamesPanel = new GameManagerPanel();//Todo networking
+        GameManagerPanel networkGamesListPanel = new GameManagerPanel();
         ConfigPanel configPanel = new ConfigPanel();
         ColorConfigPanel colorConfigPanel = new ColorConfigPanel();
 
         localGamesPanel.addTab("Create a game", new LocalGameSetupPanel(localGamesPanel));
 
+        networkGamesPanel.addTab("Games", networkGamesListPanel);
         networkGamesPanel.addTab("Create a LAN game", new LANSetupPanel());
         networkGamesPanel.addTab("Create a server game", new ServerSetupPanel());
-        networkGamesPanel.addTab("Browse LAN games", new BrowserPanel());
+        networkGamesPanel.addTab("Join a game", new BrowserPanel(networkGamesPanel, networkGamesListPanel));
 
         MainTabbedPane.addTab("Local Games", localGamesPanel);
         MainTabbedPane.addTab("Network Games", networkGamesPanel);

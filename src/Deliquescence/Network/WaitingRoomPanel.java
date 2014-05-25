@@ -5,16 +5,26 @@
  */
 package Deliquescence.Network;
 
+import Deliquescence.GameManagerPanel;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.net.InetAddress;
+
 /**
  *
  * @author Josh
  */
 public class WaitingRoomPanel extends javax.swing.JPanel {
 
+    InetAddress serverAddress;
+    GameManagerPanel gameList;
+
     /**
      * Creates new form WaitingRoomPanel
      */
-    public WaitingRoomPanel() {
+    public WaitingRoomPanel(GameManagerPanel listPanel, InetAddress addr) {
+        serverAddress = addr;
+        gameList = listPanel;
         initComponents();
     }
 
@@ -28,18 +38,91 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        StartButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField1.addFocusListener(new FocusListener(){
+            @Override
+            public void focusGained(FocusEvent  e){
+                if (jTextField1.getText().contains("Change This")) {
+                    jTextField1.setText("");
+                }
+            }
+            @Override
+            public void focusLost(FocusEvent  e) {
+                if (jTextField1.getText().equals("")) {
+                    jTextField1.setText("Change This");
+                }
+            }
+        });
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList();
+        LeaveButton = new javax.swing.JButton();
+
+        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
+
+        StartButton.setText("Start");
+        add(StartButton);
+
+        jLabel1.setText("Server Address:");
+        jLabel1.setText("Server Address: " + serverAddress);
+        add(jLabel1);
+
+        jPanel1.setMaximumSize(new java.awt.Dimension(999999, 20));
+        jPanel1.setPreferredSize(new java.awt.Dimension(40, 20));
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
+
+        jLabel2.setText("Your Name:");
+        jPanel1.add(jLabel2);
+
+        jTextField1.setText("Change This");
+        jTextField1.setMaximumSize(new java.awt.Dimension(2147483647, 25));
+        jTextField1.setPreferredSize(new java.awt.Dimension(65, 25));
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jTextField1);
+
+        add(jPanel1);
+
+        jLabel3.setText("Players:");
+        add(jLabel3);
+
+        jScrollPane1.setViewportView(jList1);
+
+        add(jScrollPane1);
+
+        LeaveButton.setText("Exit");
+        LeaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LeaveButtonActionPerformed(evt);
+            }
+        });
+        add(LeaveButton);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void LeaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LeaveButtonActionPerformed
+        this.gameList.removeTab(this);
+    }//GEN-LAST:event_LeaveButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton LeaveButton;
+    private javax.swing.JButton StartButton;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JList jList1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

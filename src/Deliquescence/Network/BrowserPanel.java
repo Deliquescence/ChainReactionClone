@@ -6,6 +6,7 @@
 package Deliquescence.Network;
 
 import Deliquescence.Config;
+import Deliquescence.GameManagerPanel;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -20,11 +21,17 @@ import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
 public class BrowserPanel extends javax.swing.JPanel {
 
     DefaultListModel listModel;
+    GameManagerPanel gameManager;
+    GameManagerPanel gameListPanel;
+
+    String serverName;
 
     /**
      * Creates new form LANBrowserPanel
      */
-    public BrowserPanel() {
+    public BrowserPanel(GameManagerPanel gameManager, GameManagerPanel gameList) {
+        this.gameManager = gameManager;
+        this.gameListPanel = gameList;
         initComponents();
 
         //Socket testSocket = new Socket(addr, Config.getInt("LAN_PORT"));
@@ -59,25 +66,29 @@ public class BrowserPanel extends javax.swing.JPanel {
         jPanel2.setPreferredSize(new java.awt.Dimension(400, 40));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        ServerAddressFieldLabel.setText("Server Address, with port (Default 22222)");
+        ServerAddressFieldLabel.setText("Server Address");
         ServerAddressFieldLabel.setMaximumSize(new java.awt.Dimension(203, 10));
         ServerAddressFieldLabel.setMinimumSize(new java.awt.Dimension(203, 10));
         ServerAddressFieldLabel.setPreferredSize(new java.awt.Dimension(203, 10));
         jPanel2.add(ServerAddressFieldLabel, java.awt.BorderLayout.PAGE_START);
 
-        ServerAddressField.setText(":22222");
         ServerAddressField.setMaximumSize(new java.awt.Dimension(2147483647, 20));
         ServerAddressField.setPreferredSize(new java.awt.Dimension(40, 10));
         jPanel2.add(ServerAddressField, java.awt.BorderLayout.CENTER);
 
         JoinServerButton.setText("Join");
+        JoinServerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JoinServerButtonActionPerformed(evt);
+            }
+        });
         jPanel2.add(JoinServerButton, java.awt.BorderLayout.LINE_END);
 
         add(jPanel2);
 
         jPanel1.setMaximumSize(new java.awt.Dimension(32767, 100));
         jPanel1.setPreferredSize(new java.awt.Dimension(400, 20));
-        jPanel1.setLayout(new java.awt.GridLayout());
+        jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
         RefreshButton.setText("Refresh");
         RefreshButton.addActionListener(new java.awt.event.ActionListener() {
@@ -88,6 +99,11 @@ public class BrowserPanel extends javax.swing.JPanel {
         jPanel1.add(RefreshButton);
 
         JoinLANButton.setText("Join Selected Game");
+        JoinLANButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JoinLANButtonActionPerformed(evt);
+            }
+        });
         jPanel1.add(JoinLANButton);
 
         add(jPanel1);
@@ -102,8 +118,14 @@ public class BrowserPanel extends javax.swing.JPanel {
         add(jScrollPane1);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void joinGame() {
+    private void joinGame(String server) {
+        try {
+            InetAddress addr = InetAddress.getByName(server);
 
+            gameListPanel.addTab(addr.getHostName(), new WaitingRoomPanel(gameListPanel, addr));
+        } catch (Exception e) {
+            System.out.println(e);//todo
+        }
     }
 
     private void RefreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshButtonActionPerformed
@@ -142,6 +164,15 @@ public class BrowserPanel extends javax.swing.JPanel {
             System.out.println(e);
         }
     }//GEN-LAST:event_RefreshButtonActionPerformed
+
+    private void JoinLANButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JoinLANButtonActionPerformed
+        serverName = (String) GameList.getSelectedValue();
+        joinGame(serverName);
+    }//GEN-LAST:event_JoinLANButtonActionPerformed
+
+    private void JoinServerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JoinServerButtonActionPerformed
+        joinGame(ServerAddressField.getText());
+    }//GEN-LAST:event_JoinServerButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList GameList;

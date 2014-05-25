@@ -35,7 +35,7 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="ServerAddressFieldLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Server Address, with port (Default 22222)"/>
+            <Property name="text" type="java.lang.String" value="Server Address"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[203, 10]"/>
             </Property>
@@ -54,7 +54,6 @@
         </Component>
         <Component class="javax.swing.JTextField" name="ServerAddressField">
           <Properties>
-            <Property name="text" type="java.lang.String" value=":22222"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[2147483647, 20]"/>
             </Property>
@@ -72,6 +71,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Join"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JoinServerButtonActionPerformed"/>
+          </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
               <BorderConstraints direction="After"/>
@@ -107,6 +109,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Join Selected Game"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JoinLANButtonActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
