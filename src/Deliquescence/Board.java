@@ -41,8 +41,6 @@ public class Board extends JPanel {
     private boolean inGame;
     private boolean inReaction;
 
-    private Player winner;
-
     private final GamePanel gamePanel;
 
     /**
@@ -399,7 +397,6 @@ public class Board extends JPanel {
             for (Player p : players) {
                 if (p.isAlive()) {
                     inGame = false;
-                    winner = p;
                     gamePanel.setPlayerStatus(currentPlayer.getColor(), p.getDisplayName() + " Wins!");
                     gamePanel.stopTimer();
                 }

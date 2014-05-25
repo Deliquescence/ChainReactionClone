@@ -34,7 +34,7 @@ public class BrowserPanel extends javax.swing.JPanel {
         this.gameListPanel = gameList;
         initComponents();
 
-        //Socket testSocket = new Socket(addr, Config.getInt("LAN_PORT"));
+        //Socket testSocket = new Socket(addr, Config.getInt("NETWORK_PORT"));
     }
 
     /**
@@ -122,7 +122,7 @@ public class BrowserPanel extends javax.swing.JPanel {
         try {
             InetAddress addr = InetAddress.getByName(server);
 
-            gameListPanel.addTab(addr.getHostName(), new WaitingRoomPanel(gameListPanel, addr));
+            gameListPanel.addTab(addr.getHostName(), new NetworkGameViewer(gameListPanel, addr));
         } catch (Exception e) {
             System.out.println(e);//todo
         }
@@ -151,7 +151,7 @@ public class BrowserPanel extends javax.swing.JPanel {
             for (String ip : info.getAllAddresses()) {
                 InetAddress addr = InetAddress.getByName(ip);
                 if (addr.isReachable(10)) {
-                    Socket socket = new Socket(addr, Config.getInt("LAN_PORT"));
+                    Socket socket = new Socket(addr, Config.getInt("NETWORK_PORT"));
                 }
 
 //                ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());

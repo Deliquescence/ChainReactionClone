@@ -80,7 +80,6 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
 
         jTextField1.setText("Change This");
         jTextField1.setMaximumSize(new java.awt.Dimension(2147483647, 25));
-        jTextField1.setPreferredSize(new java.awt.Dimension(65, 25));
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -107,7 +106,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void LeaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LeaveButtonActionPerformed
