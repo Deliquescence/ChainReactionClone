@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -55,7 +55,17 @@ public class GamePanel extends javax.swing.JPanel {
     final int timerAction;
 
     /**
-     * Creates new form GamePanel
+     * Creates a new GamePanel with all the specified settings.
+     *
+     * @param gameManager The parent {@link GameManager} of this GamePanel.
+     * @param players The number of players in the game.
+     * @param rows The number of rows in the game.
+     * @param columns The number of columns in the game.
+     * @param playerNames Array containing the names of the players.
+     * @param RNGEnabled True if the RNG button will be enabled.
+     * @param RandomizePlayer True to choose a random player to start.
+     * @param timerLength The length of the timer (0 if disabled)
+     * @param timeAction 0 for skip turn, 1 for RNG turn
      */
     public GamePanel(GameManager gameManager, int players, int rows, int columns, String[] playerNames, boolean RNGEnabled, boolean RandomizePlayer, int timerLength, int timeAction) {
         initComponents();
@@ -135,7 +145,7 @@ public class GamePanel extends javax.swing.JPanel {
     }
 
     /**
-     * Update teh list of players on the side so it displays if a player has died.
+     * Update the list of players on the side so it displays if a player has died.
      *
      * @param players Array of all the players that are/were part of this game.
      */

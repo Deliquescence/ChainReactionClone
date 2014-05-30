@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -72,7 +72,7 @@ public class ConfigPanel extends JPanel implements Refreshable {
         JLabel[] infoLabels = new JLabel[3];
         infoLabels[0] = new JLabel("Here you will find various values that can be configured.");
         infoLabels[1] = new JLabel("Note some changes may not be noticable until after a restart.");
-        infoLabels[2] = new JLabel("Also, changing certain settings may cause errors.");
+        infoLabels[2] = new JLabel("Also, changing settings may cause errors.");
 
         for (JLabel info : infoLabels) {
             info.setHorizontalAlignment(SwingConstants.LEFT);
@@ -94,9 +94,9 @@ public class ConfigPanel extends JPanel implements Refreshable {
         for (String key : configTreeSet) {
             String value = Config.getString(key);
 
-            JLabel label = new JLabel(key);
-            JTextArea textArea = new JTextArea(value);
-            JButton button = new JButton("Default");
+            JLabel label = new JLabel(key);             //Title of the config setting
+            JTextArea textArea = new JTextArea(value);  //Value of the config setting
+            JButton button = new JButton("Default");    //Reset to default
 
             label.setPreferredSize(new Dimension(100, 15));
 

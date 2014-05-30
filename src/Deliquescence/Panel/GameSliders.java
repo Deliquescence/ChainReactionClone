@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -32,6 +32,7 @@ import Deliquescence.Config;
 import Deliquescence.Refreshable;
 
 /**
+ * This panel is meant to be a subpanel. It contains sliders for choosing numeric settings in a game.
  *
  * @author Josh
  */
@@ -59,14 +60,29 @@ public class GameSliders extends javax.swing.JPanel implements Refreshable {
         }
     }
 
+    /**
+     * Setting for the number of rows.
+     *
+     * @return The configured number of rows.
+     */
     public int getRows() {
         return RowsSlider.getValue();
     }
 
+    /**
+     * Setting for the number of columns.
+     *
+     * @return The configured number of columns.
+     */
     public int getColumns() {
         return ColumnsSlider.getValue();
     }
 
+    /**
+     * Setting for the number of players.
+     *
+     * @return The configured number of players.
+     */
     public int getPlayers() {
         return PlayersSlider.getValue();
     }
@@ -92,11 +108,6 @@ public class GameSliders extends javax.swing.JPanel implements Refreshable {
         jSeparator3 = new javax.swing.JSeparator();
 
         setPreferredSize(new java.awt.Dimension(400, 400));
-        addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                formFocusGained(evt);
-            }
-        });
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
         PlayersLabel.setText("Players:");
@@ -141,10 +152,6 @@ public class GameSliders extends javax.swing.JPanel implements Refreshable {
         add(ColumnsSlider);
         add(jSeparator3);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
-
-    }//GEN-LAST:event_formFocusGained
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ColumnsLabel;

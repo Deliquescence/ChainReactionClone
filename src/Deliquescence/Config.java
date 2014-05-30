@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -57,6 +57,10 @@ public class Config {
     public static ArrayList<Refreshable> refreshables = new ArrayList<>();
     public static File configFile;
 
+    /**
+     * Setup the config. File is stored in "user.home"\ChainReactionClone\config.txt
+     * For example, "C:\Users\Josh\ChainReactionClone\config.txt"
+     */
     public static void init() {
 
         defaultProps = new Properties();
@@ -66,6 +70,8 @@ public class Config {
             props = new Properties(defaultProps);
 
             String filePath = System.getProperty("user.home") + "\\ChainReactionClone\\config.txt";
+            System.out.println("Config Path: " + filePath);
+
             configFile = new File(filePath);
             if (!configFile.exists()) {
                 configFile.getParentFile().mkdirs();

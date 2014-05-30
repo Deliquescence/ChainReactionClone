@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -29,7 +29,7 @@
 package Deliquescence;
 
 /**
- * Used to refreshConfig config values
+ * Used to refresh config values
  *
  * @author Josh
  */

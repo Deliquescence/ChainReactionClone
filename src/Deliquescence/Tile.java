@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -191,15 +191,19 @@ public class Tile {
         return new Tile(this.getBoard(), this.getX(), this.getY(), this.getOwner(), this.getNumberOfParticles());
     }
 
+    /**
+     *
+     * Check if one tile is equal to (has the same data as) another.
+     *
+     * @param compare The Tile to compare to.
+     *
+     * @return True if the Tiles are identical.
+     */
     public boolean equals(Tile compare) {
-        if (this.getBoard() == compare.getBoard() &&
+        return this.getBoard() == compare.getBoard() &&
                 this.getNumberOfParticles() == compare.getNumberOfParticles() &&
                 this.getOwner() == compare.getOwner() &&
                 this.getX() == compare.getX() &&
-                this.getY() == compare.getY()) {
-            return true;
-        } else {
-            return false;
-        }
+                this.getY() == compare.getY();
     }
 }

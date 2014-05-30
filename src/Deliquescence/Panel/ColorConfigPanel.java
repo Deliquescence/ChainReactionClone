@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -40,6 +40,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 
 /**
+ * A panel with buttons to change each player's color.
  *
  * @author Josh
  */
@@ -85,7 +86,7 @@ public class ColorConfigPanel extends javax.swing.JPanel implements Refreshable 
             String configName = "Color_" + button.getName();
 
             int[] defaultRGB = Config.getRGBFromPlayerID(Integer.valueOf(button.getName()));
-            //JColorChooser chooser = new JColorChooser();
+
             Color newColor = JColorChooser.showDialog(this, "Player " + button.getName() + " color", new Color(defaultRGB[0], defaultRGB[1], defaultRGB[2]));
             if (newColor != null) {
                 Config.setString(configName, newColor.getRed() + "," + newColor.getGreen() + "," + newColor.getBlue());

@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -32,12 +32,9 @@ import java.awt.Component;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
+ * A panel to contain both game setup panels and actual {@link GamePanel}s.
+ * Tabs are used to accomplish this.
  *
  * @author Josh
  */
@@ -62,7 +59,7 @@ public class GameManager extends JPanel {
     }
 
     /**
-     * Adds a new {@link GamePanel} to this manager.
+     * Adds a new {@link GamePanel} to this manager with default name of "Game"
      *
      * @param game The GamePanel to add to this manager.
      */

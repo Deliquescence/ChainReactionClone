@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -29,7 +29,7 @@
 package Deliquescence.Panel;
 
 /**
- * This panel is meant to be a subpanel and settings for use in games
+ * This panel is meant to be a subpanel. It contains components for choosing settings in a game.
  *
  * @author Josh
  */
@@ -85,6 +85,15 @@ public class GameSettings extends javax.swing.JPanel {
      */
     public boolean timerExpireRNG() {
         return timerExpireRadio2.isSelected();
+    }
+
+    /**
+     * Setting for what should happen when the turn timer expires.
+     *
+     * @return True if the turn should skip when timer expires.
+     */
+    public boolean timerExpireSkip() {
+        return timerExpireRadio1.isSelected();
     }
 
     /**

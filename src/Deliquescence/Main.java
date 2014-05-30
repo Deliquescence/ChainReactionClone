@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -28,18 +28,19 @@
  */
 package Deliquescence;
 
-import Deliquescence.Panel.ConfigPanel;
-import Deliquescence.Panel.ColorConfigPanel;
-import Deliquescence.Panel.LocalGameSetup;
-import Deliquescence.Panel.GameManager;
 import Deliquescence.Network.BrowserPanel;
 import Deliquescence.Network.LANSetupPanel;
 import Deliquescence.Network.ServerSetupPanel;
+import Deliquescence.Panel.ColorConfigPanel;
+import Deliquescence.Panel.ConfigPanel;
+import Deliquescence.Panel.GameManager;
+import Deliquescence.Panel.LocalGameSetup;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 /**
+ * The starting point for ChainReactionClone
  *
  * @author Josh
  */

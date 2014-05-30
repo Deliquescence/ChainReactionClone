@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -35,6 +35,8 @@ import java.awt.event.FocusListener;
 import javax.swing.JTextField;
 
 /**
+ * A panel for setting up a local game.
+ * Subpanels {@link GameSliders} and {@link GameSettings}
  *
  * @author Josh
  */
@@ -43,17 +45,14 @@ public class LocalGameSetup extends javax.swing.JPanel {
     GameManager gameManager;
 
     /**
-     * This panel has settings for creating new singleplayer games.
+     * Creates new form LocalGameSetup with the specified GameManager parent.
+     *
+     * @param gameManager The parent {@link GameManager} of this setup panel.
      */
     public LocalGameSetup(GameManager gameManager) {
         initComponents();
 
         this.gameManager = gameManager;
-        //This.parent == A tab in GameManager
-        //(that^).Parent == GameManager
-
-//        Config.refreshables.add(this);
-//        refreshConfig();
     }
 
     /**
