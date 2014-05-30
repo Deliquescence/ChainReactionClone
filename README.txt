@@ -1,5 +1,5 @@
 Chain Reaction Clone!
 
-Find semi-recent jars in /dist
+Jars under releases as well as in /dist
 
-
+The ones in /dist might be weird though.
