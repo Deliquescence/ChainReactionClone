@@ -6,7 +6,7 @@
 package Deliquescence.Network;
 
 import Deliquescence.Config;
-import Panel.GameManagerPanel;
+import Deliquescence.Panel.GameManager;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -21,15 +21,15 @@ import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
 public class BrowserPanel extends javax.swing.JPanel {
 
     DefaultListModel listModel;
-    GameManagerPanel gameManager;
-    GameManagerPanel gameListPanel;
+    GameManager gameManager;
+    GameManager gameListPanel;
 
     String serverName;
 
     /**
      * Creates new form LANBrowserPanel
      */
-    public BrowserPanel(GameManagerPanel gameManager, GameManagerPanel gameList) {
+    public BrowserPanel(GameManager gameManager, GameManager gameList) {
         this.gameManager = gameManager;
         this.gameListPanel = gameList;
         initComponents();

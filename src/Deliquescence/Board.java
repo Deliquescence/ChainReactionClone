@@ -5,7 +5,7 @@
  */
 package Deliquescence;
 
-import Panel.GamePanel;
+import Deliquescence.Panel.GamePanel;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Panel;
+package Deliquescence.Panel;
 
 import Deliquescence.Board;
 import Deliquescence.Player;
@@ -23,7 +23,7 @@ import javax.swing.Timer;
  */
 public class GamePanel extends javax.swing.JPanel {
 
-    GameManagerPanel gameManager;
+    GameManager gameManager;
     Board gameBoard;
     Timer timer;
 
@@ -34,7 +34,7 @@ public class GamePanel extends javax.swing.JPanel {
     /**
      * Creates new form GamePanel
      */
-    public GamePanel(GameManagerPanel gameManager, int players, int rows, int columns, String[] playerNames, boolean RNGEnabled, boolean RandomizePlayer, int timerLength, int timeAction) {
+    public GamePanel(GameManager gameManager, int players, int rows, int columns, String[] playerNames, boolean RNGEnabled, boolean RandomizePlayer, int timerLength, int timeAction) {
         initComponents();
         this.gameManager = gameManager;
 

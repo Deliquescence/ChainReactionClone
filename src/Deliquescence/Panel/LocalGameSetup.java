@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Panel;
+package Deliquescence.Panel;
 
 import Deliquescence.Config;
 import java.awt.Dimension;
@@ -15,19 +15,19 @@ import javax.swing.JTextField;
  *
  * @author Josh
  */
-public class LocalGameSetupPanel extends javax.swing.JPanel {
+public class LocalGameSetup extends javax.swing.JPanel {
 
-    GameManagerPanel gameManager;
+    GameManager gameManager;
 
     /**
      * This panel has settings for creating new singleplayer games.
      */
-    public LocalGameSetupPanel(GameManagerPanel gameManager) {
+    public LocalGameSetup(GameManager gameManager) {
         initComponents();
 
         this.gameManager = gameManager;
-        //This.parent == A tab in GameManagerPanel
-        //(that^).Parent == GameManagerPanel
+        //This.parent == A tab in GameManager
+        //(that^).Parent == GameManager
 
 //        Config.refreshables.add(this);
 //        refreshConfig();
@@ -43,10 +43,10 @@ public class LocalGameSetupPanel extends javax.swing.JPanel {
         buttonGroup1 = new javax.swing.ButtonGroup();
         SplitPane = new javax.swing.JSplitPane();
         NumbersPanel = new javax.swing.JPanel();
-        gameSlidersPanel = new Panel.GameSlidersPanel();
+        gameSlidersPanel = new Deliquescence.Panel.GameSliders();
         StartButton = new javax.swing.JButton();
         PlayerNamesPanel = new javax.swing.JPanel();
-        gameSettingsPanel = new Panel.GameSettingsPanel();
+        gameSettingsPanel = new Deliquescence.Panel.GameSettings();
         PlayerNamesLabel = new javax.swing.JLabel();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
@@ -139,7 +139,7 @@ public class LocalGameSetupPanel extends javax.swing.JPanel {
     private javax.swing.JSplitPane SplitPane;
     private javax.swing.JButton StartButton;
     private javax.swing.ButtonGroup buttonGroup1;
-    private Panel.GameSettingsPanel gameSettingsPanel;
-    private Panel.GameSlidersPanel gameSlidersPanel;
+    private Deliquescence.Panel.GameSettings gameSettingsPanel;
+    private Deliquescence.Panel.GameSliders gameSlidersPanel;
     // End of variables declaration//GEN-END:variables
 }

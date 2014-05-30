@@ -3,19 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Panel;
+package Deliquescence.Panel;
 
 /**
  * This panel is meant to be a subpanel and settings for use in games
  *
  * @author Josh
  */
-public class GameSettingsPanel extends javax.swing.JPanel {
+public class GameSettings extends javax.swing.JPanel {
 
     /**
      * Creates new form GameSettingsPanel
      */
-    public GameSettingsPanel() {
+    public GameSettings() {
         initComponents();
     }
 

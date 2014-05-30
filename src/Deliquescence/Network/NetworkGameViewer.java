@@ -5,7 +5,7 @@
  */
 package Deliquescence.Network;
 
-import Panel.GameManagerPanel;
+import Deliquescence.Panel.GameManager;
 import java.net.InetAddress;
 import javax.swing.BoxLayout;
 
@@ -17,12 +17,12 @@ import javax.swing.BoxLayout;
 public class NetworkGameViewer extends javax.swing.JPanel {
 
     InetAddress serverAddress;
-    GameManagerPanel gameList;
+    GameManager gameList;
 
     /**
      * Creates new form NetworkGameViewer
      */
-    public NetworkGameViewer(GameManagerPanel listPanel, InetAddress addr) {
+    public NetworkGameViewer(GameManager listPanel, InetAddress addr) {
         serverAddress = addr;
         gameList = listPanel;
         initComponents();

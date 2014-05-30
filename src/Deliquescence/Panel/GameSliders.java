@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Panel;
+package Deliquescence.Panel;
 
 import Deliquescence.Config;
 import Deliquescence.Refreshable;
@@ -12,12 +12,12 @@ import Deliquescence.Refreshable;
  *
  * @author Josh
  */
-public class GameSlidersPanel extends javax.swing.JPanel implements Refreshable {
+public class GameSliders extends javax.swing.JPanel implements Refreshable {
 
     /**
      * Creates new form GameSlidersPanel
      */
-    public GameSlidersPanel() {
+    public GameSliders() {
         initComponents();
         Config.refreshables.add(this);
         refreshConfig();

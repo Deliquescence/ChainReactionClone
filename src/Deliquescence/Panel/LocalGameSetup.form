@@ -54,7 +54,7 @@
             <Property name="axis" type="int" value="1"/>
           </Layout>
           <SubComponents>
-            <Component class="Panel.GameSlidersPanel" name="gameSlidersPanel">
+            <Component class="Deliquescence.Panel.GameSliders" name="gameSlidersPanel">
             </Component>
             <Component class="javax.swing.JButton" name="StartButton">
               <Properties>
@@ -89,7 +89,7 @@
             <Property name="axis" type="int" value="1"/>
           </Layout>
           <SubComponents>
-            <Component class="Panel.GameSettingsPanel" name="gameSettingsPanel">
+            <Component class="Deliquescence.Panel.GameSettings" name="gameSettingsPanel">
             </Component>
             <Component class="javax.swing.JLabel" name="PlayerNamesLabel">
               <Properties>

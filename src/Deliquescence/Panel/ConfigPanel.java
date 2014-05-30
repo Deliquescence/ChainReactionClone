@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Panel;
+package Deliquescence.Panel;
 
 import Deliquescence.Config;
 import Deliquescence.Refreshable;

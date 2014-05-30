@@ -1,4 +1,4 @@
-package Panel;
+package Deliquescence.Panel;
 
 import java.awt.Component;
 import java.util.ArrayList;
@@ -13,14 +13,14 @@ import javax.swing.JPanel;
  *
  * @author Josh
  */
-public class GameManagerPanel extends JPanel {
+public class GameManager extends JPanel {
 
     ArrayList<GamePanel> currentGames;
 
     /**
      * Creates a new Game manager. Has tabs with {@link GamePanel}s and setup panels.
      */
-    public GameManagerPanel() {
+    public GameManager() {
         initComponents();
     }
 

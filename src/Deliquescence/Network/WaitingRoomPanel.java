@@ -5,7 +5,7 @@
  */
 package Deliquescence.Network;
 
-import Panel.GameManagerPanel;
+import Deliquescence.Panel.GameManager;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.net.InetAddress;
@@ -17,12 +17,12 @@ import java.net.InetAddress;
 public class WaitingRoomPanel extends javax.swing.JPanel {
 
     InetAddress serverAddress;
-    GameManagerPanel gameList;
+    GameManager gameList;
 
     /**
      * Creates new form WaitingRoomPanel
      */
-    public WaitingRoomPanel(GameManagerPanel listPanel, InetAddress addr) {
+    public WaitingRoomPanel(GameManager listPanel, InetAddress addr) {
         serverAddress = addr;
         gameList = listPanel;
         initComponents();
