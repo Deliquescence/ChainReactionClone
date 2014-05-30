@@ -29,7 +29,7 @@ public class GameSlidersPanel extends javax.swing.JPanel implements Refreshable 
             RowsSlider.setMaximum(Config.getInt("MAX_ROWS"));
             ColumnsSlider.setMaximum(Config.getInt("MAX_COLUMNS"));
             PlayersSlider.setMaximum(Config.getInt("MAX_PLAYERS"));
-        } catch (NullPointerException e) {
+        } catch (NullPointerException e) {//Config not loaded
             RowsSlider.setMaximum(15);
             ColumnsSlider.setMaximum(10);
             PlayersSlider.setMaximum(8);
