@@ -1,5 +1,10 @@
+"ChainReactionClone.jar"  Should run with Java!
+
+
+
+
 ========================
-BUILD OUTPUT DESCRIPTION
+BUILD OUTPUT DESCRIPTION   (From Netbeans)
 ========================
 
 When you build an Java application project that has a main class, the IDE
