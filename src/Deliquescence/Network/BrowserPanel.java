@@ -6,7 +6,7 @@
 package Deliquescence.Network;
 
 import Deliquescence.Config;
-import Deliquescence.GameManagerPanel;
+import Panel.GameManagerPanel;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;

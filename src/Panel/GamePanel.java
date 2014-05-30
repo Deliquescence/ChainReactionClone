@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Deliquescence;
+package Panel;
 
+import Deliquescence.Board;
+import Deliquescence.Player;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;

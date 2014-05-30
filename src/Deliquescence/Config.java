@@ -28,11 +28,11 @@ public class Config {
     protected static Properties defaultProps;
     protected static boolean fileInitialized;
 
-    public static Map<Integer, Image[]> imagesByPlayerID;
-    public static ArrayList<Refreshable> refreshables = new ArrayList<>();
+    private static Map<Integer, Image[]> imagesByPlayerID;
+    private static FileOutputStream configOutputStream;
 
-    protected static File configFile;
-    protected static FileOutputStream configOutputStream;
+    public static ArrayList<Refreshable> refreshables = new ArrayList<>();
+    public static File configFile;
 
     public static void init() {
 
@@ -192,7 +192,7 @@ public class Config {
     }
 
     /**
-     * Refresh all the register refreshables so they show the updated config.
+     * Refresh all the registered refreshables so they show the updated config.
      */
     public static void refresh() {
         refreshColors();
@@ -213,6 +213,10 @@ public class Config {
                 System.err.println(ex);
             }
         }
+    }
+
+    public static Image getImageByPlayerID(int player, int num) {
+        return imagesByPlayerID.get(player)[num];
     }
 
     /**

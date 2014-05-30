@@ -5,7 +5,7 @@
  */
 package Deliquescence.Network;
 
-import Deliquescence.GameManagerPanel;
+import Panel.GameManagerPanel;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.net.InetAddress;

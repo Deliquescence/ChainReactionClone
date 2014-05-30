@@ -5,6 +5,7 @@
  */
 package Deliquescence;
 
+import Panel.GamePanel;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
@@ -414,7 +415,7 @@ public class Board extends JPanel {
         for (Tile tile : getAllTiles()) {
             //Draw particles (spheres)
             Image theImage;
-            theImage = Config.imagesByPlayerID.get(tile.getOwnerID())[tile.getNumberOfParticles()];
+            theImage = Config.getImageByPlayerID(tile.getOwnerID(), tile.getNumberOfParticles());
 
             g.drawImage(theImage, (tile.getX() * Config.getInt("CELL_SIZE")), (tile.getY() * Config.getInt("CELL_SIZE")), this);
         }

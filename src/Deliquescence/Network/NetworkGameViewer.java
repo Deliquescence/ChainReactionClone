@@ -5,7 +5,7 @@
  */
 package Deliquescence.Network;
 
-import Deliquescence.GameManagerPanel;
+import Panel.GameManagerPanel;
 import java.net.InetAddress;
 import javax.swing.BoxLayout;
 

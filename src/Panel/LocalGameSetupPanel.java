@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Deliquescence;
+package Panel;
 
+import Deliquescence.Config;
 import java.awt.Dimension;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -42,10 +43,10 @@ public class LocalGameSetupPanel extends javax.swing.JPanel {
         buttonGroup1 = new javax.swing.ButtonGroup();
         SplitPane = new javax.swing.JSplitPane();
         NumbersPanel = new javax.swing.JPanel();
-        gameSlidersPanel = new Deliquescence.GameSlidersPanel();
+        gameSlidersPanel = new Panel.GameSlidersPanel();
         StartButton = new javax.swing.JButton();
         PlayerNamesPanel = new javax.swing.JPanel();
-        gameSettingsPanel = new Deliquescence.GameSettingsPanel();
+        gameSettingsPanel = new Panel.GameSettingsPanel();
         PlayerNamesLabel = new javax.swing.JLabel();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
@@ -138,7 +139,7 @@ public class LocalGameSetupPanel extends javax.swing.JPanel {
     private javax.swing.JSplitPane SplitPane;
     private javax.swing.JButton StartButton;
     private javax.swing.ButtonGroup buttonGroup1;
-    private Deliquescence.GameSettingsPanel gameSettingsPanel;
-    private Deliquescence.GameSlidersPanel gameSlidersPanel;
+    private Panel.GameSettingsPanel gameSettingsPanel;
+    private Panel.GameSlidersPanel gameSlidersPanel;
     // End of variables declaration//GEN-END:variables
 }

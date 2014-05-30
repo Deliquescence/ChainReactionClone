@@ -5,6 +5,10 @@
  */
 package Deliquescence;
 
+import Panel.ConfigPanel;
+import Panel.ColorConfigPanel;
+import Panel.LocalGameSetupPanel;
+import Panel.GameManagerPanel;
 import Deliquescence.Network.BrowserPanel;
 import Deliquescence.Network.LANSetupPanel;
 import Deliquescence.Network.ServerSetupPanel;

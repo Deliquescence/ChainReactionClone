@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Deliquescence;
+package Panel;
 
 /**
  * This panel is meant to be a subpanel and settings for use in games

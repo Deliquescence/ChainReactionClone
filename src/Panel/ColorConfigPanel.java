@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Deliquescence;
+package Panel;
 
+import Deliquescence.Config;
+import Deliquescence.Refreshable;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -46,7 +48,7 @@ public class ColorConfigPanel extends javax.swing.JPanel implements Refreshable 
                 }
             });
 
-            final JLabel label = new JLabel(new ImageIcon(Config.imagesByPlayerID.get(i)[1]));
+            final JLabel label = new JLabel(new ImageIcon(Config.getImageByPlayerID(i, 1)));
 
             this.add(button);
             this.add(label);
