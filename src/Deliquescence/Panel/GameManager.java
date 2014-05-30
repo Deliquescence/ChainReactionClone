@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -61,12 +61,12 @@ public class GameManager extends JPanel {
     }
 
     /**
-     * Adds a new {@link GamePanel} to this manager with default name of "Game" and also switch to it.
+     * Adds a new, closeable {@link GamePanel} to this manager with default name of "Game" and also switch to it.
      *
      * @param game The GamePanel to add to this manager.
      */
     public void addGameTab(GamePanel game) {
-        addTab("Game", game, true);
+        addTab("Game", game, true, true);
     }
 
     /**
@@ -76,18 +76,34 @@ public class GameManager extends JPanel {
      * @param component The component to add.
      */
     public void addTab(String name, Component component) {
-        addTab(name, component, false);
+        addTab(name, component, false, false);
     }
 
     /**
-     * Adds a new tab to the manager, and switches to it if specified.
+     * Adds a new tab to the manager. It is closeable if specified.
      *
      * @param name The title of the added tab.
      * @param component The component to add.
+     * @param closeable True if the tab will have a close button.
+     */
+    public void addTab(String name, Component component, boolean closeable) {
+        addTab(name, component, closeable, false);
+    }
+
+    /**
+     * Adds a new tab to the manager, switched to and closeable if specified.
+     *
+     * @param name The title of the added tab.
+     * @param component The component to add.
+     * @param closeable True if the tab will have a close button.
      * @param Switch True to set focus to the new tab.
      */
-    public void addTab(String name, Component component, boolean Switch) {
+    public void addTab(String name, Component component, boolean closeable, boolean Switch) {
         jTabbedPane1.addTab(name, component);
+
+        if (closeable) {
+            jTabbedPane1.setTabComponentAt(jTabbedPane1.indexOfComponent(component), new ButtonTabComponent(jTabbedPane1));
+        }
         if (Switch) {
             jTabbedPane1.setSelectedComponent(component);
         }
