@@ -59,12 +59,12 @@ public class GameManager extends JPanel {
     }
 
     /**
-     * Adds a new {@link GamePanel} to this manager with default name of "Game"
+     * Adds a new {@link GamePanel} to this manager with default name of "Game" and also switch to it.
      *
      * @param game The GamePanel to add to this manager.
      */
     public void addGameTab(GamePanel game) {
-        jTabbedPane1.add("Game", game);
+        addTab("Game", game, true);
     }
 
     /**
@@ -74,7 +74,21 @@ public class GameManager extends JPanel {
      * @param component The component to add.
      */
     public void addTab(String name, Component component) {
+        addTab(name, component, false);
+    }
+
+    /**
+     * Adds a new tab to the manager, and switches to it if specified.
+     *
+     * @param name The title of the added tab.
+     * @param component The component to add.
+     * @param Switch True to set focus to the new tab.
+     */
+    public void addTab(String name, Component component, boolean Switch) {
         jTabbedPane1.addTab(name, component);
+        if (Switch) {
+            jTabbedPane1.setSelectedComponent(component);
+        }
     }
 
     /**
