@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -197,34 +197,37 @@ public class Board extends JPanel {
         return tiles.toArray(new Tile[1]);
     }
 
-    private void doReaction(Tile InitiatingTile) throws StackOverflowError {//todo ajdust to look better
+    private void doReaction(Tile InitiatingTile) throws StackOverflowError {
         //-Xss JVM arg will change stack size
         if (gameWon()) {
             return;
         }
-        boolean dirty = false;
-        if (inGame) {
-            if (InitiatingTile.canExplode()) {
-                InitiatingTile.setNumberOfParticles(0);
-                for (Tile t : getSurroundingTiles(InitiatingTile)) {
-                    t.setOwner(InitiatingTile.getOwner());
-                    t.setNumberOfParticles(t.getNumberOfParticles() + 1);
-                    dirty = true;
-                    if (dirty) {
-                        paintImmediately(0, 0, numCols * Config.getInt("CELL_SIZE"), numRows * Config.getInt("CELL_SIZE"));
-                        sleep();
-                    }
 
-                    doReaction(t);
-                }
-                if (InitiatingTile.getNumberOfParticles() == 0) { //Clear owner of empty tile
-                    InitiatingTile.setOwner(players[0]);//Todo Fix rare orphaned particles
-                }
+        ArrayList<Tile> explodingTiles = new ArrayList<>();
+        for (Tile tile : getAllTiles()) {//Get the tiles that need to explode
+            if (tile.canExplode()) {
+                explodingTiles.add(tile);
             }
+        }
+
+        ArrayList<Tile> increasedTiles = new ArrayList<>();
+        for (Tile tile : explodingTiles) {//Explode the tiles and add to the neighbors
+            increasedTiles.addAll(explodeTile(tile));
+        }
+
+        //Next iteration
+        if (increasedTiles.size() <= 0) {
+            return;//Do not iterate if nothing was changed
+        } else {
+            //Update the board, with delay so it looks nice
+            paintImmediately(0, 0, numCols * Config.getInt("CELL_SIZE"), numRows * Config.getInt("CELL_SIZE"));
+            sleep();
+
+            doReaction(InitiatingTile);//note: param may not be needed
         }
     }
 
-    private Tile[] explodeTile(Tile tile) {
+    private ArrayList<Tile> explodeTile(Tile tile) {//Retruns altered tiles
         ArrayList<Tile> dirtyTiles = new ArrayList<>();//Does not include initiating tile
         for (Tile t : getSurroundingTiles(tile)) {
             t.setOwner(tile.getOwner());
@@ -233,12 +236,12 @@ public class Board extends JPanel {
         }
         tile.setNumberOfParticles(0);
         tile.setOwner(players[0]);
-        return dirtyTiles.toArray(new Tile[0]);
+        return dirtyTiles;
     }
 
     private void sleep() {
         try {
-            Thread.sleep(100);
+            Thread.sleep(500);
         } catch (Exception er) {
 
         }

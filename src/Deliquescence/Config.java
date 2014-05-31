@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -119,19 +119,19 @@ public class Config {
     }
 
     public static void initImages() {
-        Image[] images;
+        int numberOfImages = 7; //0, 1, 2, 3, 4 dots are obvious, but need 5 and 6 because of the way the reacting algorithim works
+        Image[] images = new Image[numberOfImages];
         imagesByPlayerID = new HashMap<>();
-        images = new Image[5]; //Dont forget about 0
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < numberOfImages; i++) {
             java.net.URL imgURL = Main.class.getResource("/TileImages/" + i + ".png");
             images[i] = (new ImageIcon(imgURL)).getImage();
         }
 
         imagesByPlayerID.put(0, images);
         for (int player = 1; player <= Config.getInt("MAX_PLAYERS"); player++) {
-            Image[] colorizedImages = new Image[5];
-            for (int i = 0; i < 5; i++) {
+            Image[] colorizedImages = new Image[numberOfImages];
+            for (int i = 0; i < numberOfImages; i++) {
                 colorizedImages[i] = Colorizer.colorize(images[i], player);
             }
             imagesByPlayerID.put(player, colorizedImages);
@@ -182,8 +182,7 @@ public class Config {
      * Sets a property value in the config.
      *
      * @param key The key of the property
-     *
-     * @param The value of the property
+     * @param value The value of the property
      */
     public static void setString(String key, String value) {
         props.setProperty(key, value);
@@ -195,7 +194,7 @@ public class Config {
      *
      * @param key The key of the property
      *
-     * @param The value of the property
+     * @param value The value of the property
      */
     public static void setInt(String key, int value) {
         props.setProperty(key, Integer.toString(value));
