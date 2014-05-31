@@ -30,32 +30,17 @@
  */
 package Deliquescence.Network;
 
-import Deliquescence.Panel.GameManager;
-import java.net.InetAddress;
-import javax.swing.BoxLayout;
-
 /**
- * Displays waiting room panel or game panel
  *
- * @author Josh
+ * @author Deliquescence <Deliquescence1@gmail.com>
  */
-public class NetworkGameViewer extends javax.swing.JPanel {
-
-    InetAddress serverAddress;
-    GameManager gameList;
+public class NetworkSetupPanel extends javax.swing.JPanel {
 
     /**
-     * Contains waiting room panel, until wait is done and game panel is displayed.
-     *
-     * Creates new form NetworkGameViewer
+     * Creates new form NetworkSetupPanel
      */
-    public NetworkGameViewer(GameManager listPanel, InetAddress addr) {
-        serverAddress = addr;
-        gameList = listPanel;
+    public NetworkSetupPanel() {
         initComponents();
-
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(new WaitingRoomPanel(listPanel, addr));
     }
 
     /**

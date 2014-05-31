@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -31,8 +31,7 @@
 package Deliquescence;
 
 import Deliquescence.Network.BrowserPanel;
-import Deliquescence.Network.LANSetupPanel;
-import Deliquescence.Network.ServerSetupPanel;
+import Deliquescence.Network.NetworkSetupPanel;
 import Deliquescence.Panel.ColorConfigPanel;
 import Deliquescence.Panel.ConfigPanel;
 import Deliquescence.Panel.GameManager;
@@ -61,16 +60,17 @@ public class Main extends JFrame implements Refreshable {
         JTabbedPane MainTabbedPane = new JTabbedPane();
 
         GameManager localGamesPanel = new GameManager();
+
         GameManager networkGamesPanel = new GameManager();//Todo networking
-        GameManager networkGamesListPanel = new GameManager();
+        GameManager networkGamesListPanel = new GameManager();//List of network games; tab in networkGamesPanel
+
         ConfigPanel configPanel = new ConfigPanel();
         ColorConfigPanel colorConfigPanel = new ColorConfigPanel();
 
         localGamesPanel.addTab("Create a game", new LocalGameSetup(localGamesPanel));
 
         networkGamesPanel.addTab("Games", networkGamesListPanel);
-        networkGamesPanel.addTab("Create a LAN game", new LANSetupPanel());
-        networkGamesPanel.addTab("Create a server game", new ServerSetupPanel());
+        networkGamesPanel.addTab("Create a game", new NetworkSetupPanel());
         networkGamesPanel.addTab("Join a game", new BrowserPanel(networkGamesPanel, networkGamesListPanel));
 
         MainTabbedPane.addTab("Local Games", localGamesPanel);

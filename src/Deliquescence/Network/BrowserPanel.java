@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -32,6 +32,7 @@ package Deliquescence.Network;
 
 import Deliquescence.Config;
 import Deliquescence.Panel.GameManager;
+import Deliquescence.Refreshable;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -43,7 +44,7 @@ import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
  *
  * @author Josh
  */
-public class BrowserPanel extends javax.swing.JPanel {
+public class BrowserPanel extends javax.swing.JPanel implements Refreshable {
 
     DefaultListModel listModel;
     GameManager gameManager;
@@ -53,6 +54,9 @@ public class BrowserPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form LANBrowserPanel
+     *
+     * @param gameManager //TODO
+     * @param gameList The panel to send new games to
      */
     public BrowserPanel(GameManager gameManager, GameManager gameList) {
         this.gameManager = gameManager;
@@ -72,34 +76,62 @@ public class BrowserPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
+        PlayerCountPanel = new javax.swing.JPanel();
+        PlayersSliderLabel = new javax.swing.JLabel();
+        PlayersSlider = new javax.swing.JSlider();
+        ServerAddressPanel = new javax.swing.JPanel();
         ServerAddressFieldLabel = new javax.swing.JLabel();
         ServerAddressField = new javax.swing.JTextField();
         JoinServerButton = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
+        ButtonPanel1 = new javax.swing.JPanel();
         RefreshButton = new javax.swing.JButton();
         JoinLANButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        LanGamesListLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         listModel = new DefaultListModel();
         GameList = GameList = new javax.swing.JList(listModel);
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanel2.setMaximumSize(new java.awt.Dimension(32767, 100));
-        jPanel2.setMinimumSize(new java.awt.Dimension(203, 30));
-        jPanel2.setPreferredSize(new java.awt.Dimension(400, 40));
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        PlayerCountPanel.setMaximumSize(new java.awt.Dimension(32767, 75));
+        PlayerCountPanel.setMinimumSize(new java.awt.Dimension(400, 50));
+        PlayerCountPanel.setPreferredSize(new java.awt.Dimension(300, 50));
+        PlayerCountPanel.setLayout(new javax.swing.BoxLayout(PlayerCountPanel, javax.swing.BoxLayout.LINE_AXIS));
+
+        PlayersSliderLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        PlayersSliderLabel.setLabelFor(PlayersSlider);
+        PlayersSliderLabel.setText("Number of players on this client: ");
+        PlayersSliderLabel.setMaximumSize(new java.awt.Dimension(350, 15));
+        PlayersSliderLabel.setMinimumSize(new java.awt.Dimension(150, 15));
+        PlayersSliderLabel.setPreferredSize(new java.awt.Dimension(200, 15));
+        PlayerCountPanel.add(PlayersSliderLabel);
+
+        PlayersSlider.setMajorTickSpacing(1);
+        PlayersSlider.setMaximum(8);
+        PlayersSlider.setMinimum(1);
+        PlayersSlider.setMinorTickSpacing(1);
+        PlayersSlider.setPaintLabels(true);
+        PlayersSlider.setPaintTicks(true);
+        PlayersSlider.setSnapToTicks(true);
+        PlayersSlider.setValue(1);
+        PlayerCountPanel.add(PlayersSlider);
+
+        add(PlayerCountPanel);
+
+        ServerAddressPanel.setMaximumSize(new java.awt.Dimension(32767, 100));
+        ServerAddressPanel.setMinimumSize(new java.awt.Dimension(203, 30));
+        ServerAddressPanel.setPreferredSize(new java.awt.Dimension(400, 40));
+        ServerAddressPanel.setLayout(new java.awt.BorderLayout());
 
         ServerAddressFieldLabel.setText("Server Address");
         ServerAddressFieldLabel.setMaximumSize(new java.awt.Dimension(203, 10));
         ServerAddressFieldLabel.setMinimumSize(new java.awt.Dimension(203, 10));
         ServerAddressFieldLabel.setPreferredSize(new java.awt.Dimension(203, 10));
-        jPanel2.add(ServerAddressFieldLabel, java.awt.BorderLayout.PAGE_START);
+        ServerAddressPanel.add(ServerAddressFieldLabel, java.awt.BorderLayout.PAGE_START);
 
         ServerAddressField.setMaximumSize(new java.awt.Dimension(2147483647, 20));
         ServerAddressField.setPreferredSize(new java.awt.Dimension(40, 10));
-        jPanel2.add(ServerAddressField, java.awt.BorderLayout.CENTER);
+        ServerAddressPanel.add(ServerAddressField, java.awt.BorderLayout.CENTER);
 
         JoinServerButton.setText("Join");
         JoinServerButton.addActionListener(new java.awt.event.ActionListener() {
@@ -107,13 +139,13 @@ public class BrowserPanel extends javax.swing.JPanel {
                 JoinServerButtonActionPerformed(evt);
             }
         });
-        jPanel2.add(JoinServerButton, java.awt.BorderLayout.LINE_END);
+        ServerAddressPanel.add(JoinServerButton, java.awt.BorderLayout.LINE_END);
 
-        add(jPanel2);
+        add(ServerAddressPanel);
 
-        jPanel1.setMaximumSize(new java.awt.Dimension(32767, 100));
-        jPanel1.setPreferredSize(new java.awt.Dimension(400, 20));
-        jPanel1.setLayout(new java.awt.GridLayout(1, 0));
+        ButtonPanel1.setMaximumSize(new java.awt.Dimension(32767, 100));
+        ButtonPanel1.setPreferredSize(new java.awt.Dimension(400, 20));
+        ButtonPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
         RefreshButton.setText("Refresh");
         RefreshButton.addActionListener(new java.awt.event.ActionListener() {
@@ -121,7 +153,7 @@ public class BrowserPanel extends javax.swing.JPanel {
                 RefreshButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(RefreshButton);
+        ButtonPanel1.add(RefreshButton);
 
         JoinLANButton.setText("Join Selected Game");
         JoinLANButton.addActionListener(new java.awt.event.ActionListener() {
@@ -129,13 +161,13 @@ public class BrowserPanel extends javax.swing.JPanel {
                 JoinLANButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(JoinLANButton);
+        ButtonPanel1.add(JoinLANButton);
 
-        add(jPanel1);
+        add(ButtonPanel1);
 
-        jLabel1.setText("LAN Games");
-        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        add(jLabel1);
+        LanGamesListLabel.setText("LAN Games");
+        LanGamesListLabel.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        add(LanGamesListLabel);
 
         GameList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(GameList);
@@ -200,15 +232,27 @@ public class BrowserPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_JoinServerButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel ButtonPanel1;
     private javax.swing.JList GameList;
     private javax.swing.JButton JoinLANButton;
     private javax.swing.JButton JoinServerButton;
+    private javax.swing.JLabel LanGamesListLabel;
+    private javax.swing.JPanel PlayerCountPanel;
+    private javax.swing.JSlider PlayersSlider;
+    private javax.swing.JLabel PlayersSliderLabel;
     private javax.swing.JButton RefreshButton;
     private javax.swing.JTextField ServerAddressField;
     private javax.swing.JLabel ServerAddressFieldLabel;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel ServerAddressPanel;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void refreshConfig() {
+        try {
+            PlayersSlider.setMaximum(Config.getInt("MAX_PLAYERS"));
+        } catch (NullPointerException e) {//Config not loaded
+            PlayersSlider.setMaximum(8);
+        }
+    }
 }
