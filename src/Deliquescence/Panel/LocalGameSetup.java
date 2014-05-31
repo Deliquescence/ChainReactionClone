@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -31,10 +31,6 @@
 package Deliquescence.Panel;
 
 import Deliquescence.Config;
-import java.awt.Dimension;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import javax.swing.JTextField;
 
 /**
  * A panel for setting up a local game.
@@ -71,7 +67,7 @@ public class LocalGameSetup extends javax.swing.JPanel {
         StartButton = new javax.swing.JButton();
         PlayerNamesPanel = new javax.swing.JPanel();
         gameSettingsPanel = new Deliquescence.Panel.GameSettings();
-        PlayerNamesLabel = new javax.swing.JLabel();
+        playerNames1 = new Deliquescence.Panel.PlayerNames();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
@@ -98,37 +94,7 @@ public class LocalGameSetup extends javax.swing.JPanel {
         PlayerNamesPanel.setMinimumSize(new java.awt.Dimension(175, 60));
         PlayerNamesPanel.setLayout(new javax.swing.BoxLayout(PlayerNamesPanel, javax.swing.BoxLayout.Y_AXIS));
         PlayerNamesPanel.add(gameSettingsPanel);
-
-        PlayerNamesLabel.setText("Player Names:");
-        PlayerNamesLabel.setPreferredSize(new java.awt.Dimension(100, 14));
-        PlayerNamesPanel.add(PlayerNamesLabel);
-
-        //Add player text boxes
-        playerTextFields = new JTextField[Deliquescence.Config.getInt("MAX_PLAYERS")+1];
-        for (int i = 1; i <= Deliquescence.Config.getInt("MAX_PLAYERS"); i++) {
-            final JTextField textField = new JTextField();
-            playerTextFields[i] = textField;
-            textField.setName(Integer.toString(i));
-            textField.setText(Deliquescence.Config.getDefaultPlayerName(i));
-            textField.setMaximumSize(new Dimension(400, 20));
-
-            textField.addFocusListener(new FocusListener(){
-                @Override
-                public void focusGained(FocusEvent  e){
-                    if (textField.getText().contains("Player ")) {
-                        textField.setText("");
-                    }
-                }
-                @Override
-                public void focusLost(FocusEvent  e) {
-                    if (textField.getText().equals("")) {
-                        textField.setText("Player " + textField.getName());
-                    }
-                }
-            });
-
-            PlayerNamesPanel.add(playerTextFields[i]);
-        }
+        PlayerNamesPanel.add(playerNames1);
 
         SplitPane.setRightComponent(PlayerNamesPanel);
 
@@ -138,7 +104,7 @@ public class LocalGameSetup extends javax.swing.JPanel {
     private void StartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartButtonActionPerformed
         String[] names = new String[Config.getInt("MAX_PLAYERS") + 1];
         for (int i = 1; i <= Config.getInt("MAX_PLAYERS"); i++) {
-            names[i] = playerTextFields[i].getText();//Todo if MAX_PLAYERS is changed while running and game not restarted, suspect AOB here
+            names[i] = playerNames1.getPlayerName(i);//Todo if MAX_PLAYERS is changed while running and game not restarted, suspect AOB here
         }
         int timerLength;
         if (gameSettingsPanel.EnableTurnTimer()) {
@@ -157,13 +123,12 @@ public class LocalGameSetup extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel NumbersPanel;
-    private javax.swing.JLabel PlayerNamesLabel;
-    private JTextField[] playerTextFields;
     private javax.swing.JPanel PlayerNamesPanel;
     private javax.swing.JSplitPane SplitPane;
     private javax.swing.JButton StartButton;
     private javax.swing.ButtonGroup buttonGroup1;
     private Deliquescence.Panel.GameSettings gameSettingsPanel;
     private Deliquescence.Panel.GameSliders gameSlidersPanel;
+    private Deliquescence.Panel.PlayerNames playerNames1;
     // End of variables declaration//GEN-END:variables
 }
