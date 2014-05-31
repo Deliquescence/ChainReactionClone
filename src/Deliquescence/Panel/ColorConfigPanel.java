@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -59,29 +59,42 @@ public class ColorConfigPanel extends javax.swing.JPanel implements Refreshable 
     @Override
     public void refreshConfig() {
         this.removeAll();
-        setLayout(new java.awt.GridLayout(Config.getInt("MAX_PLAYERS"), 2, 5, 5));
+        setLayout(new java.awt.GridLayout(Config.getInt("MAX_PLAYERS"), 3, 5, 5));
 
         for (int i = 1; i <= Config.getInt("MAX_PLAYERS"); i++) {
-            final JButton button = new JButton();
-            button.setName(Integer.toString(i));
-            button.setText(Deliquescence.Config.getDefaultPlayerName(i));
-            button.setMaximumSize(new Dimension(400, 20));
+            final JButton playerButton = new JButton();
+            playerButton.setName(Integer.toString(i));
+            playerButton.setText(Deliquescence.Config.getDefaultPlayerName(i));
+            playerButton.setMaximumSize(new Dimension(400, 20));
 
-            button.addActionListener(new ActionListener() {
+            playerButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    colorConfigButtonActionPreformed(e);
+                    playerButtonActionPreformed(e);
                 }
             });
 
             final JLabel label = new JLabel(new ImageIcon(Config.getImageByPlayerID(i, 1)));
 
-            this.add(button);
+            final JButton defaultButton = new JButton();
+            defaultButton.setName(Integer.toString(i));
+            defaultButton.setText("Default");
+            defaultButton.setMaximumSize(new Dimension(400, 20));
+
+            defaultButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    defaultButtonActionPreformed(e);
+                }
+            });
+
+            this.add(playerButton);
             this.add(label);
+            this.add(defaultButton);
         }
     }
 
-    private void colorConfigButtonActionPreformed(java.awt.event.ActionEvent evt) {
+    private void playerButtonActionPreformed(java.awt.event.ActionEvent evt) {
         Object source = evt.getSource();
         if (source instanceof JButton) {
             JButton button = (JButton) source;
@@ -93,6 +106,27 @@ public class ColorConfigPanel extends javax.swing.JPanel implements Refreshable 
             if (newColor != null) {
                 Config.setString(configName, newColor.getRed() + "," + newColor.getGreen() + "," + newColor.getBlue());
             }
+            Config.refresh();
+            refreshConfig();
+        }
+    }
+
+    private void defaultButtonActionPreformed(java.awt.event.ActionEvent evt) {
+        Object source = evt.getSource();
+        if (source instanceof JButton) {
+            JButton button = (JButton) source;
+            String configName = "Color_" + button.getName();
+
+            String defaultConfig = Config.getDefaultString("Color_" + Integer.valueOf(button.getName()));
+            String[] stringInts = defaultConfig.split(",");
+            int[] RGB = new int[3];
+            RGB[0] = Integer.valueOf(stringInts[0]);
+            RGB[1] = Integer.valueOf(stringInts[1]);
+            RGB[2] = Integer.valueOf(stringInts[2]);
+
+            Color color = new Color(RGB[0], RGB[1], RGB[2]);
+            Config.setString(configName, color.getRed() + "," + color.getGreen() + "," + color.getBlue());
+
             Config.refresh();
             refreshConfig();
         }
