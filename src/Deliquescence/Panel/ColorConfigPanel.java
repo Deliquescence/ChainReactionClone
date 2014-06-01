@@ -117,15 +117,7 @@ public class ColorConfigPanel extends javax.swing.JPanel implements Refreshable 
             JButton button = (JButton) source;
             String configName = "Color_" + button.getName();
 
-            String defaultConfig = Config.getDefaultString("Color_" + Integer.valueOf(button.getName()));
-            String[] stringInts = defaultConfig.split(",");
-            int[] RGB = new int[3];
-            RGB[0] = Integer.valueOf(stringInts[0]);
-            RGB[1] = Integer.valueOf(stringInts[1]);
-            RGB[2] = Integer.valueOf(stringInts[2]);
-
-            Color color = new Color(RGB[0], RGB[1], RGB[2]);
-            Config.setString(configName, color.getRed() + "," + color.getGreen() + "," + color.getBlue());
+            Config.setString(configName, Config.getDefaultString(configName));
 
             Config.refresh();
             refreshConfig();
