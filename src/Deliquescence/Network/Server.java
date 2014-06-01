@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *

@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -41,7 +41,7 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-       //msg should be Map<PacketTitles, object>
+        //msg should be Map<PacketTitles, object>
 
     }
 
