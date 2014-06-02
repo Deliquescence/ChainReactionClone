@@ -114,6 +114,7 @@ public class Config {
         p.setProperty("Color_7", "255,128,0");
         p.setProperty("Color_8", "255,255,255");
         p.setProperty("NETWORK_PORT", "22222");
+        p.setProperty("REACTION_DELAY", "500");
 
         return p;
     }

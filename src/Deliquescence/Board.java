@@ -197,9 +197,9 @@ public class Board extends JPanel {
         return tiles.toArray(new Tile[1]);
     }
 
-    private void doReaction(Tile InitiatingTile) throws StackOverflowError {
+    private void doReaction() throws StackOverflowError {
         //-Xss JVM arg will change stack size
-        if (gameWon()) {
+        if (gameWon()) {//Do not run reaction if game is over
             return;
         }
 
@@ -216,14 +216,13 @@ public class Board extends JPanel {
         }
 
         //Next iteration
-        if (increasedTiles.size() <= 0) {
-            return;//Do not iterate if nothing was changed
-        } else {
+        if (increasedTiles.size() > 0) {
             //Update the board, with delay so it looks nice
             paintImmediately(0, 0, numCols * Config.getInt("CELL_SIZE"), numRows * Config.getInt("CELL_SIZE"));
             sleep();
 
-            doReaction(InitiatingTile);//note: param may not be needed
+            doReaction();
+        } else {//Do not iterate if nothing was changed
         }
     }
 
@@ -241,7 +240,7 @@ public class Board extends JPanel {
 
     private void sleep() {
         try {
-            Thread.sleep(500);
+            Thread.sleep(Config.getInt("REACTION_DELAY"));
         } catch (Exception er) {
 
         }
@@ -329,7 +328,7 @@ public class Board extends JPanel {
 
             inReaction = true;
             try {
-                doReaction(onTile);
+                doReaction();
             } catch (StackOverflowError er) {
 
             }
