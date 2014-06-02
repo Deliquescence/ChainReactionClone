@@ -104,7 +104,7 @@ public class LocalGameSetup extends javax.swing.JPanel {
     private void StartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartButtonActionPerformed
         String[] names = new String[Config.getInt("MAX_PLAYERS") + 1];
         for (int i = 1; i <= Config.getInt("MAX_PLAYERS"); i++) {
-            names[i] = playerNames1.getPlayerName(i);//Todo if MAX_PLAYERS is changed while running and game not restarted, suspect AOB here
+            names[i] = playerNames1.getPlayerName(i);
         }
         int timerLength;
         if (gameSettingsPanel.EnableTurnTimer()) {
