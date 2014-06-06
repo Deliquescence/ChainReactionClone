@@ -28,28 +28,56 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package Deliquescence.Network;
+package Deliquescence.Network.Client;
 
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
 
 /**
  *
  * @author Josh
  */
-public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
+public class ClientHandler extends SimpleChannelInboundHandler<String> {
+
+    private ChannelHandlerContext chc;
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        //msg should be Map<PacketTitles, object>
+    public void channelActive(ChannelHandlerContext chc) {
+        this.chc = chc;
+    }
 
+    public void writeMine(final String msg) throws Exception {
+        ChannelFuture future = chc.write(msg);
+
+        future.addListener(new ChannelFutureListener() {
+            @Override
+            public void operationComplete(ChannelFuture f) throws Exception {
+                if (f.isSuccess()) {
+                    System.out.println("CLIENT WRITE : " + msg);
+                } else {
+                    f.cause().printStackTrace();
+                    f.channel().close();
+                }
+            }
+        });
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+    protected void messageReceived(ChannelHandlerContext chc, String i) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void channelReadComplete(ChannelHandlerContext chc) {
+        chc.flush();
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext chc, Throwable cause) {
         // Close the connection when an exception is raised.
         cause.printStackTrace();
-        ctx.close();
+        chc.close();
     }
-
 }

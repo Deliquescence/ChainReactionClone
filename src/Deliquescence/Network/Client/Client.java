@@ -28,53 +28,75 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package Deliquescence.Network;
+package Deliquescence.Network.Client;
 
 import Deliquescence.Config;
-import io.netty.bootstrap.ServerBootstrap;
+import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.example.discard.DiscardServerHandler;
+import io.netty.channel.socket.nio.NioSocketChannel;
 
 /**
  *
- * @author Josh
+ * @author Deliquescence <Deliquescence1@gmail.com>
  */
-public class Server {
+public class Client implements Runnable {
 
-    private String[] playerNames;
+    private final String host;
+    private final int port;
+    private ClientHandler handler;
+    private Channel channel;
 
-    public void run() throws Exception {
-        EventLoopGroup bossGroup = new NioEventLoopGroup(); // (1)
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
+    public Client() {
+        host = "localhost";
+        port = Config.getInt("NETWORK_PORT");
+    }
+
+    @Override
+    public void run() {
+
+        EventLoopGroup group = new NioEventLoopGroup();
         try {
-            ServerBootstrap b = new ServerBootstrap(); // (2)
-            b.group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class) // (3)
-                    .childHandler(new ChannelInitializer<SocketChannel>() { // (4)
+            Bootstrap b = new Bootstrap();
+            b.group(group)
+                    .channel(NioSocketChannel.class)
+                    .option(ChannelOption.TCP_NODELAY, true)
+                    .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new DiscardServerHandler());
+                            ChannelPipeline p = ch.pipeline();
+                            /*if (sslCtx != null) {
+                             p.addLast(sslCtx.newHandler(ch.alloc(), host, port));
+                             }*/
+                            //p.addLast(new LoggingHandler(LogLevel.INFO));
+                            p.addLast(new ClientHandler());
                         }
-                    })
-                    .option(ChannelOption.SO_BACKLOG, 128) // (5)
-                    .childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
+                    });
 
-            // Bind and start to accept incoming connections.
-            ChannelFuture f = b.bind(Config.getInt("NETWORK_PORT")).sync(); // (7)
+            // Start the client.
+            ChannelFuture f = b.connect(host, port).sync(); // (5)
+            handler = (ClientHandler) f.channel().pipeline().last();
+            channel = f.channel();
 
-            // Wait until the server socket is closed.
-            // In this example, this does not happen, but you can do that to gracefully
-            // shut down your server.
+            // Wait until the connection is closed.
             f.channel().closeFuture().sync();
+        } catch (Exception e) {
+
         } finally {
-            workerGroup.shutdownGracefully();
-            bossGroup.shutdownGracefully();
+            group.shutdownGracefully();
+        }
+    }
+
+    public void writeToChannel(String o) {
+        try {
+            handler.writeMine(o + "\r\n");
+        } catch (Exception e) {
         }
     }
 }

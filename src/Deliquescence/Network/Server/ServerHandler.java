@@ -28,12 +28,37 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package Deliquescence.Network;
+package Deliquescence.Network.Server;
+
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 
 /**
  *
  * @author Josh
  */
-public class ClientChannelHandler {
+@ChannelHandler.Sharable
+public class ServerHandler extends SimpleChannelInboundHandler<String> {
 
+    /* public void write(ChannelHandlerContext ctx, String msg, ChannelPromise promise) throws Exception {
+     System.out.println("SERVER WRITE : " + msg);
+     ctx.write(msg);
+     }*/
+
+    /*  @Override
+     public void channelRead(ChannelHandlerContext ctx, Object msg) {
+
+     Channel incoming = ctx.channel();
+
+     ByteBuf in = (ByteBuf) msg;
+     String str = in.toString(0, in.readableBytes(), io.netty.util.CharsetUtil.US_ASCII);
+     System.out.println("SERVER READ @ " + incoming.remoteAddress() + " : " + str);
+
+     }
+     */
+    @Override
+    protected void messageReceived(ChannelHandlerContext chc, String i) throws Exception {
+        System.out.println("SERVER READ @ " + chc.channel().remoteAddress() + " : " + i);
+    }
 }
