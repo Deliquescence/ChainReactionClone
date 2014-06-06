@@ -67,18 +67,28 @@ public class PlayerNames extends javax.swing.JPanel implements Refreshable {
         return playerTextFields[ID].getText();
     }
 
-    private void makeTextFields() {
+    private void makeTextFields(String[] preConfiguredNames) {
         fieldsPanel.removeAll();
 
         //Add player text boxes
         for (int i = 1; i <= numPlayers; i++) {
-            final JTextField textField = new JTextField();
-            playerTextFields[i] = textField;
-            textField.setName(Integer.toString(i));
-            textField.setText(Deliquescence.Config.getDefaultPlayerName(i));
 
-            textField.setMaximumSize(new Dimension(400, 20));
-            textField.setMinimumSize(new Dimension(400, 20));
+            //If the config is changed, do not overwrite the old player name
+            JTextField temp = null;
+            try {
+                temp = new JTextField(preConfiguredNames[i]);
+            } catch (Exception e) {
+            }
+            if (temp == null || "".equals(temp.getText())) { //temp.getText() == ""
+                temp = new JTextField(Deliquescence.Config.getDefaultPlayerName(i));
+            }
+            final JTextField textField = temp;
+            playerTextFields[i] = textField;
+
+            textField.setName(Integer.toString(i));
+
+            textField.setMaximumSize(new Dimension(800, 20));
+            textField.setMinimumSize(new Dimension(200, 20));
             textField.setPreferredSize(new Dimension(400, 20));
 
             textField.addFocusListener(new FocusListener() {
@@ -136,7 +146,18 @@ public class PlayerNames extends javax.swing.JPanel implements Refreshable {
         } catch (NullPointerException e) {//config not loaded
             numPlayers = 8;
         }
+
+        //If the config is changed, do not overwrite the old player name
+        String[] temp = null;
+        try {
+            temp = new String[numPlayers + 1];
+            for (int i = 1; i <= numPlayers; i++) {
+                temp[i] = playerTextFields[i].getText();
+            }
+        } catch (Exception e) {
+
+        }
         playerTextFields = new JTextField[numPlayers + 1];
-        makeTextFields();
+        makeTextFields(temp);
     }
 }
