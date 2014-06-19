@@ -28,60 +28,34 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package Deliquescence.Network.Client;
+package Deliquescence.Network;
 
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandlerAdapter;
-import io.netty.channel.ChannelHandlerContext;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
 
 /**
  *
- * @author Josh
+ * @author Deliquescence <Deliquescence1@gmail.com>
  */
-public class ClientHandler extends ChannelHandlerAdapter {
-
-    private ChannelHandlerContext chc;
+public class ClientListener extends Listener {
 
     @Override
-    public void channelActive(ChannelHandlerContext chc) {
-        this.chc = chc;
-    }
+    public void received(Connection connection, Object object) {
+        //System.out.println("Client Recieve: " + object.toString());
+        if (object instanceof MyNetworkObject) {
+            MyNetworkObject myObject = (MyNetworkObject) object;
 
-    public void writeMine(final String msg) throws Exception {
-        ChannelFuture future = chc.write(msg);
-
-//        future.addListener(new ChannelFutureListener() {
-//            @Override
-//            public void operationComplete(ChannelFuture f) throws Exception {
-//                if (f.isSuccess()) {
-//                    System.out.println("CLIENT WRITE : " + msg);
-//                } else {
-//                    f.cause().printStackTrace();
-//                    f.channel().close();
-//                }
-//            }
-//        });
-    }
-
-//    @Override
-//    public void channelActive(ChannelHandlerContext ctx) {
-//        ctx.writeAndFlush(firstMessage);
-//    }
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        //ctx.write(msg);
-        System.out.println("CLIENT READ @ " + ctx.channel().remoteAddress() + " : " + msg.toString());
+            System.out.println("Client Recieve Mine: " + myObject.text);
+        }
     }
 
     @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) {
-        //ctx.flush();
+    public void connected(Connection connection) {
+        System.out.println("Client Connect: " + connection.toString());
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        // Close the connection when an exception is raised.
-        cause.printStackTrace();
-        ctx.close();
+    public void disconnected(Connection connection) {
+        System.out.println("Client Disconnect: " + connection.toString());
     }
 }

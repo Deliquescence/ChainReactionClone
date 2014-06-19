@@ -30,8 +30,10 @@
  */
 package Deliquescence.Network;
 
-import Deliquescence.Network.Client.Client;
-import Deliquescence.Network.Server.Server;
+import Deliquescence.Config;
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.kryonet.Server;
 
 /**
  *
@@ -64,28 +66,28 @@ public class NetworkSetupPanel extends javax.swing.JPanel {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
-        jButton1.setText("jButton1");
+        jButton1.setText("make server");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jButton2.setText("jButton2");
+        jButton2.setText("make client");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
-        jButton3.setText("jButton3");
+        jButton3.setText("client send");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
 
-        jButton4.setText("jButton4");
+        jButton4.setText("server send");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -105,7 +107,7 @@ public class NetworkSetupPanel extends javax.swing.JPanel {
                     .addComponent(jButton2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(187, Short.MAX_VALUE)
+                .addContainerGap(169, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton1)
@@ -130,30 +132,64 @@ public class NetworkSetupPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            server = new Server();
-            new Thread(server).start();
-        } catch (Exception e) {
-
-        }
+        createServer();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {
-            client = new Client();
-            new Thread(client).start();
-        } catch (Exception e) {
-
-        }
+        createClient();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        client.writeToChannel("fdsa");
+        try {
+            MyNetworkObject mno = new MyNetworkObject();
+            mno.text = "Client send";
+            client.sendTCP(mno);
+            System.out.println("attempted client send");
+        } catch (Exception e) {
+            System.err.println(e);
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        server.writeToChannel("FDSA");
+        try {
+            MyNetworkObject mno = new MyNetworkObject();
+            mno.text = "Server send";
+            server.sendToAllTCP(mno);
+            System.out.println("attempted server send");
+        } catch (Exception e) {
+            System.err.println(e);
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void createServer() {
+        try {
+            server = new Server();
+            server.addListener(new ServerListener());
+            server.start();
+
+            server.bind(Config.getInt("NETWORK_PORT"));
+
+            Kryo kryo = server.getKryo();
+            kryo.register(MyNetworkObject.class);
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+    }
+
+    private void createClient() {
+        try {
+            client = new Client();
+            client.addListener(new ClientListener());
+            client.start();
+
+            client.connect(5000, "localhost", Config.getInt("NETWORK_PORT"));//todo localhost
+
+            Kryo kryo = client.getKryo();
+            kryo.register(MyNetworkObject.class);
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
