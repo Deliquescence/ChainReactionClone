@@ -30,17 +30,24 @@
  */
 package Deliquescence.Network.Server;
 
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
 
 /**
  *
  * @author Josh
  */
 @ChannelHandler.Sharable
-public class ServerHandler extends SimpleChannelInboundHandler<String> {
+public class ServerHandler extends ChannelHandlerAdapter {
 
+    private ChannelHandlerContext chc;
+
+    @Override
+    public void channelActive(ChannelHandlerContext chc) {
+        this.chc = chc;
+    }
     /* public void write(ChannelHandlerContext ctx, String msg, ChannelPromise promise) throws Exception {
      System.out.println("SERVER WRITE : " + msg);
      ctx.write(msg);
@@ -57,8 +64,27 @@ public class ServerHandler extends SimpleChannelInboundHandler<String> {
 
      }
      */
+//    @Override
+//    protected void messageReceived(ChannelHandlerContext chc, String i) throws Exception {
+//        System.out.println("SERVER READ @ " + chc.channel().remoteAddress() + " : " + i);
+//    }
     @Override
-    protected void messageReceived(ChannelHandlerContext chc, String i) throws Exception {
-        System.out.println("SERVER READ @ " + chc.channel().remoteAddress() + " : " + i);
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        System.out.println("SERVER READ @ " + ctx.channel().remoteAddress() + " : " + msg.toString());
+    }
+
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) {
+        //ctx.flush();
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        cause.printStackTrace();
+        ctx.close();
+    }
+
+    public void writeMine(final String msg) throws Exception {
+        ChannelFuture future = chc.write(msg);
     }
 }

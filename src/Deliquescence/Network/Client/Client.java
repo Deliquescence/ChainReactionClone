@@ -32,7 +32,6 @@ package Deliquescence.Network.Client;
 
 import Deliquescence.Config;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -41,6 +40,10 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.Delimiters;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 
 /**
  *
@@ -51,7 +54,6 @@ public class Client implements Runnable {
     private final String host;
     private final int port;
     private ClientHandler handler;
-    private Channel channel;
 
     public Client() {
         host = "localhost";
@@ -74,7 +76,11 @@ public class Client implements Runnable {
                             /*if (sslCtx != null) {
                              p.addLast(sslCtx.newHandler(ch.alloc(), host, port));
                              }*/
-                            //p.addLast(new LoggingHandler(LogLevel.INFO));
+                            // p.addLast(new LoggingHandler(LogLevel.INFO));
+                            p.addFirst("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
+                            p.addFirst("stringDecoder", new StringDecoder());
+                            p.addFirst("stringEncoder", new StringEncoder());
+
                             p.addLast(new ClientHandler());
                         }
                     });
@@ -82,7 +88,7 @@ public class Client implements Runnable {
             // Start the client.
             ChannelFuture f = b.connect(host, port).sync(); // (5)
             handler = (ClientHandler) f.channel().pipeline().last();
-            channel = f.channel();
+//            channel = f.channel();
 
             // Wait until the connection is closed.
             f.channel().closeFuture().sync();
@@ -95,8 +101,11 @@ public class Client implements Runnable {
 
     public void writeToChannel(String o) {
         try {
-            handler.writeMine(o + "\r\n");
+            //channel.write("FDSA" + "\r\n");
+            handler.writeMine(o);
         } catch (Exception e) {
+            System.err.println(e);
+            e.printStackTrace();
         }
     }
 }

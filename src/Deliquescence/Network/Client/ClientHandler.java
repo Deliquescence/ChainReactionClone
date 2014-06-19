@@ -31,15 +31,14 @@
 package Deliquescence.Network.Client;
 
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
 
 /**
  *
  * @author Josh
  */
-public class ClientHandler extends SimpleChannelInboundHandler<String> {
+public class ClientHandler extends ChannelHandlerAdapter {
 
     private ChannelHandlerContext chc;
 
@@ -51,33 +50,38 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
     public void writeMine(final String msg) throws Exception {
         ChannelFuture future = chc.write(msg);
 
-        future.addListener(new ChannelFutureListener() {
-            @Override
-            public void operationComplete(ChannelFuture f) throws Exception {
-                if (f.isSuccess()) {
-                    System.out.println("CLIENT WRITE : " + msg);
-                } else {
-                    f.cause().printStackTrace();
-                    f.channel().close();
-                }
-            }
-        });
+//        future.addListener(new ChannelFutureListener() {
+//            @Override
+//            public void operationComplete(ChannelFuture f) throws Exception {
+//                if (f.isSuccess()) {
+//                    System.out.println("CLIENT WRITE : " + msg);
+//                } else {
+//                    f.cause().printStackTrace();
+//                    f.channel().close();
+//                }
+//            }
+//        });
+    }
+
+//    @Override
+//    public void channelActive(ChannelHandlerContext ctx) {
+//        ctx.writeAndFlush(firstMessage);
+//    }
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        //ctx.write(msg);
+        System.out.println("CLIENT READ @ " + ctx.channel().remoteAddress() + " : " + msg.toString());
     }
 
     @Override
-    protected void messageReceived(ChannelHandlerContext chc, String i) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void channelReadComplete(ChannelHandlerContext ctx) {
+        //ctx.flush();
     }
 
     @Override
-    public void channelReadComplete(ChannelHandlerContext chc) {
-        chc.flush();
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext chc, Throwable cause) {
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         // Close the connection when an exception is raised.
         cause.printStackTrace();
-        chc.close();
+        ctx.close();
     }
 }

@@ -40,8 +40,10 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.logging.LogLevel;
-import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.Delimiters;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 
 /**
  * A server instance of a game. Each game has a server.
@@ -78,6 +80,7 @@ public class Server implements Runnable {
     private int port;
 
     private String[] playerNames;
+    private ServerHandler handler;
 
     public Server() {
         port = Config.getInt("NETWORK_PORT");
@@ -93,7 +96,7 @@ public class Server implements Runnable {
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG, 100)
-                    .handler(new LoggingHandler(LogLevel.INFO))
+                    //.handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
@@ -101,13 +104,19 @@ public class Server implements Runnable {
                             /*if (sslCtx != null) {
                              p.addLast(sslCtx.newHandler(ch.alloc()));
                              }*/
-                            //p.addLast(new LoggingHandler(LogLevel.INFO));
+                            //p.addFirst(new LoggingHandler(LogLevel.INFO));
+                            p.addFirst("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
+                            p.addFirst("stringDecoder", new StringDecoder());
+                            p.addFirst("stringEncoder", new StringEncoder());
+
                             p.addLast(new ServerHandler());
                         }
                     });
 
             // Start the server.
             ChannelFuture f = b.bind(port).sync();
+
+            handler = (ServerHandler) f.channel().pipeline().last();
 
             // Wait until the server socket is closed.
             f.channel().closeFuture().sync();
@@ -116,6 +125,16 @@ public class Server implements Runnable {
         } finally {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
+        }
+    }
+
+    public void writeToChannel(String o) {
+        try {
+            //channel.write("FDSA" + "\r\n");
+            handler.writeMine(o);
+        } catch (Exception e) {
+            System.err.println(e);
+            e.printStackTrace();
         }
     }
 }
