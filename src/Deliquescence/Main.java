@@ -70,7 +70,7 @@ public class Main extends JFrame implements Refreshable {
         localGamesPanel.addTab("Create a game", new LocalGameSetup(localGamesPanel));
 
         networkGamesPanel.addTab("Games", networkGamesListPanel);
-        networkGamesPanel.addTab("Create a game", new NetworkSetupPanel());
+        networkGamesPanel.addTab("Create a game", new NetworkSetupPanel(networkGamesPanel, networkGamesListPanel));
         networkGamesPanel.addTab("Join a game", new BrowserPanel(networkGamesPanel, networkGamesListPanel));
 
         MainTabbedPane.addTab("Local Games", localGamesPanel);

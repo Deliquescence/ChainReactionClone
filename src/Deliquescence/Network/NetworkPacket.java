@@ -30,11 +30,31 @@
  */
 package Deliquescence.Network;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
- * @author Josh
+ * @author Deliquescence <Deliquescence1@gmail.com>
  */
-public enum PacketTitles {
+public class NetworkPacket implements Serializable {
 
-    PLAYER_NAME_CHANGE;
+    public PacketTitle packetTitle;
+    private final Map<String, Object> data = new HashMap<>();
+
+    public NetworkPacket(PacketTitle title) {
+        this.packetTitle = title;
+    }
+
+    public NetworkPacket() {
+    }
+
+    public void setData(String key, Object value) {
+        data.put(key, value);
+    }
+
+    public Object getData(String key) {
+        return data.get(key);
+    }
 }

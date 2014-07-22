@@ -34,7 +34,7 @@ package Deliquescence.Network;
  *
  * @author Deliquescence <Deliquescence1@gmail.com>
  */
-public class MyNetworkObject {
+public enum PacketTitle {
 
-    public String text;
+    NetworkGameSettingsPacket, GameStartPacket, attemptTurnPacket, namesPacket;
 }

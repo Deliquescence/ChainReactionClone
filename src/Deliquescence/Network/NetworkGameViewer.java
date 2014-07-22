@@ -30,7 +30,9 @@
  */
 package Deliquescence.Network;
 
+import Deliquescence.Config;
 import Deliquescence.Panel.GameManager;
+import Deliquescence.Panel.GamePanel;
 import java.net.InetAddress;
 import javax.swing.BoxLayout;
 
@@ -41,21 +43,67 @@ import javax.swing.BoxLayout;
  */
 public class NetworkGameViewer extends javax.swing.JPanel {
 
-    InetAddress serverAddress;
+    GameServer server;
+    GameClient client;
     GameManager gameList;
+    int localPlayers;
 
     /**
      * Contains waiting room panel, until wait is done and game panel is displayed.
      *
      * Creates new form NetworkGameViewer
      */
-    public NetworkGameViewer(GameManager listPanel, InetAddress addr) {
-        serverAddress = addr;
-        gameList = listPanel;
+    public NetworkGameViewer(GameManager listPanel, InetAddress addr, int localPlayers) {
+        this.gameList = listPanel;
+        this.localPlayers = localPlayers;
         initComponents();
-
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(new WaitingRoomPanel(listPanel, addr));
+
+        try {
+            client = new GameClient();
+            Networking.register(client);
+            client.addListener(new ClientListener());
+            client.start();
+
+            NetworkGameSettings settings = new NetworkGameSettings();
+            client.settings = settings;
+
+            client.connect(5000, "localhost", Config.getInt("NETWORK_PORT"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        WaitingRoomPanel wrp = new WaitingRoomPanel(listPanel, client, localPlayers);
+        add(wrp);
+
+    }
+
+    public NetworkGameViewer(GameManager listPanel, NetworkGameSettings settings, int localPlayers) {
+        this.gameList = listPanel;
+        this.localPlayers = localPlayers;
+        initComponents();
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        try {
+            server = new GameServer();
+            Networking.register(server);
+            server.addListener(new ServerListener());
+            server.start();
+
+            server.settings = settings;
+
+            server.bind(Config.getInt("NETWORK_PORT"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        add(new WaitingRoomPanel(listPanel, server, localPlayers));
+    }
+
+    public void displayGame(GamePanel p) {
+        this.removeAll();
+        add(p);
     }
 
     /**

@@ -41,12 +41,12 @@ public class ServerListener extends Listener {
 
     @Override
     public void received(Connection connection, Object object) {
-        //System.out.println("Server Recieve: " + object.toString());
-        if (object instanceof MyNetworkObject) {
-            MyNetworkObject myObject = (MyNetworkObject) object;
+        System.out.println("Server Recieve: " + object.toString());
+        /*if (object instanceof MyNetworkObject) {
+         MyNetworkObject myObject = (MyNetworkObject) object;
 
-            System.out.println("Server Recieve Mine: " + myObject.text);
-        }
+         System.out.println("Server Recieve Mine: " + myObject.text);
+         }*/
     }
 
     @Override

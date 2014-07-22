@@ -101,6 +101,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="ServerAddressField">
           <Properties>
+            <Property name="text" type="java.lang.String" value="localhost"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[2147483647, 20]"/>
             </Property>

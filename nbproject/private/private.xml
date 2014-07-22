@@ -11,6 +11,23 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/NetworkGamePanel.java</file>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Panel/GamePanel.java</file>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/Networking.java</file>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Board.java</file>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/GameServer.java</file>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/NetworkPacket.java</file>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/NetworkSetupPanel.java</file>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/NetworkGameViewer.java</file>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/NetworkBoard.java</file>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Main.java</file>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/PacketTitle.java</file>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/GameClient.java</file>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/WaitingRoomPanel.java</file>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/BrowserPanel.java</file>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Panel/LocalGameSetup.java</file>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Panel/GameManager.java</file>
+        </group>
     </open-files>
 </project-private>

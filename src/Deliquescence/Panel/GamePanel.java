@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -49,7 +49,7 @@ import javax.swing.Timer;
 public class GamePanel extends javax.swing.JPanel {
 
     GameManager gameManager;
-    Board gameBoard;
+    public Board gameBoard;
     Timer timer;
 
     int totalTime;
@@ -98,7 +98,7 @@ public class GamePanel extends javax.swing.JPanel {
         }
         );
 
-        gameBoard = new Board(this, players, rows, columns, playerNames, RandomizePlayer);
+        makeBoard(players, rows, columns, playerNames, RandomizePlayer);
 
         add(gameBoard);
         if (totalTime != 0) {
@@ -108,6 +108,10 @@ public class GamePanel extends javax.swing.JPanel {
             //todo fix wins with early skipped turns
             //maybe dont start until after first turns
         }
+    }
+
+    protected void makeBoard(int players, int rows, int columns, String[] playerNames, boolean RandomizePlayer) {
+        gameBoard = new Board(this, players, rows, columns, playerNames, RandomizePlayer);
     }
 
     /**

@@ -31,31 +31,66 @@
 package Deliquescence.Network;
 
 import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
 
 /**
  *
  * @author Deliquescence <Deliquescence1@gmail.com>
  */
-public class ClientListener extends Listener {
+public class ResponseWaiter implements Runnable {
 
-    @Override
-    public void received(Connection connection, Object object) {
-        System.out.println("Client Recieve: " + object.toString());
-        /*if (object instanceof MyNetworkObject) {
-         MyNetworkObject myObject = (MyNetworkObject) object;
+    private final GameClient client;
+    private final PacketTitle waitingFor;
+    private NetworkPacket response;
+    //private boolean done;
 
-         System.out.println("Client Recieve Mine: " + myObject.text);
-         }*/
+    private Thread myThread;
+
+    public ResponseWaiter(GameClient client, PacketTitle title) {
+        this.client = client;
+        this.waitingFor = title;
+
+        client.addListener(new ClientListener() {
+            @Override
+            public void received(Connection c, Object object) {
+
+                try {
+                    ResponseWaiter.this.response = (NetworkPacket) object;
+                    myThread.notify();
+                } catch (ClassCastException ignore) {
+                }
+            }
+        });
+    }
+
+    public NetworkPacket sendAndGetResponse(Object o) {
+        client.sendTCP(o);
+        return getResponse();
+    }
+
+    public NetworkPacket getResponse() {
+        myThread = new Thread(this, "ResponseWaiter");
+        myThread.start();
+
+        try {
+            myThread.join(1000);
+        } catch (InterruptedException notsure) {
+        }
+        return response;
     }
 
     @Override
-    public void connected(Connection connection) {
-        System.out.println("Client Connect: " + connection.toString());
-    }
+    public void run() {
+        try {
+            synchronized (myThread) {
+                while ((response == null) || (response.packetTitle != waitingFor)) {
+                    System.out.println("waiting");
+                    myThread.wait();
 
-    @Override
-    public void disconnected(Connection connection) {
-        System.out.println("Client Disconnect: " + connection.toString());
+                }
+                //done = true;
+                System.out.println("NOT waiting");
+            }
+        } catch (InterruptedException notsure) {
+        }
     }
 }

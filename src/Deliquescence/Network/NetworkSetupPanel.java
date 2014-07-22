@@ -30,10 +30,7 @@
  */
 package Deliquescence.Network;
 
-import Deliquescence.Config;
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryonet.Client;
-import com.esotericsoftware.kryonet.Server;
+import Deliquescence.Panel.GameManager;
 
 /**
  *
@@ -41,13 +38,15 @@ import com.esotericsoftware.kryonet.Server;
  */
 public class NetworkSetupPanel extends javax.swing.JPanel {
 
-    private Client client;
-    private Server server;
+    GameManager gameManager;
+    GameManager gameListPanel;
 
     /**
      * Creates new form NetworkSetupPanel
      */
-    public NetworkSetupPanel() {
+    public NetworkSetupPanel(GameManager gameManager, GameManager gameList) {
+        this.gameManager = gameManager;
+        this.gameListPanel = gameList;
         initComponents();
     }
 
@@ -65,6 +64,15 @@ public class NetworkSetupPanel extends javax.swing.JPanel {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        LeftPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        LocalPlayersSlider = new javax.swing.JSlider();
+        jSeparator1 = new javax.swing.JSeparator();
+        gameSliders1 = new Deliquescence.Panel.GameSliders();
+        StartButton = new javax.swing.JButton();
+        RightPanel = new javax.swing.JPanel();
+        gameSettings1 = new Deliquescence.Panel.GameSettings();
 
         jButton1.setText("make server");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -94,107 +102,135 @@ public class NetworkSetupPanel extends javax.swing.JPanel {
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(92, 92, 92)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jButton3))
-                    .addComponent(jButton2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(169, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(140, 140, 140))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton4)
-                        .addGap(70, 70, 70))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
-                .addGap(35, 35, 35)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
-                .addContainerGap(61, Short.MAX_VALUE))
-        );
+        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
+
+        LeftPanel.setLayout(new javax.swing.BoxLayout(LeftPanel, javax.swing.BoxLayout.Y_AXIS));
+
+        jLabel1.setLabelFor(LocalPlayersSlider);
+        jLabel1.setText("Number of players on this machine:");
+        LeftPanel.add(jLabel1);
+
+        LocalPlayersSlider.setMajorTickSpacing(1);
+        LocalPlayersSlider.setMaximum(8);
+        LocalPlayersSlider.setMinimum(1);
+        LocalPlayersSlider.setMinorTickSpacing(1);
+        LocalPlayersSlider.setPaintLabels(true);
+        LocalPlayersSlider.setPaintTicks(true);
+        LocalPlayersSlider.setSnapToTicks(true);
+        LocalPlayersSlider.setValue(1);
+        LeftPanel.add(LocalPlayersSlider);
+        LeftPanel.add(jSeparator1);
+        LeftPanel.add(gameSliders1);
+
+        StartButton.setText("Start");
+        StartButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StartButtonActionPerformed(evt);
+            }
+        });
+        LeftPanel.add(StartButton);
+
+        jSplitPane1.setLeftComponent(LeftPanel);
+
+        RightPanel.setLayout(new java.awt.GridLayout(1, 0));
+        RightPanel.add(gameSettings1);
+
+        jSplitPane1.setRightComponent(RightPanel);
+
+        add(jSplitPane1);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        createServer();
+        //createServer();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        createClient();
+        //createClient();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try {
-            MyNetworkObject mno = new MyNetworkObject();
-            mno.text = "Client send";
-            client.sendTCP(mno);
-            System.out.println("attempted client send");
-        } catch (Exception e) {
-            System.err.println(e);
-        }
+        /*try {
+         MyNetworkObject mno = new MyNetworkObject();
+         mno.text = "Client send";
+         client.sendTCP(mno);
+         //System.out.println("attempted client send");
+         } catch (Exception e) {
+         System.err.println(e);
+         }*/
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        try {
-            MyNetworkObject mno = new MyNetworkObject();
-            mno.text = "Server send";
-            server.sendToAllTCP(mno);
-            System.out.println("attempted server send");
-        } catch (Exception e) {
-            System.err.println(e);
-        }
+        /*try {
+         MyNetworkObject mno = new MyNetworkObject();
+         mno.text = "Server send";
+         server.sendToAllTCP(mno);
+         //System.out.println("attempted server send");
+         } catch (Exception e) {
+         System.err.println(e);
+         }*/
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void createServer() {
-        try {
-            server = new Server();
-            server.addListener(new ServerListener());
-            server.start();
+    private void StartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartButtonActionPerformed
+        GameManager man = (GameManager) this.getParent().getParent();//Sketchy
+        man.switchToTabByTitle("Games");
 
-            server.bind(Config.getInt("NETWORK_PORT"));
+        NetworkGameSettings settings = new NetworkGameSettings();
 
-            Kryo kryo = server.getKryo();
-            kryo.register(MyNetworkObject.class);
-        } catch (Exception e) {
-            System.err.println(e);
-        }
-    }
+        settings.RNGEnabled = gameSettings1.EnableRNGButton();
+        settings.cols = gameSliders1.getColumns();
+        settings.totalPlayers = gameSliders1.getPlayers();
+        settings.randomStartingPlayer = gameSettings1.RandomStartPlayer();
+        settings.rows = gameSliders1.getRows();
 
-    private void createClient() {
-        try {
-            client = new Client();
-            client.addListener(new ClientListener());
-            client.start();
+        //settings.timerAction = TOdO
+        settings.timerLength = gameSettings1.TimerLength();
+        settings.turnTimerEnabled = gameSettings1.EnableTurnTimer();
 
-            client.connect(5000, "localhost", Config.getInt("NETWORK_PORT"));//todo localhost
+        gameListPanel.addTab("Hosted Game", new NetworkGameViewer(gameListPanel, settings, LocalPlayersSlider.getValue()), false, true);
+    }//GEN-LAST:event_StartButtonActionPerformed
 
-            Kryo kryo = client.getKryo();
-            kryo.register(MyNetworkObject.class);
-        } catch (Exception e) {
-            System.err.println(e);
-        }
-    }
+    /* private void createServer() {
+     try {
+     server = new Server();
+     server.addListener(new ServerListener());
+     server.start();
 
+     server.bind(Config.getInt("NETWORK_PORT"));
+
+     /*Kryo kryo = server.getKryo();
+     kryo.register(MyNetworkObject.class);
+     } catch (Exception e) {
+     System.err.println(e);
+     }
+     }
+
+     private void createClient() {
+     try {
+     client = new Client();
+     client.addListener(new ClientListener());
+     client.start();
+
+     client.connect(5000, "localhost", Config.getInt("NETWORK_PORT"));
+
+     /*Kryo kryo = client.getKryo();
+     kryo.register(MyNetworkObject.class);
+     } catch (Exception e) {
+     System.err.println(e);
+     }
+     }*/
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel LeftPanel;
+    private javax.swing.JSlider LocalPlayersSlider;
+    private javax.swing.JPanel RightPanel;
+    private javax.swing.JButton StartButton;
+    private Deliquescence.Panel.GameSettings gameSettings1;
+    private Deliquescence.Panel.GameSliders gameSliders1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSplitPane jSplitPane1;
     // End of variables declaration//GEN-END:variables
 }

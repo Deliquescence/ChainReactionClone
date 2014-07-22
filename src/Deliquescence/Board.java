@@ -46,12 +46,12 @@ import javax.swing.JPanel;
  */
 public class Board extends JPanel {
 
-    private int numRows;
-    private int numCols;
-    private int numPlayers;
-    private int turn;
-    private int currentPlayerID;
-    private Player currentPlayer;
+    protected int numRows;
+    protected int numCols;
+    protected int numPlayers;
+    protected int turn;
+    protected int currentPlayerID;
+    protected Player currentPlayer;
 
     /**
      * Array of the {@link Player}s in the game.
@@ -62,10 +62,10 @@ public class Board extends JPanel {
      * The field containing the {@link Tile}s of the game.
      */
     protected Tile[][] field;
-    private Tile[][] fieldPrevious;
+    protected Tile[][] fieldPrevious;
 
-    private boolean inGame;
-    private boolean inReaction;
+    protected boolean inGame;
+    protected boolean inReaction;
 
     private final GamePanel gamePanel;
 
@@ -88,7 +88,7 @@ public class Board extends JPanel {
 
         this.players = new Player[Config.getInt("MAX_PLAYERS") + 1];
         players[0] = new Player(0);
-        for (int i = 1; i < players.length; i++) {
+        for (int i = 1; i < playerNames.length; i++) {
             players[i] = new Player(i, playerNames[i]);
         }
 
@@ -98,7 +98,7 @@ public class Board extends JPanel {
         //MyMouseAdapter will get clicks to the board
     }
 
-    private void newGame(boolean randomizePlayer) {
+    protected void newGame(boolean randomizePlayer) {
         //Create blank tiles
         field = new Tile[numCols][numRows];
         for (int x = 0; x < numCols; x++) {
@@ -118,11 +118,11 @@ public class Board extends JPanel {
         repaint();
     }
 
-    private Tile[] getAllTiles() {
+    protected Tile[] getAllTiles() {
         return getAllTiles(this.field);
     }
 
-    private Tile[] getAllTiles(Tile[][] theField) {
+    protected Tile[] getAllTiles(Tile[][] theField) {
         ArrayList<Tile> tiles = new ArrayList<>();
         for (int x = 0; x < numCols; x++) {
             for (int y = 0; y < numRows; y++) {
@@ -132,7 +132,7 @@ public class Board extends JPanel {
         return tiles.toArray(new Tile[0]);
     }
 
-    private boolean playerIsAlive(Player p) {
+    protected boolean playerIsAlive(Player p) {
         if (turn <= numPlayers) {
             return true;//Players may be incorrectly labled as dead
         } else {
@@ -140,7 +140,7 @@ public class Board extends JPanel {
         }
     }
 
-    private boolean setCurrentPlayerByID(int pID) {
+    protected boolean setCurrentPlayerByID(int pID) {
         if (!playerIsAlive(players[pID])) {
             return false;
         }
@@ -150,7 +150,7 @@ public class Board extends JPanel {
         return true;
     }
 
-    private void incrementPlayer(int curPlayerID) {
+    protected void incrementPlayer(int curPlayerID) {
         int targetID = 0;
         if (curPlayerID == numPlayers) {
             targetID = 1;
@@ -166,7 +166,7 @@ public class Board extends JPanel {
         }
     }
 
-    private Tile[] getSurroundingTiles(Tile t) {
+    protected Tile[] getSurroundingTiles(Tile t) {
         ArrayList<Tile> tiles = new ArrayList<>();
         //All these trys are somewhat sketchy
         //But putting all the .add's in one would sometimes stop the lower ones from being called
@@ -197,7 +197,7 @@ public class Board extends JPanel {
         return tiles.toArray(new Tile[1]);
     }
 
-    private void doReaction() throws StackOverflowError {
+    protected void doReaction() throws StackOverflowError {
         //-Xss JVM arg will change stack size
         if (gameWon()) {//Do not run reaction if game is over
             return;
@@ -226,7 +226,7 @@ public class Board extends JPanel {
         }
     }
 
-    private ArrayList<Tile> explodeTile(Tile tile) {//Retruns altered tiles
+    protected ArrayList<Tile> explodeTile(Tile tile) {//Retruns altered tiles
         ArrayList<Tile> dirtyTiles = new ArrayList<>();//Does not include initiating tile
         for (Tile t : getSurroundingTiles(tile)) {
             t.setOwner(tile.getOwner());
@@ -392,7 +392,7 @@ public class Board extends JPanel {
         repaint();
     }
 
-    private boolean gameWon() {
+    protected boolean gameWon() {
         refreshDisplayPlayers();
 
         //If the first turn is checked things dont work right
@@ -448,7 +448,7 @@ public class Board extends JPanel {
         }
     }
 
-    class MyMouseAdapter extends MouseAdapter {
+    public class MyMouseAdapter extends MouseAdapter {
 
         @Override
         public void mousePressed(MouseEvent e) {
@@ -464,8 +464,12 @@ public class Board extends JPanel {
 
             Tile tile = field[clickedCol][clickedRow];
             if ((x < numCols * Config.getInt("CELL_SIZE")) && (y < numRows * Config.getInt("CELL_SIZE"))) { //in bounds
-                doTurn(tile);
+                clickFunction(tile);
             }
         }
+    }
+
+    public void clickFunction(Tile t) {
+        doTurn(t);
     }
 }

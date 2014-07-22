@@ -63,7 +63,7 @@ public class BrowserPanel extends javax.swing.JPanel implements Refreshable {
         this.gameListPanel = gameList;
         initComponents();
 
-        //Socket testSocket = new Socket(addr, Config.getInt("NETWORK_PORT"));
+        listModel.add(0, "TODO");
     }
 
     /**
@@ -129,6 +129,7 @@ public class BrowserPanel extends javax.swing.JPanel implements Refreshable {
         ServerAddressFieldLabel.setPreferredSize(new java.awt.Dimension(203, 10));
         ServerAddressPanel.add(ServerAddressFieldLabel, java.awt.BorderLayout.PAGE_START);
 
+        ServerAddressField.setText("localhost");
         ServerAddressField.setMaximumSize(new java.awt.Dimension(2147483647, 20));
         ServerAddressField.setPreferredSize(new java.awt.Dimension(40, 10));
         ServerAddressPanel.add(ServerAddressField, java.awt.BorderLayout.CENTER);
@@ -175,13 +176,14 @@ public class BrowserPanel extends javax.swing.JPanel implements Refreshable {
         add(jScrollPane1);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void joinGame(String server) {
+    private void joinGame(String server, int localPlayers) {
         try {
             InetAddress addr = InetAddress.getByName(server);
 
-            gameListPanel.addTab(addr.getHostName(), new NetworkGameViewer(gameListPanel, addr));
+            gameListPanel.addTab(addr.getHostName(), new NetworkGameViewer(gameListPanel, addr, localPlayers), false, true);
+            gameManager.switchToTabByTitle("Games");
         } catch (Exception e) {
-            System.out.println(e);//todo
+            e.printStackTrace();
         }
     }
 
@@ -218,17 +220,17 @@ public class BrowserPanel extends javax.swing.JPanel implements Refreshable {
 //                String response = (String) ois.readObject();
             }
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }//GEN-LAST:event_RefreshButtonActionPerformed
 
     private void JoinLANButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JoinLANButtonActionPerformed
         serverName = (String) GameList.getSelectedValue();
-        joinGame(serverName);
+        joinGame(serverName, PlayersSlider.getValue());
     }//GEN-LAST:event_JoinLANButtonActionPerformed
 
     private void JoinServerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JoinServerButtonActionPerformed
-        joinGame(ServerAddressField.getText());
+        joinGame(ServerAddressField.getText(), PlayersSlider.getValue());
     }//GEN-LAST:event_JoinServerButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -38,8 +38,8 @@ package Deliquescence;
 public class Tile {
 
     private final int xPos, yPos;
-    private final int particleCapacity; //Particles needed to explode
-    private final Board board;
+    private int particleCapacity; //Particles needed to explode
+    //private final Board board;
 
     private Player owner;
     private int numParticles;
@@ -77,7 +77,7 @@ public class Tile {
      * @param Particles How many particles this tile has.
      */
     public Tile(Board b, int x, int y, Player Owner, int Particles) {
-        this.board = b;
+        //this.board = b;
         this.xPos = x;
         this.yPos = y;
         this.numParticles = Particles;
@@ -87,14 +87,21 @@ public class Tile {
         } else {
             this.owner = new Player(0);
         }
+        setupCapacity(b);
+    }
 
-        if (x == 0 || x == b.getCols() - 1) { //On left or right edge
-            if (y == 0 || y == b.getRows() - 1) { //In a corner
+    private void setupCapacity(Board b) {
+        if (particleCapacity > 0) {
+            return;
+        }
+
+        if (xPos == 0 || xPos == b.getCols() - 1) { //On left or right edge
+            if (yPos == 0 || yPos == b.getRows() - 1) { //In a corner
                 this.particleCapacity = 2;
             } else {//On left or right edge, not in corner
                 this.particleCapacity = 3;
             }
-        } else if (y == 0 || y == b.getRows() - 1) {//On top or bottom edge
+        } else if (yPos == 0 || yPos == b.getRows() - 1) {//On top or bottom edge
             //If it was a corner it should have been found
             this.particleCapacity = 3;
         } else {
@@ -181,7 +188,20 @@ public class Tile {
      * @return The parent {@link Board} of this tile.
      */
     public Board getBoard() {
-        return this.board;
+//        return this.board;
+        return null;
+    }
+
+    public Tile(int x, int y, Player Owner, int Particles, int capacity) {
+        this.xPos = x;
+        this.yPos = y;
+        this.numParticles = Particles;
+
+        if (Owner != null) {
+            this.owner = Owner;
+        } else {
+            this.owner = new Player(0);
+        }
     }
 
     /**
@@ -190,7 +210,7 @@ public class Tile {
      * @return A new {link Tile} object with the same data.
      */
     public Tile cloneTile() {
-        return new Tile(this.getBoard(), this.getX(), this.getY(), this.getOwner(), this.getNumberOfParticles());
+        return new Tile(this.getX(), this.getY(), this.getOwner(), this.getNumberOfParticles(), this.particleCapacity);
     }
 
     /**

@@ -30,32 +30,52 @@
  */
 package Deliquescence.Network;
 
-import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
+import Deliquescence.Panel.GameManager;
+import Deliquescence.Panel.GamePanel;
 
 /**
  *
  * @author Deliquescence <Deliquescence1@gmail.com>
  */
-public class ClientListener extends Listener {
+public class NetworkGamePanel extends GamePanel {
 
-    @Override
-    public void received(Connection connection, Object object) {
-        System.out.println("Client Recieve: " + object.toString());
-        /*if (object instanceof MyNetworkObject) {
-         MyNetworkObject myObject = (MyNetworkObject) object;
+    public final GameServer server;
+    public final GameClient client;
 
-         System.out.println("Client Recieve Mine: " + myObject.text);
-         }*/
+    public NetworkBoard netGameBoard;
+
+    public NetworkGamePanel(GameManager gameManager, int players, int rows, int columns, String[] playerNames, boolean RNGEnabled, boolean RandomizePlayer, int timerLength, int timeAction, GameServer server, GameClient client) {
+        super(gameManager, players, rows, columns, playerNames, RNGEnabled, RandomizePlayer, timerLength, timeAction);
+        this.server = server;
+        this.client = client;
+
+        netGameBoard.server = server;
+        netGameBoard.client = client;
+
     }
 
+    /*
+     public NetworkGamePanel(GameManager gameManager, int players, int rows, int columns, String[] playerNames, boolean RNGEnabled, boolean RandomizePlayer, int timerLength, int timeAction, GameServer server, GameClient client) {
+     //this.server = server;
+     super(
+     gameManager,
+     players,
+     rows,
+     columns,
+     playerNames,
+     RNGEnabled,
+     RandomizePlayer,
+     timerLength,
+     timeAction
+     );
+
+     //this.gameBoard = new NetworkBoard(this, players, rows, columns, playerNames, RandomizePlayer, server, client);
+     }*/
     @Override
-    public void connected(Connection connection) {
-        System.out.println("Client Connect: " + connection.toString());
+    protected void makeBoard(int players, int rows, int columns, String[] playerNames, boolean RandomizePlayer) {
+        gameBoard = new NetworkBoard(this, players, rows, columns, playerNames, RandomizePlayer, server, client);
+        netGameBoard = (NetworkBoard) gameBoard;
+
     }
 
-    @Override
-    public void disconnected(Connection connection) {
-        System.out.println("Client Disconnect: " + connection.toString());
-    }
 }
