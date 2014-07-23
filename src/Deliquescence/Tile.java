@@ -202,6 +202,8 @@ public class Tile {
         } else {
             this.owner = new Player(0);
         }
+
+        this.particleCapacity = capacity;
     }
 
     /**
