@@ -32,7 +32,6 @@ package Deliquescence.Network;
 
 import Deliquescence.Board;
 import Deliquescence.Panel.GamePanel;
-import Deliquescence.Player;
 import Deliquescence.Tile;
 
 /**
@@ -44,6 +43,8 @@ public class NetworkBoard extends Board {
     GameServer server;
     GameClient client;
 
+    NetworkPlayer currentPlayer;
+
     public NetworkBoard(GamePanel parent, int NumberOfPlayers, int Rows, int Columns, String[] playerNames, boolean RandomizePlayerStart, GameServer server, GameClient client) {
         super(parent, NumberOfPlayers, Rows, Columns, playerNames, RandomizePlayerStart);
         this.server = server;
@@ -52,14 +53,12 @@ public class NetworkBoard extends Board {
     }
 
     public synchronized boolean tryTurn(Tile t) {
-        System.out.println("tryTurn!!");
+        //System.out.println("tryTurn!!");
 
         if (!inGame) {
             return false;
         }
-        NetworkPacket p = new NetworkPacket(PacketTitle.attemptTurnPacket);
-        p.setData("onTile", t);
-        p.setData("player", this.currentPlayer);
+
         /*
          client.addListener(new ClientListener(){
          @Override
@@ -69,20 +68,30 @@ public class NetworkBoard extends Board {
          });
          */
         //client.sendTCP(p);
-
-        ResponseWaiter responseWaiter = new ResponseWaiter(client, PacketTitle.attemptTurnPacket);
-
-        NetworkPacket resp = responseWaiter.sendAndGetResponse(p);
-        //NetworkPacket resp = (NetworkPacket) client.waitForResponse(PacketTitle.attemptTurnPacket);
-
-        if ((boolean) resp.getData("valid") == true) {
-            doTurn(t, currentPlayer);
-            return true;
+        //ResponseWaiter responseWaiter = new ResponseWaiter(client, PacketTitle.attemptturnPacket     NetworkPacket resp = responseWaiter.sendAndGetResponse(p);
+        //NetworkPacket resp = (NetworkPacket) client.waitForResponse(PacketTitle.attemptTurnPacturnPacket ((boolean) resp.getData("valid") == true) {
+        boolean valid = false;
+        //Tile onTile = (Tile) np.getData("onTile");
+        if (t.getOwnerID() == 0) { //Unowned, can claim
+            valid = true;
+        } else { //Is owned
+            valid = t.getOwner() == this.currentPlayer;
         }
-        return false;
+
+        if (valid) {
+
+            NetworkPacket p = new NetworkPacket(PacketTitle.turnPacket);
+            p.setData("onTile", t);
+            p.setData("player", this.currentPlayer);
+
+            client.sendTCP(p);
+
+            doTurn(t, currentPlayer);
+        }
+        return true;
     }
 
-    public boolean doTurn(Tile onTile, Player player) {
+    public boolean doTurn(Tile onTile, NetworkPlayer player) {
         //boolean dirty = false;
         Tile[][] fieldPreviousTemp = new Tile[numCols][numRows];//may not need to be temp
         for (int fieldx = 0; fieldx < numCols; fieldx++) {

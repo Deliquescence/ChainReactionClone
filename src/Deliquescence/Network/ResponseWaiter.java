@@ -31,6 +31,7 @@
 package Deliquescence.Network;
 
 import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
 
 /**
  *
@@ -49,7 +50,7 @@ public class ResponseWaiter implements Runnable {
         this.client = client;
         this.waitingFor = title;
 
-        client.addListener(new ClientListener() {
+        client.addListener(new Listener() {
             @Override
             public void received(Connection c, Object object) {
 

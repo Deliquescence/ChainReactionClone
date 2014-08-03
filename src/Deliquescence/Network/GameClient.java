@@ -32,6 +32,8 @@ package Deliquescence.Network;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
+import com.esotericsoftware.minlog.Log;
 import java.util.ArrayList;
 
 /**
@@ -42,8 +44,8 @@ public class GameClient extends Client {
 
     public NetworkGameSettings settings;
 
-    public ArrayList<String> localPlayers = new ArrayList<>();
-    public ArrayList<String> allPlayers = new ArrayList<>();
+    public ArrayList<NetworkPlayer> localPlayers = new ArrayList<>();
+    public ArrayList<NetworkPlayer> allPlayers = new ArrayList<>();
 
     public boolean gameStarted = false;
 
@@ -66,20 +68,22 @@ public class GameClient extends Client {
 
     public GameClient() {
         super();
-        this.addListener(new ClientListener() {
+        this.addListener(new Listener.ThreadedListener(new Listener() {
             @Override
             public void connected(Connection c) {
+                Log.set(Log.LEVEL_TRACE);
 
+                Log.info("Client Connect");
             }
 
             @Override
             public void disconnected(Connection c) {
-
+                Log.info("Client Disconnect");
             }
 
             @Override
             public void received(Connection c, Object object) {
-
+                Log.info("Client Recieve: " + object);
                 try {
                     NetworkPacket np = (NetworkPacket) object;
                     /*if (waiting && (np.packetTitle == waitingFor)) {
@@ -89,22 +93,39 @@ public class GameClient extends Client {
                      } else {*/
                     switch (np.packetTitle) {
                         case NetworkGameSettingsPacket:
+                            Log.debug("Setting client settings");
                             settings = (NetworkGameSettings) np;
                             break;
 
                         case GameStartPacket:
+                            Log.debug("Client sending names");
                             NetworkPacket p = new NetworkPacket(PacketTitle.namesPacket);
                             p.setData("names", localPlayers);
                             sendTCP(p);
 
+                            Log.debug("Client starting game");
                             wrp.startGame(GameClient.this);
                             gameStarted = true;
+                            Log.debug("Client started game");
+                            break;
+
+                        case namesPacket:
+                            Log.debug("Adding names to client");
+
+                            GameClient.this.allPlayers.addAll((ArrayList<NetworkPlayer>) np.getData("players"));
+                            break;
+
+                        case turnPacket:
+                            GameClient.this.wrp.networkGamePanel.netGameBoard.doTurn(
+                                    (Deliquescence.Tile) np.getData("onTile"),
+                                    (Deliquescence.Network.NetworkPlayer) np.getData("player")
+                            );
                             break;
                     }
 
                 } catch (ClassCastException ignore) {
                 }
             }
-        });
+        }));
     }
 }

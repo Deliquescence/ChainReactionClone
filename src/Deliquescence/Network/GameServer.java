@@ -30,10 +30,10 @@
  */
 package Deliquescence.Network;
 
-import Deliquescence.Player;
-import Deliquescence.Tile;
 import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.esotericsoftware.minlog.Log;
 import java.util.ArrayList;
 
 /**
@@ -45,57 +45,79 @@ public class GameServer extends Server {
     public NetworkGameSettings settings;
 
     //public ArrayList<String> localPlayers = new ArrayList<String>();
-    public ArrayList<String> allPlayers = new ArrayList<String>();
+    public ArrayList<NetworkPlayer> allPlayers = new ArrayList<>();
 
     public GameServer() {
         super();
-        this.addListener(new ServerListener() {
+        this.addListener(new Listener.ThreadedListener(new Listener() {
             @Override
             public void connected(Connection c) {
+
+                Log.set(Log.LEVEL_TRACE);
+                Log.info("Server Connect");
+                Log.debug("Sending server settings");
                 sendToTCP(c.getID(), settings);
             }
 
             @Override
             public void disconnected(Connection c) {
-
+                Log.info("Server Disconnect");
             }
 
             @Override
             public void received(Connection c, Object object) {
-
-                if (object instanceof NetworkPacket) {
+                Log.debug("Server recieved: " + object);
+                try {
                     NetworkPacket np = (NetworkPacket) object;
-                    switch (np.packetTitle) {
-                        case attemptTurnPacket:
-                            System.out.println("attempt turn on server");
-                            boolean valid = false;
-                            Tile onTile = (Tile) np.getData("onTile");
-                            if (onTile.getOwnerID() == 0) { //Unowned, can claim
-                                valid = true;
-                            } else { //Is owned
-                                if (onTile.getOwner() == (Player) np.getData("player")) { //Make sure it is their tile
-                                    valid = true;
+                    Log.debug("Server recieved network packet " + np + " | title " + np.packetTitle);
 
-                                } else { //Cannot play on others tiles
-                                    valid = false;
+                    switch (np.packetTitle) {
+                        /*
+                         case turnPacket:
+                         System.out.println("attempt turn on server");
+                         boolean valid = false;
+                         Tile onTile = (Tile) np.getData("onTile");
+                         if (onTile.getOwnerID() == 0) { //Unowned, can claim
+                         valid = true;
+                         } else { //Is owned
+                         if (onTile.getOwner() == (Player) np.getData("player")) { //Make sure it is their tile
+                         valid = true;
+
+                         } else { //Cannot play on others tiles
+                         valid = false;
+                         }
+                         }
+
+                         NetworkPacket resp = new NetworkPacket(PacketTitle.turnPacket);
+                         resp.setData("valid", valid);
+                         c.sendTCP(resp);
+
+                         break;*/
+                        case namesPacket:
+                            Log.debug("Adding names to server");
+                            allPlayers.addAll((ArrayList<NetworkPlayer>) np.getData("names"));
+
+                            Log.debug("sending names to client");
+                            NetworkPacket p = new NetworkPacket(PacketTitle.namesPacket);
+                            p.setData("names", (ArrayList<NetworkPlayer>) np.getData("names"));
+                            c.sendTCP(p);
+
+                            break;
+
+                        case turnPacket:
+                            Log.debug("Server recieved turn");
+                            for (Connection con : GameServer.this.getConnections()) {
+                                if (con.getID() != c.getID()) {
+                                    sendToTCP(con.getID(), object);
                                 }
                             }
-
-                            NetworkPacket resp = new NetworkPacket(PacketTitle.attemptTurnPacket);
-                            resp.setData("valid", valid);
-                            c.sendTCP(resp);
-
-                            break;
-
-                        case namesPacket:
-                            //
-                            allPlayers.addAll((ArrayList<String>) np.getData("names"));
                             break;
                     }
+                } catch (ClassCastException ignore) {
                 }
 
             }
-        });
+        }));
 
     }
 

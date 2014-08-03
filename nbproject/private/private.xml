@@ -17,15 +17,19 @@
             <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/Networking.java</file>
             <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Board.java</file>
             <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/GameServer.java</file>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Player.java</file>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/ResponseWaiter.java</file>
             <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/NetworkPacket.java</file>
             <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/NetworkSetupPanel.java</file>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Tile.java</file>
             <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/NetworkGameViewer.java</file>
             <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/NetworkBoard.java</file>
             <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Main.java</file>
             <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/PacketTitle.java</file>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/NetworkPlayer.java</file>
+            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/BrowserPanel.java</file>
             <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/GameClient.java</file>
             <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/WaitingRoomPanel.java</file>
-            <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Network/BrowserPanel.java</file>
             <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Panel/LocalGameSetup.java</file>
             <file>file:/C:/Users/Josh/Documents/NetBeansProjects/ChainReactionClone/src/Deliquescence/Panel/GameManager.java</file>
         </group>

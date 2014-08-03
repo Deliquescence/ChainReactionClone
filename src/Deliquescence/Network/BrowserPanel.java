@@ -34,11 +34,10 @@ import Deliquescence.Config;
 import Deliquescence.Panel.GameManager;
 import Deliquescence.Refreshable;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.net.UnknownHostException;
 import javax.swing.DefaultListModel;
-import org.apache.commons.net.util.SubnetUtils;
-import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
+//import org.apache.commons.net.util.SubnetUtils;
+//import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
 
 /**
  *
@@ -203,25 +202,25 @@ public class BrowserPanel extends javax.swing.JPanel implements Refreshable {
             local = "Network Error";
             return;
         }
-        SubnetUtils utils = new SubnetUtils(local, "255.255.255.0");
-        SubnetInfo info = utils.getInfo();
+//        SubnetUtils utils = new SubnetUtils(local, "255.255.255.0");
+//        SubnetInfo info = utils.getInfo();
 
-        try {
-            for (String ip : info.getAllAddresses()) {
-                InetAddress addr = InetAddress.getByName(ip);
-                if (addr.isReachable(10)) {
-                    Socket socket = new Socket(addr, Config.getInt("NETWORK_PORT"));
-                }
-
+//        try {
+////            for (String ip : info.getAllAddresses()) {
+//                InetAddress addr = InetAddress.getByName(ip);
+//                if (addr.isReachable(10)) {
+//                    Socket socket = new Socket(addr, Config.getInt("NETWORK_PORT"));
+//                }
 //                ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-//                oos.writeObject("ping");
-//
-//                ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-//                String response = (String) ois.readObject();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+////                oos.writeObject("ping");
+////
+////                ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+////                String response = (String) ois.readObject();
+//    }
+//}
+//catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }//GEN-LAST:event_RefreshButtonActionPerformed
 
     private void JoinLANButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JoinLANButtonActionPerformed

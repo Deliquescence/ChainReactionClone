@@ -30,54 +30,24 @@
  */
 package Deliquescence.Network;
 
-import static Deliquescence.Network.PacketTitle.NetworkGameSettingsPacket;
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryonet.EndPoint;
-import com.esotericsoftware.minlog.Log;
+import Deliquescence.Player;
 
 /**
  *
  * @author Deliquescence <Deliquescence1@gmail.com>
  */
-public class Networking {
+public class NetworkPlayer extends Player {
 
-    static public void register(EndPoint endPoint) {
-        Log.set(Log.LEVEL_TRACE);
-        Log.setLogger(new Log.Logger());
+    public final double UUID;
 
-        Kryo kryo = endPoint.getKryo();
-        // kryo.register(endPoint.getClass());
-
-        kryo.register(Deliquescence.Network.PacketTitle.class);
-        kryo.register(java.util.HashMap.class);
-        kryo.register(java.util.ArrayList.class);
-        kryo.register(NetworkPacket.class);
-        kryo.register(NetworkGameSettings.class);
-        kryo.register(Deliquescence.Network.NetworkPlayer.class);
-        kryo.register(Deliquescence.Tile.class);
-        kryo.register(Deliquescence.Network.NetworkBoard.class);
-
-        //kryo.register(Deliquescence.Network.GameClient.class);
-        //kryo.register(Deliquescence.Network.GameServer.class);
-        ///????
-        kryo.register(javax.swing.plaf.ColorUIResource.class);
-        kryo.register(float[].class);
-        kryo.register(java.net.Inet4Address.class);
+    public NetworkPlayer(int n) {
+        super(n);
+        UUID = java.lang.Math.random();
     }
 
-}
-
-class NetworkGameSettings extends NetworkPacket {
-
-    int totalPlayers, rows, cols;
-    boolean randomStartingPlayer, RNGEnabled, turnTimerEnabled;
-    int timerAction, timerLength;
-
-    public NetworkGameSettings(String title) {
-        super(NetworkGameSettingsPacket);
+    public NetworkPlayer(int n, String name) {
+        super(n, name);
+        UUID = java.lang.Math.random();
     }
 
-    public NetworkGameSettings() {
-        super(NetworkGameSettingsPacket);
-    }
 }

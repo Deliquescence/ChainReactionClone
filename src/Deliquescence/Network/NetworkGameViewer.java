@@ -33,6 +33,7 @@ package Deliquescence.Network;
 import Deliquescence.Config;
 import Deliquescence.Panel.GameManager;
 import Deliquescence.Panel.GamePanel;
+import com.esotericsoftware.minlog.Log;
 import java.net.InetAddress;
 import javax.swing.BoxLayout;
 
@@ -62,7 +63,7 @@ public class NetworkGameViewer extends javax.swing.JPanel {
         try {
             client = new GameClient();
             Networking.register(client);
-            client.addListener(new ClientListener());
+            // client.addListener(new ClientListener());
             client.start();
 
             NetworkGameSettings settings = new NetworkGameSettings();
@@ -88,7 +89,7 @@ public class NetworkGameViewer extends javax.swing.JPanel {
         try {
             server = new GameServer();
             Networking.register(server);
-            server.addListener(new ServerListener());
+//            server.addListener(new ServerListener());
             server.start();
 
             server.settings = settings;
@@ -102,6 +103,7 @@ public class NetworkGameViewer extends javax.swing.JPanel {
     }
 
     public void displayGame(GamePanel p) {
+        Log.trace("NGV.displayGame");
         this.removeAll();
         add(p);
     }

@@ -37,7 +37,7 @@ import com.esotericsoftware.kryonet.Listener;
  *
  * @author Deliquescence <Deliquescence1@gmail.com>
  */
-public class ServerListener extends Listener {
+public class ServerListener1 extends Listener {
 
     @Override
     public void received(Connection connection, Object object) {

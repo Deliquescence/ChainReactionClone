@@ -36,5 +36,5 @@ package Deliquescence.Network;
  */
 public enum PacketTitle {
 
-    NetworkGameSettingsPacket, GameStartPacket, attemptTurnPacket, namesPacket;
+    NetworkGameSettingsPacket, GameStartPacket, turnPacket, namesPacket;
 }
