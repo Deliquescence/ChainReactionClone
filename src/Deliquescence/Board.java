@@ -233,8 +233,12 @@ public class Board extends JPanel {
             t.setNumberOfParticles(t.getNumberOfParticles() + 1);
             dirtyTiles.add(t);
         }
-        tile.setNumberOfParticles(0);
-        tile.setOwner(players[0]);
+        if (tile.getNumberOfParticles() == 5) {
+            tile.setNumberOfParticles(1);//If two particles explode into a tile of three, it should be left with one after it explodes four.
+        } else {
+            tile.setNumberOfParticles(0);
+            tile.setOwner(players[0]);
+        }
         return dirtyTiles;
     }
 
