@@ -31,23 +31,28 @@
 package Deliquescence.Network;
 
 import Deliquescence.Player;
+import java.io.Serializable;
+import java.util.UUID;
 
 /**
  *
  * @author Deliquescence <Deliquescence1@gmail.com>
  */
-public class NetworkPlayer extends Player {
+public class NetworkPlayer extends Player implements Serializable {
 
-    public final double UUID;
+    //@Bind(UUIDSerializer.class)
+    public final UUID ID;
 
     public NetworkPlayer(int n) {
         super(n);
-        UUID = java.lang.Math.random();
+        ID = UUID.randomUUID();
+        //UUID = java.lang.Math.random();
     }
 
     public NetworkPlayer(int n, String name) {
         super(n, name);
-        UUID = java.lang.Math.random();
+        ID = UUID.randomUUID();
+        //UUID = java.lang.Math.random();
     }
 
 }

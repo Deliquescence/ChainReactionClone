@@ -30,30 +30,18 @@
  */
 package Deliquescence.Network;
 
-import java.io.Serializable;
-import com.esotericsoftware.kryo.util.ObjectMap;
+import java.util.ArrayList;
 
 /**
  *
  * @author Deliquescence <Deliquescence1@gmail.com>
  */
-public class NetworkPacket implements Serializable {
+public class NamesPacket extends NetworkPacket {
 
-    public PacketTitle packetTitle;
-    private final ObjectMap<String, Object> data = new ObjectMap<>();
+    public ArrayList<NetworkPlayer> names;
 
-    public NetworkPacket(PacketTitle title) {
-        this.packetTitle = title;
-    }
-
-    public NetworkPacket() {
-    }
-
-    public void setData(String key, Object value) {
-        data.put(key, value);
-    }
-
-    public Object getData(String key) {
-        return data.get(key);
+    public NamesPacket(ArrayList<NetworkPlayer> name) {
+        this.packetTitle = PacketTitle.namePacket;
+        names = name;
     }
 }

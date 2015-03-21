@@ -66,10 +66,10 @@ public class GameServer extends Server {
 
             @Override
             public void received(Connection c, Object object) {
-                Log.debug("Server recieved: " + object);
+                //Log.debug("Server recieved: " + object);
                 try {
                     NetworkPacket np = (NetworkPacket) object;
-                    Log.debug("Server recieved network packet " + np + " | title " + np.packetTitle);
+                    Log.debug("Server recieved network packet with title " + np.packetTitle);
 
                     switch (np.packetTitle) {
                         /*
@@ -93,13 +93,13 @@ public class GameServer extends Server {
                          c.sendTCP(resp);
 
                          break;*/
-                        case namesPacket:
+                        case namePacket:
                             Log.debug("Adding names to server");
                             allPlayers.addAll((ArrayList<NetworkPlayer>) np.getData("names"));
 
                             Log.debug("sending names to client");
-                            NetworkPacket p = new NetworkPacket(PacketTitle.namesPacket);
-                            p.setData("names", (ArrayList<NetworkPlayer>) np.getData("names"));
+                            NetworkPacket p = new NamesPacket((ArrayList<NetworkPlayer>) np.getData("names"));
+                            //p.setData("names", (ArrayList<NetworkPlayer>) np.getData("names"));
                             c.sendTCP(p);
 
                             break;
@@ -111,6 +111,22 @@ public class GameServer extends Server {
                                     sendToTCP(con.getID(), object);
                                 }
                             }
+                            break;
+
+                        case debugPacket:
+                            //TODO WHEN LEFT OFF, DISCONNECT IS CAUSED BY SENDING NetworkPlayer
+                            //TODO Look into custom seralizer or download
+
+                            Log.warn("Debug packet received on server");
+                            NetworkPlayer data = (NetworkPlayer) np.getData("data");
+                            //for (String d : data) {
+                            Log.debug(data.getDisplayName());
+                            //}
+
+                            NetworkPacket p1 = new NetworkPacket(PacketTitle.debugPacket);
+                            // sendTCP(p);
+                            GameServer.this.sendToAllTCP(p1);
+
                             break;
                     }
                 } catch (ClassCastException ignore) {

@@ -32,6 +32,7 @@ package Deliquescence.Network;
 
 import Deliquescence.Config;
 import static Deliquescence.Network.PacketTitle.GameStartPacket;
+import static Deliquescence.Network.PacketTitle.requestNamesPacket;
 import Deliquescence.Panel.GameManager;
 import com.esotericsoftware.minlog.Log;
 import java.awt.Dimension;
@@ -128,6 +129,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         StartButton = new javax.swing.JButton();
+        RequestNamesButton = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         NamesPanel = new javax.swing.JPanel();
@@ -146,6 +148,14 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
             }
         });
         add(StartButton);
+
+        RequestNamesButton.setText("names");
+        RequestNamesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RequestNamesButtonActionPerformed(evt);
+            }
+        });
+        add(RequestNamesButton);
 
         jButton1.setText("Edit Settings (Host Only) (TODO)");
         add(jButton1);
@@ -194,6 +204,16 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_StartButtonActionPerformedWaitingRoom
 
+    private void RequestNamesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RequestNamesButtonActionPerformed
+        if (isServer) {
+            NetworkPacket p = new NetworkPacket(requestNamesPacket);
+
+            server.sendToAllTCP(p);
+        } else {
+            client.sendDebugPacket();
+        }
+    }//GEN-LAST:event_RequestNamesButtonActionPerformed
+
     public void startGame(GameClient client) {
         Log.trace("wrp.startgame");
         NetworkGameViewer ngv = (NetworkGameViewer) this.getParent();
@@ -232,6 +252,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton LeaveButton;
     private javax.swing.JPanel NamesPanel;
+    private javax.swing.JButton RequestNamesButton;
     private javax.swing.JButton StartButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

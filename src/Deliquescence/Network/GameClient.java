@@ -83,9 +83,11 @@ public class GameClient extends Client {
 
             @Override
             public void received(Connection c, Object object) {
-                Log.info("Client Recieve: " + object);
+                //Log.info("Client Recieve: " + object);
                 try {
+
                     NetworkPacket np = (NetworkPacket) object;
+                    Log.debug("Client recieved network packet with title " + np.packetTitle);
                     /*if (waiting && (np.packetTitle == waitingFor)) {
                      this.notify();
                      waiting = false;
@@ -98,10 +100,6 @@ public class GameClient extends Client {
                             break;
 
                         case GameStartPacket:
-                            Log.debug("Client sending names");
-                            NetworkPacket p = new NetworkPacket(PacketTitle.namesPacket);
-                            p.setData("names", localPlayers);
-                            sendTCP(p);
 
                             Log.debug("Client starting game");
                             wrp.startGame(GameClient.this);
@@ -109,10 +107,22 @@ public class GameClient extends Client {
                             Log.debug("Client started game");
                             break;
 
-                        case namesPacket:
+                        case requestNamesPacket:
+                            Log.debug("Client sending names");
+                            NamesPacket namep = new NamesPacket(localPlayers);
+                            for (NetworkPlayer play : localPlayers) {
+                                Log.debug("localPlayers " + play.getDisplayName());
+                            }
+
+                            //p.setData("names", localPlayers);
+                            sendTCP(namep);
+                            Log.debug("Client sent names");
+                            break;
+
+                        case namePacket:
                             Log.debug("Adding names to client");
 
-                            GameClient.this.allPlayers.addAll((ArrayList<NetworkPlayer>) np.getData("players"));
+                            GameClient.this.allPlayers.addAll((ArrayList<NetworkPlayer>) np.getData("names"));
                             break;
 
                         case turnPacket:
@@ -121,11 +131,27 @@ public class GameClient extends Client {
                                     (Deliquescence.Network.NetworkPlayer) np.getData("player")
                             );
                             break;
+
+                        case debugPacket:
+
+                            Log.warn("Debug packet received on client");
+                            break;
                     }
 
                 } catch (ClassCastException ignore) {
                 }
             }
         }));
+    }
+
+    public void sendDebugPacket() {
+        Log.warn("Client sending debug packet");
+        NetworkPacket p = new NetworkPacket(PacketTitle.debugPacket);
+        //ArrayList<String> data = new ArrayList<>();
+        //data.add("test");
+
+        NetworkPlayer data = new NetworkPlayer(1);
+        p.setData("data", data);
+        sendTCP(p);
     }
 }

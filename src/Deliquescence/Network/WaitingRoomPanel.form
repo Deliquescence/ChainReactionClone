@@ -26,6 +26,14 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="StartButtonActionPerformedWaitingRoom"/>
       </Events>
     </Component>
+    <Component class="javax.swing.JButton" name="RequestNamesButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="names"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RequestNamesButtonActionPerformed"/>
+      </Events>
+    </Component>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
         <Property name="text" type="java.lang.String" value="Edit Settings (Host Only) (TODO)"/>
