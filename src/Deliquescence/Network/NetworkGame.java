@@ -30,7 +30,7 @@
  */
 package Deliquescence.Network;
 
-import Deliquescence.Board;
+import Deliquescence.Game;
 import Deliquescence.Panel.GamePanel;
 import Deliquescence.Tile;
 
@@ -38,13 +38,13 @@ import Deliquescence.Tile;
  *
  * @author Deliquescence <Deliquescence1@gmail.com>
  */
-public class NetworkBoard extends Board {
+public class NetworkGame extends Game {
 
     GameServer server;
     GameClient client;
 
     //NetworkPlayer currentPlayer;
-    public NetworkBoard(GamePanel parent, int NumberOfPlayers, int Rows, int Columns, String[] playerNames, boolean RandomizePlayerStart, GameServer server, GameClient client) {
+    public NetworkGame(GamePanel parent, int NumberOfPlayers, int Rows, int Columns, String[] playerNames, boolean RandomizePlayerStart, GameServer server, GameClient client) {
         super(parent, NumberOfPlayers, Rows, Columns, playerNames, RandomizePlayerStart);
         this.server = server;
         this.client = client;

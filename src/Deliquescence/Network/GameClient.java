@@ -126,7 +126,7 @@ public class GameClient extends Client {
                             break;
 
                         case turnPacket:
-                            GameClient.this.wrp.networkGamePanel.netGameBoard.doTurn(
+                            GameClient.this.wrp.networkGamePanel.netGame.doTurn(
                                     (Deliquescence.Tile) np.getData("onTile")
                             //(Deliquescence.Network.NetworkPlayer) np.getData("player")
                             );

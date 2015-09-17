@@ -42,15 +42,15 @@ public class NetworkGamePanel extends GamePanel {
     public final GameServer server;
     public final GameClient client;
 
-    public NetworkBoard netGameBoard;
+    public NetworkGame netGame;
 
     public NetworkGamePanel(GameManager gameManager, int players, int rows, int columns, String[] playerNames, boolean RNGEnabled, boolean RandomizePlayer, int timerLength, int timeAction, GameServer server, GameClient client) {
         super(gameManager, players, rows, columns, playerNames, RNGEnabled, RandomizePlayer, timerLength, timeAction);
         this.server = server;
         this.client = client;
 
-        netGameBoard.server = server;
-        netGameBoard.client = client;
+        netGame.server = server;
+        netGame.client = client;
 
     }
 
@@ -69,12 +69,12 @@ public class NetworkGamePanel extends GamePanel {
      timeAction
      );
 
-     //this.gameBoard = new NetworkBoard(this, players, rows, columns, playerNames, RandomizePlayer, server, client);
+     //this.game = new NetworkGame(this, players, rows, columns, playerNames, RandomizePlayer, server, client);
      }*/
     @Override
-    protected void makeBoard(int players, int rows, int columns, String[] playerNames, boolean RandomizePlayer) {
-        gameBoard = new NetworkBoard(this, players, rows, columns, playerNames, RandomizePlayer, server, client);
-        netGameBoard = (NetworkBoard) gameBoard;
+    protected void makeGame(int players, int rows, int columns, String[] playerNames, boolean RandomizePlayer) {
+        game = new NetworkGame(this, players, rows, columns, playerNames, RandomizePlayer, server, client);
+        netGame = (NetworkGame) game;
 
     }
 

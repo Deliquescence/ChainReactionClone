@@ -39,7 +39,7 @@ public class Tile {
 
     private final int xPos, yPos;
     private int particleCapacity; //Particles needed to explode
-    //private final Board board;
+    //private final Game board;
 
     private Player owner;
     private int numParticles;
@@ -47,7 +47,7 @@ public class Tile {
     /**
      * Create a blank tile with no owner or particles.
      *
-     * @param b The parent {@link Board} of this tile.
+     * @param b The parent {@link Game} of this tile.
      * @param x The X-Coordinate of this tile.
      * @param y The Y-Coordinate of this tile.
      */
@@ -58,7 +58,7 @@ public class Tile {
     /**
      * Create a tile with the specified owner.
      *
-     * @param b The parent {@link Board} of this tile.
+     * @param b The parent {@link Game} of this tile.
      * @param x The X-Coordinate of this tile.
      * @param y The Y-Coordinate of this tile.
      * @param Owner The {@link Player} who owns this tile.
@@ -70,7 +70,7 @@ public class Tile {
     /**
      * Create a tile with the specified owner and number of particles.
      *
-     * @param b The parent {@link Board} of this tile.
+     * @param b The parent {@link Game} of this tile.
      * @param x The X-Coordinate of this tile.
      * @param y The Y-Coordinate of this tile.
      * @param Owner The {@link Player} who owns this tile.
@@ -183,11 +183,11 @@ public class Tile {
     }
 
     /**
-     * Gets the {@link Board} this tile is in.
+     * Gets the {@link Game} this tile is in.
      *
-     * @return The parent {@link Board} of this tile.
+     * @return The parent {@link Game} of this tile.
      */
-    public Board getBoard() {
+    public Game getBoard() {
 //        return this.board;
         return null;
     }

@@ -30,7 +30,7 @@
  */
 package Deliquescence.Panel;
 
-import Deliquescence.Board;
+import Deliquescence.Game;
 import Deliquescence.Player;
 import java.awt.Color;
 import java.awt.Font;
@@ -49,7 +49,7 @@ import javax.swing.Timer;
 public class GamePanel extends javax.swing.JPanel {
 
     GameManager gameManager;
-    public Board gameBoard;
+    public Game game;
     Timer timer;
 
     int totalTime;
@@ -89,18 +89,18 @@ public class GamePanel extends javax.swing.JPanel {
                 } else {
                     currentTime = totalTime;
                     if (timerAction == 0) {//Skip
-                        gameBoard.SkipTurn();
+                        game.SkipTurn();
                     } else if (timerAction == 1) {//RNG
-                        gameBoard.RNGTurn();
+                        game.RNGTurn();
                     }
                 }
             }
         }
         );
 
-        makeBoard(players, rows, columns, playerNames, RandomizePlayer);
+        makeGame(players, rows, columns, playerNames, RandomizePlayer);
 
-        add(gameBoard);
+        add(game);
         if (totalTime != 0) {
             TimerLabel1.setText("Timer:");
             //startTimer();
@@ -110,8 +110,8 @@ public class GamePanel extends javax.swing.JPanel {
         }
     }
 
-    protected void makeBoard(int players, int rows, int columns, String[] playerNames, boolean RandomizePlayer) {
-        gameBoard = new Board(this, players, rows, columns, playerNames, RandomizePlayer);
+    protected void makeGame(int players, int rows, int columns, String[] playerNames, boolean RandomizePlayer) {
+        game = new Game(this, players, rows, columns, playerNames, RandomizePlayer);
     }
 
     /**
@@ -269,11 +269,11 @@ public class GamePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_CloseButtonActionPerformed
 
     private void UndoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UndoButtonActionPerformed
-        gameBoard.undo();
+        game.undo();
     }//GEN-LAST:event_UndoButtonActionPerformed
 
     private void RNGButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RNGButtonActionPerformed
-        gameBoard.RNGTurn();
+        game.RNGTurn();
     }//GEN-LAST:event_RNGButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
