@@ -182,16 +182,6 @@ public class Tile {
         return this.numParticles >= this.particleCapacity;
     }
 
-    /**
-     * Gets the {@link Game} this tile is in.
-     *
-     * @return The parent {@link Game} of this tile.
-     */
-    public Game getBoard() {
-//        return this.board;
-        return null;
-    }
-
     public Tile(int x, int y, Player Owner, int Particles, int capacity) {
         this.xPos = x;
         this.yPos = y;
@@ -224,8 +214,7 @@ public class Tile {
      * @return True if the Tiles are identical.
      */
     public boolean equals(Tile compare) {
-        return this.getBoard() == compare.getBoard() &&
-                this.getNumberOfParticles() == compare.getNumberOfParticles() &&
+        return this.getNumberOfParticles() == compare.getNumberOfParticles() &&
                 this.getOwner() == compare.getOwner() &&
                 this.getX() == compare.getX() &&
                 this.getY() == compare.getY();
