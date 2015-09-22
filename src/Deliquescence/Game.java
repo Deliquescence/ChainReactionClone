@@ -202,37 +202,51 @@ public class Game extends JPanel {
     }
 
     /**
-     * Attempts to add a particle to the specified {@link Tile}, but may not be successful. For example, will fail if the tile is not owned by the current player or the game is not running.
+     * Checks if a move is valid for the specified tile and player. Will fail if the tile is not owned by the current player or the game is not running.
+     *
+     * @param onTile The tile to check
+     * @param onPlayer The player to check
+     *
+     * @return if the move is valid
+     */
+    public boolean moveIsValid(Tile onTile, Player onPlayer) {
+        if (inGame) {
+            if (onTile.getOwnerID() == 0) { //Unowned, can claim
+                return true;
+            } else { //Is owned
+                return onTile.getOwner() == onPlayer; //Make sure it is their tile
+                //Cannot play on others tiles
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Attempts to add a particle to the specified {@link Tile}, but may not be successful if move is invalid.
      *
      * @param onTile The tile that will be added to.
      *
      * @return True if the particle was successfully added.
      */
     public boolean doTurn(Tile onTile) {
-        boolean dirty = false;
-        Tile[][] fieldPreviousTemp = new Tile[board.numCols][board.numRows];//Temp because the turn may not be valid
-        for (int fieldx = 0; fieldx < board.numCols; fieldx++) {
-            for (int fieldy = 0; fieldy < board.numRows; fieldy++) {
-                fieldPreviousTemp[fieldx][fieldy] = board.field[fieldx][fieldy].cloneTile();
-            }
-        }
-        if (inGame) {
-            if (onTile.getOwnerID() == 0) { //Unowned, can claim
-                dirty = true;
-                onTile.setOwner(currentPlayer);
-                onTile.setNumberOfParticles(onTile.getNumberOfParticles() + 1);//Increase particle count
-            } else { //Is owned
-                if (onTile.getOwner() == currentPlayer) { //Make sure it is their tile
-                    dirty = true;
-                    onTile.setNumberOfParticles(onTile.getNumberOfParticles() + 1);//Increase particle count
-                } else { //Cannot play on others tiles
-                    return false;
+
+        if (moveIsValid(onTile, currentPlayer)) {
+
+            //Increase particle count and update owner
+            onTile.setOwner(currentPlayer);
+            onTile.setNumberOfParticles(onTile.getNumberOfParticles() + 1);
+
+            //Generate undo information
+            Tile[][] fieldPreviousTemp = new Tile[board.numCols][board.numRows];
+            for (int fieldx = 0; fieldx < board.numCols; fieldx++) {
+                for (int fieldy = 0; fieldy < board.numRows; fieldy++) {
+                    fieldPreviousTemp[fieldx][fieldy] = board.field[fieldx][fieldy].cloneTile();
                 }
             }
-        }
-        if (dirty) {//Need to repaint and do reactions
             board.fieldPrevious = fieldPreviousTemp;
 
+            //Do the reaction
             inReaction = true;
             try {
                 doReaction();
@@ -248,7 +262,7 @@ public class Game extends JPanel {
             repaint();
             return true;
         }
-        return false;
+        return false;//Move wasn't valid
     }
 
     private void refreshDisplayPlayers() {
