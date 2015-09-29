@@ -43,6 +43,11 @@ public class NetworkPlayer extends Player implements Serializable {
     //@Bind(UUIDSerializer.class)
     public final UUID ID;
 
+    public NetworkPlayer() {
+        super(0);
+        ID = UUID.randomUUID();
+    }
+
     public NetworkPlayer(int n) {
         super(n);
         ID = UUID.randomUUID();

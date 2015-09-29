@@ -50,45 +50,45 @@ public class NetworkGame extends Game {
         this.client = client;
 
     }
-
-    public synchronized boolean tryTurn(Tile t) {
-        //System.out.println("tryTurn!!");
-
-        if (!inGame) {
-            return false;
-        }
-
-        /*
-         client.addListener(new ClientListener(){
-         @Override
-         public void received(Connection c, Object object) {
-         this.notify();
-         }
-         });
-         */
-        //client.sendTCP(p);
-        //ResponseWaiter responseWaiter = new ResponseWaiter(client, PacketTitle.attemptturnPacket     NetworkPacket resp = responseWaiter.sendAndGetResponse(p);
-        //NetworkPacket resp = (NetworkPacket) client.waitForResponse(PacketTitle.attemptTurnPacturnPacket ((boolean) resp.getData("valid") == true) {
-        boolean valid = false;
-        //Tile onTile = (Tile) np.getData("onTile");
-        if (t.getOwnerID() == 0) { //Unowned, can claim
-            valid = true;
-        } else { //Is owned
-            valid = t.getOwner() == this.currentPlayer;
-        }
-
-        if (valid) {
-
-            NetworkPacket p = new NetworkPacket(PacketTitle.turnPacket);
-            p.setData("onTile", t);
-            p.setData("player", this.currentPlayer);
-
-            client.sendTCP(p);
-
-            doTurn(t);
-        }
-        return true;
-    }
+//
+//    public synchronized boolean tryTurn(Tile t) {
+//        //System.out.println("tryTurn!!");
+//
+//        if (!inGame) {
+//            return false;
+//        }
+//
+//        /*
+//         client.addListener(new ClientListener(){
+//         @Override
+//         public void received(Connection c, Object object) {
+//         this.notify();
+//         }
+//         });
+//         */
+//        //client.sendTCP(p);
+//        //ResponseWaiter responseWaiter = new ResponseWaiter(client, PacketTitle.attemptturnPacket     NetworkPacket resp = responseWaiter.sendAndGetResponse(p);
+//        //NetworkPacket resp = (NetworkPacket) client.waitForResponse(PacketTitle.attemptTurnPacturnPacket ((boolean) resp.getData("valid") == true) {
+//        boolean valid = false;
+//        //Tile onTile = (Tile) np.getData("onTile");
+//        if (t.getOwnerID() == 0) { //Unowned, can claim
+//            valid = true;
+//        } else { //Is owned
+//            valid = t.getOwner() == this.currentPlayer;
+//        }
+//
+//        if (valid) {
+//
+//            NetworkPacket p = new NetworkPacket(PacketTitle.turnPacket);
+//            p.setData("onTile", t);
+//            p.setData("player", this.currentPlayer);
+//
+//            client.sendTCP(p);
+//
+//            doTurn(t);
+//        }
+//        return true;
+//    }
 
 //    public boolean doTurn(Tile onTile, NetworkPlayer player) {
 //        //boolean dirty = false;
@@ -120,7 +120,18 @@ public class NetworkGame extends Game {
 //    }
     @Override
     public void clickFunction(Tile t) {
-        tryTurn(t);
+        doNetworkTurn(t);
+    }
+
+    private void doNetworkTurn(Tile t) {
+        if (doTurn(t)) {
+            NetworkPacket p = new NetworkPacket(PacketTitle.turnPacket);
+            p.setData("onTile", t);
+            p.setData("player", this.currentPlayer);
+
+            client.sendTCP(p);
+
+        }
     }
 
 }

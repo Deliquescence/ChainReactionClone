@@ -53,7 +53,7 @@ public class GameServer extends Server {
             @Override
             public void connected(Connection c) {
 
-                Log.set(Log.LEVEL_TRACE);
+                //Log.set(Log.LEVEL_TRACE);
                 Log.info("Server Connect");
                 Log.debug("Sending server settings");
                 sendToTCP(c.getID(), settings);
@@ -95,10 +95,15 @@ public class GameServer extends Server {
                          break;*/
                         case namePacket:
                             Log.debug("Adding names to server");
-                            allPlayers.addAll((ArrayList<NetworkPlayer>) np.getData("names"));
+                            //Log.debug("allPlayers.size() " + allPlayers.size());
+                            ArrayList<NetworkPlayer> thePlayers = (ArrayList<NetworkPlayer>) np.getData("names");
+                            //Log.debug("thePlayers.size() " + thePlayers.size());
+                            //allPlayers.addAll((ArrayList<NetworkPlayer>) np.getData("names"));
 
                             Log.debug("sending names to client");
-                            NetworkPacket p = new NamesPacket((ArrayList<NetworkPlayer>) np.getData("names"));
+
+                            NetworkPacket p = new NetworkPacket(PacketTitle.namePacket);
+                            p.setData("names", (ArrayList<NetworkPlayer>) np.getData("names"));
                             //p.setData("names", (ArrayList<NetworkPlayer>) np.getData("names"));
                             c.sendTCP(p);
 

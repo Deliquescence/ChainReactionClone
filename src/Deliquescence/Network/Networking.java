@@ -43,7 +43,7 @@ import java.util.UUID;
 public class Networking {
 
     static public void register(EndPoint endPoint) {
-        Log.set(Log.LEVEL_TRACE);
+        Log.set(Log.LEVEL_DEBUG);
         Log.setLogger(new Log.Logger());
 
         Kryo kryo = endPoint.getKryo();
@@ -59,7 +59,7 @@ public class Networking {
         kryo.register(Deliquescence.Network.NetworkGame.class);
         kryo.register(UUID.class, new UUIDSerializer());
         kryo.register(com.esotericsoftware.kryo.util.ObjectMap.class);
-        kryo.register(NamesPacket.class);
+        //kryo.register(NamesPacket.class);
         kryo.register(Deliquescence.Player.class);
 
         //kryo.register(Deliquescence.Network.GameClient.class);

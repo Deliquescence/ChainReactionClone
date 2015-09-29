@@ -71,7 +71,7 @@ public class GameClient extends Client {
         this.addListener(new Listener.ThreadedListener(new Listener() {
             @Override
             public void connected(Connection c) {
-                Log.set(Log.LEVEL_TRACE);
+                //Log.set(Log.LEVEL_TRACE);
 
                 Log.info("Client Connect");
             }
@@ -109,7 +109,8 @@ public class GameClient extends Client {
 
                         case requestNamesPacket:
                             Log.debug("Client sending names");
-                            NamesPacket namep = new NamesPacket(localPlayers);
+                            NetworkPacket namep = new NetworkPacket(PacketTitle.namePacket);
+                            namep.setData("names", localPlayers);
                             for (NetworkPlayer play : localPlayers) {
                                 Log.debug("localPlayers " + play.getDisplayName());
                             }
