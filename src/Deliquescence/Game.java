@@ -79,9 +79,9 @@ public class Game extends JPanel {
         this.gamePanel = parent;
         this.turn = 1;
 
-        players = new Player[Config.getInt("MAX_PLAYERS") + 1];
+        players = new Player[numPlayers + 1];
         players[0] = new Player(0);
-        for (int i = 1; i < playerNames.length; i++) {
+        for (int i = 1; i <= numPlayers; i++) {
             players[i] = new Player(i, playerNames[i]);
         }
 
