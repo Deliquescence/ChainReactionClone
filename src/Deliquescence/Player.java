@@ -37,9 +37,19 @@ package Deliquescence;
  */
 public class Player {
 
-    private int id;
-    private boolean alive;
-    private String name;
+    protected int id;
+    protected boolean alive;
+    protected String name;
+
+    /**
+     * This is needed for networking...
+     * kryonet needs a no-arg constructor
+     *
+     * Dont actually use this?
+     * ...shady af
+     */
+    public Player() {
+    }
 
     /**
      * Create a player with the specified numeric ID. Is assumed to be dead.
