@@ -148,4 +148,17 @@ public class Board {
         return field[x][y];
     }
 
+    /**
+     *
+     * Get a tile from given coordinates
+     *
+     * @param x The x coordinate
+     * @param y The y coordinate
+     *
+     * @return The tile on the coordinates
+     */
+    public Tile getTile(int x, int y) {
+        return field[x][y];
+    }
+
 }
