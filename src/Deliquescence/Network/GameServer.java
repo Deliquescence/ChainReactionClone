@@ -95,15 +95,28 @@ public class GameServer extends Server {
                          break;*/
                         case namePacket:
                             Log.debug("Adding names to server");
-                            //Log.debug("allPlayers.size() " + allPlayers.size());
+
                             ArrayList<NetworkPlayer> thePlayers = (ArrayList<NetworkPlayer>) np.getData("names");
-                            //Log.debug("thePlayers.size() " + thePlayers.size());
-                            //allPlayers.addAll((ArrayList<NetworkPlayer>) np.getData("names"));
+                            for (NetworkPlayer newPlayer : thePlayers) {
+                                boolean addable = true;
+                                for (NetworkPlayer cPlayer : allPlayers) {
+                                    if (newPlayer.uuid.compareTo(cPlayer.uuid) == 0) {
+                                        addable = false;
+                                        cPlayer = newPlayer;
+                                        break;
+                                    }
+                                }
+                                if (addable) {
+                                    newPlayer.setNumber(allPlayers.size() + 1);
+                                    allPlayers.add(newPlayer);
+
+                                }
+                            }
 
                             Log.debug("sending names to client");
 
                             NetworkPacket p = new NetworkPacket(PacketTitle.namePacket);
-                            p.setData("names", (ArrayList<NetworkPlayer>) np.getData("names"));
+                            p.setData("names", allPlayers);
                             //p.setData("names", (ArrayList<NetworkPlayer>) np.getData("names"));
                             c.sendTCP(p);
 
@@ -140,6 +153,11 @@ public class GameServer extends Server {
             }
         }));
 
+    }
+
+    public void getNames() {
+        NetworkPacket p = new NetworkPacket(PacketTitle.requestNamesPacket);
+        sendToAllTCP(p);
     }
 
 }

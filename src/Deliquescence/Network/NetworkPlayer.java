@@ -41,23 +41,26 @@ import java.util.UUID;
 public class NetworkPlayer extends Player implements Serializable {
 
     //@Bind(UUIDSerializer.class)
-    public final UUID ID;
+    public final UUID uuid;
 
     public NetworkPlayer() {
         super(0);
-        ID = UUID.randomUUID();
+        uuid = UUID.randomUUID();
     }
 
     public NetworkPlayer(int n) {
         super(n);
-        ID = UUID.randomUUID();
+        uuid = UUID.randomUUID();
         //UUID = java.lang.Math.random();
     }
 
     public NetworkPlayer(int n, String name) {
         super(n, name);
-        ID = UUID.randomUUID();
+        uuid = UUID.randomUUID();
         //UUID = java.lang.Math.random();
     }
 
+    public void setNumber(int n) {
+        this.id = n;
+    }
 }

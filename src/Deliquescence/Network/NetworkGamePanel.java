@@ -49,8 +49,8 @@ public class NetworkGamePanel extends GamePanel {
         this.server = server;
         this.client = client;
 
-        netGame.server = server;
-        netGame.client = client;
+        this.netGame.server = server;
+        this.netGame.client = client;
 
     }
 

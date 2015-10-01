@@ -32,7 +32,6 @@ package Deliquescence.Network;
 
 import Deliquescence.Config;
 import static Deliquescence.Network.PacketTitle.GameStartPacket;
-import static Deliquescence.Network.PacketTitle.requestNamesPacket;
 import Deliquescence.Panel.GameManager;
 import com.esotericsoftware.minlog.Log;
 import java.awt.Dimension;
@@ -64,6 +63,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         this.gameList = listPanel;
         this.localPlayers = localPlayers;
         this.client = client;
+        //this.server = client.
         isServer = false;
         client.wrp = this;
 
@@ -206,9 +206,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
 
     private void RequestNamesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RequestNamesButtonActionPerformed
         if (isServer) {
-            NetworkPacket p = new NetworkPacket(requestNamesPacket);
-
-            server.sendToAllTCP(p);
+            server.getNames();
         } else {
             client.sendDebugPacket();
         }
@@ -225,11 +223,13 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
             myPlayerNames[i] = client.allPlayers.get(i - 1).getName();
             Log.trace("myPlayerNames[" + i + "]: " + myPlayerNames[i]);
         }
-
-        ngv.displayGame(new NetworkGamePanel(gameList, client.settings.totalPlayers, client.settings.rows, client.settings.cols, myPlayerNames, false, false, 0, 0, server, client));
+        this.networkGamePanel = new NetworkGamePanel(gameList, client.settings.totalPlayers, client.settings.rows, client.settings.cols, myPlayerNames, false, false, 0, 0, server, client);
+        ngv.displayGame(this.networkGamePanel);
     }
 
     private void startGame(GameServer server) {
+        server.getNames();
+
         NetworkPacket p = new NetworkPacket(GameStartPacket);
         // p.setData("Something", "somethingelseTODO");
         server.sendToAllTCP(p);
@@ -242,7 +242,8 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
             myPlayerNames[i] = server.allPlayers.get(i - 1).getName();
         }
 
-        ngv.displayGame(new NetworkGamePanel(gameList, server.settings.totalPlayers, server.settings.rows, server.settings.cols, myPlayerNames, false, false, 0, 0, server, client));
+        this.networkGamePanel = new NetworkGamePanel(gameList, server.settings.totalPlayers, server.settings.rows, server.settings.cols, myPlayerNames, false, false, 0, 0, server, client);
+        ngv.displayGame(networkGamePanel);
 //        } else {
 //            ngv.displayGame(new NetworkGamePanel(gameList, client.settings.localPlayers, client.settings.rows, client.settings.cols, client.localPlayers.toArray(new String[0]), false, false, 0, 0));
 //        }

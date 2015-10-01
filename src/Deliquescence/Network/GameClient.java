@@ -123,12 +123,28 @@ public class GameClient extends Client {
                         case namePacket:
                             Log.debug("Adding names to client");
 
-                            GameClient.this.allPlayers.addAll((ArrayList<NetworkPlayer>) np.getData("names"));
+                            ArrayList<NetworkPlayer> thePlayers = (ArrayList<NetworkPlayer>) np.getData("names");
+                            //GameClient.this.allPlayers.addAll((ArrayList<NetworkPlayer>) np.getData("names"));
+
+                            for (NetworkPlayer newPlayer : thePlayers) {
+                                boolean addable = true;
+                                for (NetworkPlayer cPlayer : allPlayers) {
+                                    if (newPlayer.uuid.compareTo(cPlayer.uuid) == 0) {
+                                        addable = false;
+                                        cPlayer = newPlayer;
+                                        break;
+                                    }
+                                }
+                                if (addable) {
+                                    allPlayers.add(newPlayer);
+                                }
+                            }
+
                             break;
 
                         case turnPacket:
-                            GameClient.this.wrp.networkGamePanel.netGame.doTurn(
-                                    (Deliquescence.Tile) np.getData("onTile")
+                            GameClient.this.wrp.networkGamePanel.netGame.doNetworkTurn(//todo this is sketchy, is there a different way to get network game?
+                                    (int) np.getData("x"), (int) np.getData("y")
                             //(Deliquescence.Network.NetworkPlayer) np.getData("player")
                             );
                             break;

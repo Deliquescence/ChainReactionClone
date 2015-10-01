@@ -120,17 +120,21 @@ public class NetworkGame extends Game {
 //    }
     @Override
     public void clickFunction(Tile t) {
-        doNetworkTurn(t);
+        doNetworkTurn(t.getX(), t.getY());
     }
 
-    private void doNetworkTurn(Tile t) {
+    public void doNetworkTurn(int x, int y) {
+
+        Tile t = this.board.getTile(x, y);
+
         if (doTurn(t)) {
             NetworkPacket p = new NetworkPacket(PacketTitle.turnPacket);
-            p.setData("onTile", t);
+            //p.setData("onTile", t);
+            p.setData("x", t.getX());
+            p.setData("y", t.getY());
             p.setData("player", this.currentPlayer);
 
             client.sendTCP(p);
-
         }
     }
 
