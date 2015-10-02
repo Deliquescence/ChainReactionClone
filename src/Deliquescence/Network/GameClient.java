@@ -50,6 +50,7 @@ public class GameClient extends Client {
     public boolean gameStarted = false;
 
     public WaitingRoomPanel wrp;
+    public NetworkGame game;
 
     public GameClient() {
         super();
@@ -84,6 +85,7 @@ public class GameClient extends Client {
 
                             Log.debug("Client starting game");
                             wrp.startGame(GameClient.this);
+
                             gameStarted = true;
                             Log.debug("Client started game");
                             break;
@@ -119,9 +121,9 @@ public class GameClient extends Client {
                             break;
 
                         case turnPacket:
-                            GameClient.this.wrp.networkGamePanel.netGame.doNetworkTurn(//todo this is sketchy, is there a different way to get network game?
-                                    (int) np.getData("x"), (int) np.getData("y")
-                            //(Deliquescence.Network.NetworkPlayer) np.getData("player")
+                            GameClient.this.game = wrp.networkGamePanel.netGame;
+                            game.doTurn(
+                                    game.board.getTile((int) np.getData("x"), (int) np.getData("y"))
                             );
                             break;
 

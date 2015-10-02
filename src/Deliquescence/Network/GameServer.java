@@ -52,7 +52,7 @@ public class GameServer extends Server {
             @Override
             public void connected(Connection c) {
 
-                //Log.set(Log.LEVEL_TRACE);
+                Log.set(Log.LEVEL_TRACE);
                 Log.info("Server Connect");
                 Log.debug("Sending server settings");
                 sendToTCP(c.getID(), settings);

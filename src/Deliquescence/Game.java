@@ -46,7 +46,7 @@ import javax.swing.JPanel;
  */
 public class Game extends JPanel {
 
-    protected Board board;
+    public Board board;
 
     protected int turn;
     protected int currentPlayerID;
