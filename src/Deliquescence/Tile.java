@@ -39,7 +39,6 @@ public class Tile {
 
     private final int xPos, yPos;
     private int particleCapacity; //Particles needed to explode
-    //private final Game board;
 
     private Player owner;
     private int numParticles;
@@ -77,7 +76,6 @@ public class Tile {
      * @param Particles How many particles this tile has.
      */
     public Tile(Board b, int x, int y, Player Owner, int Particles) {
-        //this.board = b;
         this.xPos = x;
         this.yPos = y;
         this.numParticles = Particles;

@@ -50,21 +50,6 @@ public class GameClient extends Client {
     public boolean gameStarted = false;
 
     public WaitingRoomPanel wrp;
-    /*
-     private Object response;
-     private boolean waiting;
-     private PacketTitle waitingFor;
-
-
-     public synchronized Object waitForResponse(PacketTitle packet, Thread with) {
-     waitingFor = packet;
-     waiting = true;
-     try {
-     this.wait();
-     } catch (Exception e) {
-     }
-     return response;
-     }*/
 
     public GameClient() {
         super();
@@ -88,11 +73,7 @@ public class GameClient extends Client {
 
                     NetworkPacket np = (NetworkPacket) object;
                     Log.debug("Client recieved network packet with title " + np.packetTitle);
-                    /*if (waiting && (np.packetTitle == waitingFor)) {
-                     this.notify();
-                     waiting = false;
-                     response = object;
-                     } else {*/
+
                     switch (np.packetTitle) {
                         case NetworkGameSettingsPacket:
                             Log.debug("Setting client settings");
@@ -111,11 +92,7 @@ public class GameClient extends Client {
                             Log.debug("Client sending names");
                             NetworkPacket namep = new NetworkPacket(PacketTitle.namePacket);
                             namep.setData("names", localPlayers);
-                            for (NetworkPlayer play : localPlayers) {
-                                Log.debug("localPlayers " + play.getDisplayName());
-                            }
 
-                            //p.setData("names", localPlayers);
                             sendTCP(namep);
                             Log.debug("Client sent names");
                             break;
@@ -124,7 +101,6 @@ public class GameClient extends Client {
                             Log.debug("Adding names to client");
 
                             ArrayList<NetworkPlayer> thePlayers = (ArrayList<NetworkPlayer>) np.getData("names");
-                            //GameClient.this.allPlayers.addAll((ArrayList<NetworkPlayer>) np.getData("names"));
 
                             for (NetworkPlayer newPlayer : thePlayers) {
                                 boolean addable = true;

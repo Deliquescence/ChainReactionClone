@@ -63,7 +63,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         this.gameList = listPanel;
         this.localPlayers = localPlayers;
         this.client = client;
-        //this.server = client.
+
         isServer = false;
         client.wrp = this;
 
@@ -72,7 +72,6 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         NamesPanel.add(n);
         //this.client.localPlayers.addAll(n.getPlayerNames());//todo add changed names
         this.client.localPlayers.add(new NetworkPlayer(0, "client"));
-        //this.client.allPlayers.add("client");
 
         NamesPanel.setPreferredSize(new Dimension(800, 20 * (localPlayers + 1)));
     }
@@ -87,7 +86,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
             this.client = new GameClient();
 
             Networking.register(client);
-//            client.addListener(new ClientListener());
+
             client.start();
 
             NetworkGameSettings settings = new NetworkGameSettings();
@@ -102,21 +101,9 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         initComponents();
         names n = new names();
         NamesPanel.add(n);
-        //this.server.localPlayers.addAll(n.getPlayerNames());//todo make names work
         this.client.localPlayers.add(new NetworkPlayer(0, "server"));
-        //this.server.allPlayers.add("server");
         NamesPanel.setPreferredSize(new Dimension(800, 20 * (localPlayers + 1)));
     }
-    /*
-     public GamePanel waitForGamePanel() {
-     //NetworkGamePanel(GameManager gameManager, int localPlayers, int rows, int columns, String[] playerNames, boolean RNGEnabled, boolean RandomizePlayer, int timerLength, int timeAction)
-     if (isServer) {
-     return new NetworkGamePanel(gameList, server.settings.localPlayers, server.settings.rows, server.settings.cols, server.localPlayers.toArray(new String[0]), false, false, 0, 0);
-     } else {
-     return new NetworkGamePanel(gameList, client.settings.localPlayers, client.settings.rows, client.settings.cols, client.localPlayers.toArray(new String[0]), false, false, 0, 0);
-     }
-     }
-     */
 
     /**
      * This method is called from within the constructor to
@@ -199,7 +186,6 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         if (isServer) {
             startGame(server);
         } else {
-            //startGame(client);
             Log.warn("Only server can start");
         }
     }//GEN-LAST:event_StartButtonActionPerformedWaitingRoom
@@ -231,11 +217,10 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         server.getNames();
 
         NetworkPacket p = new NetworkPacket(GameStartPacket);
-        // p.setData("Something", "somethingelseTODO");
+
         server.sendToAllTCP(p);
         NetworkGameViewer ngv = (NetworkGameViewer) this.getParent();
 
-//        if (isServer) {
         String[] myPlayerNames = new String[server.settings.totalPlayers + 1];
 
         for (int i = 1; i <= server.allPlayers.size(); i++) {
@@ -244,10 +229,6 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
 
         this.networkGamePanel = new NetworkGamePanel(gameList, server.settings.totalPlayers, server.settings.rows, server.settings.cols, myPlayerNames, false, false, 0, 0, server, client);
         ngv.displayGame(networkGamePanel);
-//        } else {
-//            ngv.displayGame(new NetworkGamePanel(gameList, client.settings.localPlayers, client.settings.rows, client.settings.cols, client.localPlayers.toArray(new String[0]), false, false, 0, 0));
-//        }
-
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -44,7 +44,6 @@ public class GameServer extends Server {
 
     public NetworkGameSettings settings;
 
-    //public ArrayList<String> localPlayers = new ArrayList<String>();
     public ArrayList<NetworkPlayer> allPlayers = new ArrayList<>();
 
     public GameServer() {
@@ -72,27 +71,6 @@ public class GameServer extends Server {
                     Log.debug("Server recieved network packet with title " + np.packetTitle);
 
                     switch (np.packetTitle) {
-                        /*
-                         case turnPacket:
-                         System.out.println("attempt turn on server");
-                         boolean valid = false;
-                         Tile onTile = (Tile) np.getData("onTile");
-                         if (onTile.getOwnerID() == 0) { //Unowned, can claim
-                         valid = true;
-                         } else { //Is owned
-                         if (onTile.getOwner() == (Player) np.getData("player")) { //Make sure it is their tile
-                         valid = true;
-
-                         } else { //Cannot play on others tiles
-                         valid = false;
-                         }
-                         }
-
-                         NetworkPacket resp = new NetworkPacket(PacketTitle.turnPacket);
-                         resp.setData("valid", valid);
-                         c.sendTCP(resp);
-
-                         break;*/
                         case namePacket:
                             Log.debug("Adding names to server");
 
@@ -132,9 +110,6 @@ public class GameServer extends Server {
                             break;
 
                         case debugPacket:
-                            //TODO WHEN LEFT OFF, DISCONNECT IS CAUSED BY SENDING NetworkPlayer
-                            //TODO Look into custom seralizer or download
-
                             Log.warn("Debug packet received on server");
                             NetworkPlayer data = (NetworkPlayer) np.getData("data");
                             //for (String d : data) {
@@ -149,15 +124,12 @@ public class GameServer extends Server {
                     }
                 } catch (ClassCastException ignore) {
                 }
-
             }
         }));
-
     }
 
     public void getNames() {
         NetworkPacket p = new NetworkPacket(PacketTitle.requestNamesPacket);
         sendToAllTCP(p);
     }
-
 }

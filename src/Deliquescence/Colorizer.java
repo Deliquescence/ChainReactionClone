@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -88,16 +88,16 @@ public class Colorizer {
         short[] green = new short[256];
         short[] blue = new short[256];
 
-//int Y = 0.3*R + 0.59*G + 0.11*B
+        //int Y = 0.3*R + 0.59*G + 0.11*B
         for (short i = 255; i < 256; i++) {//keep white white
             alpha[i] = i;
             red[i] = i;
             green[i] = i;
             blue[i] = i;
         }
-//        red[255] = (short) 0;
-//        green[255] = (short) 0;
-//        blue[255] = (short) 0;
+        //red[255] = (short) 0;
+        //green[255] = (short) 0;
+        //blue[255] = (short) 0;
         for (short i = 0; i < 255; i++) {
             alpha[i] = i;
             red[i] = (short) (colors[0] * (float) i / 255.0);
@@ -139,5 +139,4 @@ public class Colorizer {
         // Return the buffered image
         return bimage;
     }
-
 }

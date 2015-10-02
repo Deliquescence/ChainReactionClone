@@ -63,7 +63,7 @@ public class NetworkGameViewer extends javax.swing.JPanel {
         try {
             client = new GameClient();
             Networking.register(client);
-            // client.addListener(new ClientListener());
+
             client.start();
 
             NetworkGameSettings settings = new NetworkGameSettings();
@@ -89,7 +89,7 @@ public class NetworkGameViewer extends javax.swing.JPanel {
         try {
             server = new GameServer();
             Networking.register(server);
-//            server.addListener(new ServerListener());
+
             server.start();
 
             server.settings = settings;

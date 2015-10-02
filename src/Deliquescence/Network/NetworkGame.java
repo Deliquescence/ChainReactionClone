@@ -43,81 +43,12 @@ public class NetworkGame extends Game {
     GameServer server;
     GameClient client;
 
-    //NetworkPlayer currentPlayer;
     public NetworkGame(GamePanel parent, int NumberOfPlayers, int Rows, int Columns, String[] playerNames, boolean RandomizePlayerStart, GameServer server, GameClient client) {
         super(parent, NumberOfPlayers, Rows, Columns, playerNames, RandomizePlayerStart);
         this.server = server;
         this.client = client;
-
     }
-//
-//    public synchronized boolean tryTurn(Tile t) {
-//        //System.out.println("tryTurn!!");
-//
-//        if (!inGame) {
-//            return false;
-//        }
-//
-//        /*
-//         client.addListener(new ClientListener(){
-//         @Override
-//         public void received(Connection c, Object object) {
-//         this.notify();
-//         }
-//         });
-//         */
-//        //client.sendTCP(p);
-//        //ResponseWaiter responseWaiter = new ResponseWaiter(client, PacketTitle.attemptturnPacket     NetworkPacket resp = responseWaiter.sendAndGetResponse(p);
-//        //NetworkPacket resp = (NetworkPacket) client.waitForResponse(PacketTitle.attemptTurnPacturnPacket ((boolean) resp.getData("valid") == true) {
-//        boolean valid = false;
-//        //Tile onTile = (Tile) np.getData("onTile");
-//        if (t.getOwnerID() == 0) { //Unowned, can claim
-//            valid = true;
-//        } else { //Is owned
-//            valid = t.getOwner() == this.currentPlayer;
-//        }
-//
-//        if (valid) {
-//
-//            NetworkPacket p = new NetworkPacket(PacketTitle.turnPacket);
-//            p.setData("onTile", t);
-//            p.setData("player", this.currentPlayer);
-//
-//            client.sendTCP(p);
-//
-//            doTurn(t);
-//        }
-//        return true;
-//    }
 
-//    public boolean doTurn(Tile onTile, NetworkPlayer player) {
-//        //boolean dirty = false;
-//        Tile[][] fieldPreviousTemp = new Tile[numCols][numRows];//may not need to be temp
-//        for (int fieldx = 0; fieldx < numCols; fieldx++) {
-//            for (int fieldy = 0; fieldy < numRows; fieldy++) {
-//                fieldPreviousTemp[fieldx][fieldy] = field[fieldx][fieldy].cloneTile();
-//            }
-//        }
-//
-//        onTile.setNumberOfParticles(onTile.getNumberOfParticles() + 1);//Increase particle count
-//
-//        fieldPrevious = fieldPreviousTemp;
-//
-//        inReaction = true;
-//        try {
-//            doReaction();
-//        } catch (StackOverflowError er) {
-//
-//        }
-//        inReaction = false;
-//
-//        if (!gameWon()) {
-//            incrementPlayer(currentPlayerID);//Only increment if not won
-//        }
-//
-//        repaint();
-//        return true;
-//    }
     @Override
     public void clickFunction(Tile t) {
         doNetworkTurn(t.getX(), t.getY());
@@ -129,7 +60,7 @@ public class NetworkGame extends Game {
 
         if (doTurn(t)) {
             NetworkPacket p = new NetworkPacket(PacketTitle.turnPacket);
-            //p.setData("onTile", t);
+
             p.setData("x", t.getX());
             p.setData("y", t.getY());
             p.setData("player", this.currentPlayer);
@@ -137,5 +68,4 @@ public class NetworkGame extends Game {
             client.sendTCP(p);
         }
     }
-
 }

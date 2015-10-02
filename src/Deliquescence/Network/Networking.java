@@ -34,7 +34,6 @@ import static Deliquescence.Network.PacketTitle.NetworkGameSettingsPacket;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.minlog.Log;
-import java.util.UUID;
 
 /**
  *
@@ -47,7 +46,6 @@ public class Networking {
         Log.setLogger(new Log.Logger());
 
         Kryo kryo = endPoint.getKryo();
-        // kryo.register(endPoint.getClass());
 
         kryo.register(Deliquescence.Network.PacketTitle.class);
         kryo.register(java.util.HashMap.class);
@@ -57,14 +55,9 @@ public class Networking {
         kryo.register(Deliquescence.Network.NetworkPlayer.class);
         kryo.register(Deliquescence.Tile.class);
         kryo.register(Deliquescence.Network.NetworkGame.class);
-        kryo.register(UUID.class, new UUIDSerializer());
         kryo.register(com.esotericsoftware.kryo.util.ObjectMap.class);
-        //kryo.register(NamesPacket.class);
         kryo.register(Deliquescence.Player.class);
 
-        //kryo.register(Deliquescence.Network.GameClient.class);
-        //kryo.register(Deliquescence.Network.GameServer.class);
-        ///????
         kryo.register(javax.swing.plaf.ColorUIResource.class);
         kryo.register(float[].class);
         kryo.register(java.net.Inet4Address.class);

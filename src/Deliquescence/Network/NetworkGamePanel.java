@@ -51,31 +51,11 @@ public class NetworkGamePanel extends GamePanel {
 
         this.netGame.server = server;
         this.netGame.client = client;
-
     }
 
-    /*
-     public NetworkGamePanel(GameManager gameManager, int players, int rows, int columns, String[] playerNames, boolean RNGEnabled, boolean RandomizePlayer, int timerLength, int timeAction, GameServer server, GameClient client) {
-     //this.server = server;
-     super(
-     gameManager,
-     players,
-     rows,
-     columns,
-     playerNames,
-     RNGEnabled,
-     RandomizePlayer,
-     timerLength,
-     timeAction
-     );
-
-     //this.game = new NetworkGame(this, players, rows, columns, playerNames, RandomizePlayer, server, client);
-     }*/
     @Override
     protected void makeGame(int players, int rows, int columns, String[] playerNames, boolean RandomizePlayer) {
         game = new NetworkGame(this, players, rows, columns, playerNames, RandomizePlayer, server, client);
         netGame = (NetworkGame) game;
-
     }
-
 }
