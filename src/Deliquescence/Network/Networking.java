@@ -43,7 +43,7 @@ import java.util.UUID;
 public class Networking {
 
     static public void register(EndPoint endPoint) {
-        Log.set(Log.LEVEL_TRACE);
+        Log.set(Log.LEVEL_DEBUG);
         Log.setLogger(new Log.Logger());
 
         Kryo kryo = endPoint.getKryo();

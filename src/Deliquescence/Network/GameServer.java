@@ -51,16 +51,14 @@ public class GameServer extends Server {
         this.addListener(new Listener.ThreadedListener(new Listener() {
             @Override
             public void connected(Connection c) {
-
-                Log.set(Log.LEVEL_TRACE);
-                Log.info("Server Connect");
-                Log.debug("Sending server settings");
+                Log.info("server", "Server Connect");
+                Log.debug("server", "Sending server settings");
                 sendToTCP(c.getID(), settings);
             }
 
             @Override
             public void disconnected(Connection c) {
-                Log.info("Server Disconnect");
+                Log.info("server", "Server Disconnect");
             }
 
             @Override
@@ -68,11 +66,11 @@ public class GameServer extends Server {
                 //Log.debug("Server recieved: " + object);
                 try {
                     NetworkPacket np = (NetworkPacket) object;
-                    Log.debug("Server recieved network packet with title " + np.packetTitle);
+                    Log.trace("server", "Server recieved network packet with title " + np.packetTitle);
 
                     switch (np.packetTitle) {
                         case namePacket:
-                            Log.debug("Adding names to server");
+                            Log.trace("server", "Adding names to server");
 
                             ArrayList<NetworkPlayer> thePlayers = (ArrayList<NetworkPlayer>) np.getData("names");
                             for (NetworkPlayer newPlayer : thePlayers) {
@@ -91,7 +89,7 @@ public class GameServer extends Server {
                                 }
                             }
 
-                            Log.debug("sending names to client");
+                            Log.trace("server", "sending names to client");
 
                             NetworkPacket p = new NetworkPacket(PacketTitle.namePacket);
                             p.setData("names", allPlayers);
@@ -101,7 +99,7 @@ public class GameServer extends Server {
                             break;
 
                         case turnPacket:
-                            Log.debug("Server recieved turn");
+                            Log.debug("server", "Server recieved turn");
                             for (Connection con : GameServer.this.getConnections()) {
                                 if (con.getID() != c.getID()) {
                                     sendToTCP(con.getID(), object);
@@ -110,10 +108,10 @@ public class GameServer extends Server {
                             break;
 
                         case debugPacket:
-                            Log.warn("Debug packet received on server");
+                            Log.warn("server", "Debug packet received on server");
                             NetworkPlayer data = (NetworkPlayer) np.getData("data");
                             //for (String d : data) {
-                            Log.debug(data.getDisplayName());
+                            Log.debug("server", data.getDisplayName());
                             //}
 
                             NetworkPacket p1 = new NetworkPacket(PacketTitle.debugPacket);

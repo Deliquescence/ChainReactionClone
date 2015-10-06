@@ -59,12 +59,12 @@ public class GameClient extends Client {
             public void connected(Connection c) {
                 //Log.set(Log.LEVEL_TRACE);
 
-                Log.info("Client Connect");
+                Log.info("client", "Client Connect");
             }
 
             @Override
             public void disconnected(Connection c) {
-                Log.info("Client Disconnect");
+                Log.info("client", "Client Disconnect");
             }
 
             @Override
@@ -73,34 +73,34 @@ public class GameClient extends Client {
                 try {
 
                     NetworkPacket np = (NetworkPacket) object;
-                    Log.debug("Client recieved network packet with title " + np.packetTitle);
+                    Log.trace("client", "Client recieved network packet with title " + np.packetTitle);
 
                     switch (np.packetTitle) {
                         case NetworkGameSettingsPacket:
-                            Log.debug("Setting client settings");
+                            Log.debug("client", "Setting client settings");
                             settings = (NetworkGameSettings) np;
                             break;
 
                         case GameStartPacket:
 
-                            Log.debug("Client starting game");
+                            Log.debug("client", "Client starting game");
                             wrp.startGame(GameClient.this);
 
                             gameStarted = true;
-                            Log.debug("Client started game");
+                            Log.debug("client", "Client started game");
                             break;
 
                         case requestNamesPacket:
-                            Log.debug("Client sending names");
+                            Log.trace("client", "Client sending names");
                             NetworkPacket namep = new NetworkPacket(PacketTitle.namePacket);
                             namep.setData("names", localPlayers);
 
                             sendTCP(namep);
-                            Log.debug("Client sent names");
+                            Log.trace("client", "Client sent names");
                             break;
 
                         case namePacket:
-                            Log.debug("Adding names to client");
+                            Log.trace("client", "Adding names to client");
 
                             ArrayList<NetworkPlayer> thePlayers = (ArrayList<NetworkPlayer>) np.getData("names");
 
@@ -129,7 +129,7 @@ public class GameClient extends Client {
 
                         case debugPacket:
 
-                            Log.warn("Debug packet received on client");
+                            Log.warn("client", "Debug packet received on client");
                             break;
                     }
 
@@ -140,7 +140,7 @@ public class GameClient extends Client {
     }
 
     public void sendDebugPacket() {
-        Log.warn("Client sending debug packet");
+        Log.warn("client", "Client sending debug packet");
         NetworkPacket p = new NetworkPacket(PacketTitle.debugPacket);
         //ArrayList<String> data = new ArrayList<>();
         //data.add("test");
