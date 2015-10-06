@@ -54,6 +54,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     GameClient client;
     GameServer server;
     boolean isServer;
+    private Thread nameUpdateThread;
 
     public NetworkGamePanel networkGamePanel;
 
@@ -98,6 +99,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
 
             client.wrp = this;
         } catch (Exception e) {
+            Log.error(WaitingRoomPanel.class.getName(), "", e);
         }
 
         initComponents();
@@ -105,6 +107,32 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         NamesPanel.add(n);
         this.client.localPlayers.add(new NetworkPlayer(0, "server"));
         NamesPanel.setPreferredSize(new Dimension(800, 20 * (localPlayers + 1)));
+
+        this.nameUpdateThread = createNameUpdater();
+        this.nameUpdateThread.start();
+    }
+
+    private Thread createNameUpdater() {
+        final int delayMills = 1000;
+
+        Runnable nameUpdater = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (true) {
+                        Log.trace("NameUpdater", "Name updater tick");
+                        WaitingRoomPanel.this.server.getNames();
+
+                        Thread.sleep(delayMills);
+                    }
+                } catch (InterruptedException ex) {
+                    Log.info(WaitingRoomPanel.class.getName(), "Name updater was interrupetd, probably on purpose though", ex);
+                }
+            }
+        };
+
+        Thread nameUpdaterThread = new Thread(nameUpdater, "NameUpdater");
+        return nameUpdaterThread;
     }
 
     /**
@@ -216,6 +244,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     }
 
     private void startGame(GameServer server) {
+        this.nameUpdateThread.interrupt();
         server.getNames();
 
         NetworkPacket p = new NetworkPacket(GameStartPacket);
