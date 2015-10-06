@@ -49,6 +49,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
 
     InetAddress serverAddress;
     GameManager gameList;
+    NetworkGameViewer ngv;
     int localPlayers;
     GameClient client;
     GameServer server;
@@ -59,11 +60,11 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     /**
      * Creates new form WaitingRoomPanel
      */
-    public WaitingRoomPanel(GameManager listPanel, GameClient client, int localPlayers) {
+    public WaitingRoomPanel(GameManager listPanel, GameClient client, int localPlayers, NetworkGameViewer ngv) {
         this.gameList = listPanel;
         this.localPlayers = localPlayers;
         this.client = client;
-
+        this.ngv = ngv;
         isServer = false;
         client.wrp = this;
 
@@ -76,10 +77,11 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         NamesPanel.setPreferredSize(new Dimension(800, 20 * (localPlayers + 1)));
     }
 
-    public WaitingRoomPanel(GameManager listPanel, GameServer server, int localPlayers) {
+    public WaitingRoomPanel(GameManager listPanel, GameServer server, int localPlayers, NetworkGameViewer ngv) {
         this.gameList = listPanel;
         this.localPlayers = localPlayers;
         this.server = server;
+        this.ngv = ngv;
         isServer = true;
 
         try {
@@ -200,7 +202,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
 
     public void startGame(GameClient client) {
         Log.trace("wrp.startgame");
-        NetworkGameViewer ngv = (NetworkGameViewer) this.getParent();
+        //NetworkGameViewer ngv = (NetworkGameViewer) this.getParent();
 
         String[] myPlayerNames = new String[client.settings.totalPlayers + 1];
         Log.trace("myPlayerNames: " + myPlayerNames);
@@ -210,7 +212,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
             Log.trace("myPlayerNames[" + i + "]: " + myPlayerNames[i]);
         }
         this.networkGamePanel = new NetworkGamePanel(gameList, client.settings.totalPlayers, client.settings.rows, client.settings.cols, myPlayerNames, false, false, 0, 0, server, client);
-        ngv.displayGame(this.networkGamePanel);
+        this.ngv.displayGame(this.networkGamePanel);
     }
 
     private void startGame(GameServer server) {

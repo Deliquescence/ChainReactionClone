@@ -75,7 +75,7 @@ public class NetworkGameViewer extends javax.swing.JPanel {
             e.printStackTrace();
         }
 
-        WaitingRoomPanel wrp = new WaitingRoomPanel(listPanel, client, localPlayers);
+        WaitingRoomPanel wrp = new WaitingRoomPanel(listPanel, client, localPlayers, this);
         add(wrp);
 
     }
@@ -99,7 +99,7 @@ public class NetworkGameViewer extends javax.swing.JPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        add(new WaitingRoomPanel(listPanel, server, localPlayers));
+        add(new WaitingRoomPanel(listPanel, server, localPlayers, this));
     }
 
     public void displayGame(GamePanel p) {
