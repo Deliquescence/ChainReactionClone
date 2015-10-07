@@ -39,7 +39,6 @@ import java.awt.Dimension;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.net.InetAddress;
-import java.util.ArrayList;
 import javax.swing.JTextField;
 
 /**
@@ -51,37 +50,38 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     InetAddress serverAddress;
     GameManager gameList;
     NetworkGameViewer ngv;
-    int localPlayers;
+    int numLocalPlayers;
     GameClient client;
     GameServer server;
     boolean isServer;
     private Thread nameUpdateThread;
+    NamesEditor names;
 
     public NetworkGamePanel networkGamePanel;
 
     /**
      * Creates new form WaitingRoomPanel
      */
-    public WaitingRoomPanel(GameManager listPanel, GameClient client, int localPlayers, NetworkGameViewer ngv) {
+    public WaitingRoomPanel(GameManager listPanel, GameClient client, int numLocalPlayers, NetworkGameViewer ngv) {
         this.gameList = listPanel;
-        this.localPlayers = localPlayers;
+        this.numLocalPlayers = numLocalPlayers;
         this.client = client;
         this.ngv = ngv;
         isServer = false;
         client.wrp = this;
 
         initComponents();
-        names n = new names();
-        NamesPanel.add(n);
-        //this.client.localPlayers.addAll(n.getPlayerNames());//todo add changed names
-        this.client.localPlayers.add(new Player(0, "client"));
+        names = new NamesEditor();
+        NamesPanel.add(names);
 
-        NamesPanel.setPreferredSize(new Dimension(800, 20 * (localPlayers + 1)));
+        updateLocalNames();
+
+        NamesPanel.setPreferredSize(new Dimension(800, 20 * (numLocalPlayers + 1)));
     }
 
-    public WaitingRoomPanel(GameManager listPanel, GameServer server, int localPlayers, NetworkGameViewer ngv) {
+    public WaitingRoomPanel(GameManager listPanel, GameServer server, int numLocalPlayers, NetworkGameViewer ngv) {
         this.gameList = listPanel;
-        this.localPlayers = localPlayers;
+        this.numLocalPlayers = numLocalPlayers;
         this.server = server;
         this.ngv = ngv;
         isServer = true;
@@ -104,10 +104,10 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         }
 
         initComponents();
-        names n = new names();
-        NamesPanel.add(n);
-        this.client.localPlayers.add(new Player(0, "server"));
-        NamesPanel.setPreferredSize(new Dimension(800, 20 * (localPlayers + 1)));
+        names = new NamesEditor();
+        NamesPanel.add(names);
+        updateLocalNames();
+        NamesPanel.setPreferredSize(new Dimension(800, 20 * (numLocalPlayers + 1)));
 
         this.nameUpdateThread = createNameUpdater();
         this.nameUpdateThread.start();
@@ -134,6 +134,21 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
 
         Thread nameUpdaterThread = new Thread(nameUpdater, "NameUpdater");
         return nameUpdaterThread;
+    }
+
+    public void updateLocalNames() {
+        String[] theNames = names.getPlayerNames();
+
+        if (client.localPlayers == null) { //Need to init
+            client.localPlayers = new Player[numLocalPlayers];
+            for (int i = 0; i < theNames.length; i++) {
+                client.localPlayers[i] = new Player(i, theNames[i]);
+            }
+        }
+
+        for (int i = 0; i < theNames.length; i++) {
+            client.localPlayers[i].setName(theNames[i]);
+        }
     }
 
     /**
@@ -201,7 +216,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LeaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LeaveButtonActionPerformed
-        this.gameList.removeTab(this);
+        this.gameList.removeTab(this);//todo cleaner exit of server and client
     }//GEN-LAST:event_LeaveButtonActionPerformed
 
     private void StartButtonActionPerformedWaitingRoom(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartButtonActionPerformedWaitingRoom
@@ -215,7 +230,16 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     public void startGame(GameClient client) {
         Log.trace("wrp.startgame");
 
-        this.networkGamePanel = new NetworkGamePanel(gameList, client.settings.totalPlayers, client.settings.rows, client.settings.cols, client.allPlayers.toArray(new Player[0]), false, false, 0, 0, server, client);
+        this.networkGamePanel = new NetworkGamePanel(
+                gameList,
+                client.settings.totalPlayers,
+                client.settings.rows,
+                client.settings.cols,
+                client.allPlayers.toArray(new Player[0]),
+                false, false, 0, 0,
+                server,
+                client
+        );
         this.ngv.displayGame(this.networkGamePanel);
     }
 
@@ -244,7 +268,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     //This doesnt comply with DRY, but extending panel.playerNames wasnt working
-    class names extends javax.swing.JPanel {
+    class NamesEditor extends javax.swing.JPanel {
 
         private JTextField[] playerTextFields;
         private int numPlayers;
@@ -252,9 +276,9 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         /**
          * Creates new form PlayerNames
          */
-        public names() {
+        public NamesEditor() {
             initComponents();
-            numPlayers = localPlayers;
+            numPlayers = numLocalPlayers;
             playerTextFields = new JTextField[numPlayers + 1];
             makeTextFields(null);
 
@@ -263,16 +287,15 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         /**
          * Gets the configured name of a player from its text field.
          *
-         * @param ID The id of the localPlayers name to be found
+         * @param ID The id of the numLocalPlayers name to be found
          *
          * @return The name of the player
          */
-        public ArrayList<String> getPlayerNames() {
-            ArrayList<String> out = new ArrayList<String>();
-            for (JTextField tf : playerTextFields) {
-                out.add(tf.getText());
+        public String[] getPlayerNames() {
+            String[] out = new String[numPlayers];
+            for (int i = 0; i < out.length; i++) {
+                out[i] = playerTextFields[i + 1].getText();//playerTextFields is 1 based index
             }
-            //return playerTextFields[ID].getText();
             return out;
         }
 

@@ -38,7 +38,7 @@ import java.util.UUID;
  *
  * @author Josh
  */
-public class Player {
+public class Player implements Comparable<Player> {
 
     protected int id;
     protected boolean alive;
@@ -96,6 +96,11 @@ public class Player {
                 hash +
                 Objects.hashCode(this.uuid);
         return hash;
+    }
+
+    @Override
+    public int compareTo(Player p) {
+        return this.getNumber() - p.getNumber();
     }
 
     /**

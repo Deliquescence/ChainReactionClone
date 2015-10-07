@@ -36,6 +36,8 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.TreeSet;
 
 /**
  *
@@ -45,8 +47,8 @@ public class GameClient extends Client {
 
     public NetworkGameSettings settings;
 
-    public ArrayList<Player> localPlayers = new ArrayList<>();
-    public ArrayList<Player> allPlayers = new ArrayList<>();
+    public Player[] localPlayers;
+    public TreeSet<Player> allPlayers = new TreeSet<>();
 
     public boolean gameStarted = false;
 
@@ -93,8 +95,10 @@ public class GameClient extends Client {
 
                         case requestNamesPacket:
                             Log.trace("client", "Client sending names");
+                            GameClient.this.wrp.updateLocalNames();
+
                             NetworkPacket namep = new NetworkPacket(PacketTitle.namePacket);
-                            namep.setData("names", localPlayers);
+                            namep.setData("names", new ArrayList<>(Arrays.asList(localPlayers)));
 
                             sendTCP(namep);
                             Log.trace("client", "Client sent names");
@@ -103,13 +107,16 @@ public class GameClient extends Client {
                         case namePacket:
                             Log.trace("client", "Adding names to client");
 
-                            ArrayList<Player> thePlayers = (ArrayList<Player>) np.getData("names");
+                            TreeSet<Player> thePlayers = (TreeSet<Player>) np.getData("names");
 
                             for (Player newPlayer : thePlayers) {
                                 boolean addable = true;
                                 for (Player cPlayer : allPlayers) {
                                     if (newPlayer.equals(cPlayer)) {
                                         addable = false;
+                                        //Update the player data (name)
+                                        allPlayers.remove(cPlayer);
+                                        allPlayers.add(newPlayer);
                                         break;
                                     }
                                 }

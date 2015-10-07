@@ -36,6 +36,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 /**
  *
@@ -45,7 +46,7 @@ public class GameServer extends Server {
 
     public NetworkGameSettings settings;
 
-    public ArrayList<Player> allPlayers = new ArrayList<>();
+    public TreeSet<Player> allPlayers = new TreeSet<>();
 
     public GameServer() {
         super();
@@ -79,6 +80,10 @@ public class GameServer extends Server {
                                 for (Player cPlayer : allPlayers) {
                                     if (newPlayer.equals(cPlayer)) {
                                         addable = false;
+                                        //Update the player data (name)
+                                        newPlayer.setNumber(cPlayer.getNumber());
+                                        allPlayers.remove(cPlayer);
+                                        allPlayers.add(newPlayer);
                                         break;
                                     }
                                 }

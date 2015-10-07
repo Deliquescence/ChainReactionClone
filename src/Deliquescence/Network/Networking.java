@@ -58,12 +58,13 @@ public class Networking {
         kryo.register(UUID.class, new UUIDSerializer());
         kryo.register(com.esotericsoftware.kryo.util.ObjectMap.class);
         kryo.register(Deliquescence.Player.class);
-
+        kryo.register(Deliquescence.Player[].class);
         kryo.register(javax.swing.plaf.ColorUIResource.class);
         kryo.register(float[].class);
         kryo.register(java.net.Inet4Address.class);
         kryo.register(double.class);
         kryo.register(Object[].class);
+        kryo.register(java.util.TreeSet.class);
     }
 }
 
