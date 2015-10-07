@@ -175,4 +175,14 @@ public class Player {
             return "Player " + Integer.toString(this.id);
         }
     }
+
+    public static Player[] createPlayers(String[] names) {
+        Player[] players = new Player[names.length];
+
+        for (int i = 0; i < names.length; i++) {
+            players[i] = new Player(i + 1, names[i]);//i+1 becuase this sets id and it needs to not be 0
+        }
+
+        return players;
+    }
 }
