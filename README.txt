@@ -1,5 +1,7 @@
 Chain Reaction Clone!
 
-Jars under releases as well as in /dist
+This is a clone of a game called chain reaction.
 
-The ones in /dist might be weird though.
+Basically, you place dots/atoms/particles that will eventually explode into and convert your opponents dots into your color.
+
+Jars under releases

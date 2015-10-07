@@ -4,6 +4,7 @@ build.xml
 nbproject/private/**
 nbproject/jnlp-impl.xml
 nbproject/jnlp-impl_backup.xml
+dist/
 
 errors.log
 master-application.jnlp
