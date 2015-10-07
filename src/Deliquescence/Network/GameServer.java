@@ -30,6 +30,7 @@
  */
 package Deliquescence.Network;
 
+import Deliquescence.Player;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
@@ -44,7 +45,7 @@ public class GameServer extends Server {
 
     public NetworkGameSettings settings;
 
-    public ArrayList<NetworkPlayer> allPlayers = new ArrayList<>();
+    public ArrayList<Player> allPlayers = new ArrayList<>();
 
     public GameServer() {
         super();
@@ -72,20 +73,18 @@ public class GameServer extends Server {
                         case namePacket:
                             Log.trace("server", "Adding names to server");
 
-                            ArrayList<NetworkPlayer> thePlayers = (ArrayList<NetworkPlayer>) np.getData("names");
-                            for (NetworkPlayer newPlayer : thePlayers) {
+                            ArrayList<Player> thePlayers = (ArrayList<Player>) np.getData("names");
+                            for (Player newPlayer : thePlayers) {
                                 boolean addable = true;
-                                for (NetworkPlayer cPlayer : allPlayers) {
-                                    if (newPlayer.uuid.compareTo(cPlayer.uuid) == 0) {
+                                for (Player cPlayer : allPlayers) {
+                                    if (newPlayer.equals(cPlayer)) {
                                         addable = false;
-                                        cPlayer = newPlayer;
                                         break;
                                     }
                                 }
                                 if (addable) {
                                     newPlayer.setNumber(allPlayers.size() + 1);
                                     allPlayers.add(newPlayer);
-
                                 }
                             }
 
@@ -109,10 +108,6 @@ public class GameServer extends Server {
 
                         case debugPacket:
                             Log.warn("server", "Debug packet received on server");
-                            NetworkPlayer data = (NetworkPlayer) np.getData("data");
-                            //for (String d : data) {
-                            Log.debug("server", data.getDisplayName());
-                            //}
 
                             NetworkPacket p1 = new NetworkPacket(PacketTitle.debugPacket);
                             // sendTCP(p);

@@ -32,6 +32,7 @@ package Deliquescence.Network;
 
 import Deliquescence.Panel.GameManager;
 import Deliquescence.Panel.GamePanel;
+import Deliquescence.Player;
 
 /**
  *
@@ -44,8 +45,8 @@ public class NetworkGamePanel extends GamePanel {
 
     public NetworkGame netGame;
 
-    public NetworkGamePanel(GameManager gameManager, int players, int rows, int columns, String[] playerNames, boolean RNGEnabled, boolean RandomizePlayer, int timerLength, int timeAction, GameServer server, GameClient client) {
-        super(gameManager, players, rows, columns, playerNames, RNGEnabled, RandomizePlayer, timerLength, timeAction);
+    public NetworkGamePanel(GameManager gameManager, int numPlayers, int rows, int columns, Player[] players, boolean RNGEnabled, boolean RandomizePlayer, int timerLength, int timeAction, GameServer server, GameClient client) {
+        super(gameManager, numPlayers, rows, columns, players, RNGEnabled, RandomizePlayer, timerLength, timeAction);
         this.server = server;
         this.client = client;
 
@@ -54,8 +55,8 @@ public class NetworkGamePanel extends GamePanel {
     }
 
     @Override
-    protected void makeGame(int players, int rows, int columns, String[] playerNames, boolean RandomizePlayer) {
-        game = new NetworkGame(this, players, rows, columns, playerNames, RandomizePlayer, server, client);
+    protected void makeGame(int numPlayers, int rows, int columns, Player[] players, boolean RandomizePlayer) {
+        game = new NetworkGame(this, numPlayers, rows, columns, players, RandomizePlayer, server, client);
         netGame = (NetworkGame) game;
     }
 }

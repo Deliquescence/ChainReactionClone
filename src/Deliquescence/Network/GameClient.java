@@ -30,6 +30,7 @@
  */
 package Deliquescence.Network;
 
+import Deliquescence.Player;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -44,8 +45,8 @@ public class GameClient extends Client {
 
     public NetworkGameSettings settings;
 
-    public ArrayList<NetworkPlayer> localPlayers = new ArrayList<>();
-    public ArrayList<NetworkPlayer> allPlayers = new ArrayList<>();
+    public ArrayList<Player> localPlayers = new ArrayList<>();
+    public ArrayList<Player> allPlayers = new ArrayList<>();
 
     public boolean gameStarted = false;
 
@@ -102,14 +103,13 @@ public class GameClient extends Client {
                         case namePacket:
                             Log.trace("client", "Adding names to client");
 
-                            ArrayList<NetworkPlayer> thePlayers = (ArrayList<NetworkPlayer>) np.getData("names");
+                            ArrayList<Player> thePlayers = (ArrayList<Player>) np.getData("names");
 
-                            for (NetworkPlayer newPlayer : thePlayers) {
+                            for (Player newPlayer : thePlayers) {
                                 boolean addable = true;
-                                for (NetworkPlayer cPlayer : allPlayers) {
-                                    if (newPlayer.uuid.compareTo(cPlayer.uuid) == 0) {
+                                for (Player cPlayer : allPlayers) {
+                                    if (newPlayer.equals(cPlayer)) {
                                         addable = false;
-                                        cPlayer = newPlayer;
                                         break;
                                     }
                                 }
@@ -139,13 +139,23 @@ public class GameClient extends Client {
         }));
     }
 
+    public boolean hasLocalPlayer(Player testPlayer) {
+        boolean hasPlayer = false;
+        for (Player p : localPlayers) {
+            if (p.equals(testPlayer)) {
+                hasPlayer = true;
+                break;
+            }
+        }
+        return hasPlayer;
+    }
+
     public void sendDebugPacket() {
         Log.warn("client", "Client sending debug packet");
         NetworkPacket p = new NetworkPacket(PacketTitle.debugPacket);
-        //ArrayList<String> data = new ArrayList<>();
-        //data.add("test");
+        ArrayList<String> data = new ArrayList<>();
+        data.add("test");
 
-        NetworkPlayer data = new NetworkPlayer(1);
         p.setData("data", data);
         sendTCP(p);
     }

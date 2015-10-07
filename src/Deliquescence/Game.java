@@ -70,19 +70,20 @@ public class Game extends JPanel {
      * @param NumberOfPlayers The number of players in this board.
      * @param Rows The number of rows in this game.
      * @param Columns The number of columns in this game.
-     * @param playerNames A String array containing friendly names of the players.
+     * @param players An array containing the players.
      * @param RandomizePlayerStart True to choose a random player to start.
      */
-    public Game(GamePanel parent, int NumberOfPlayers, int Rows, int Columns, String[] playerNames, boolean RandomizePlayerStart) {
+    public Game(GamePanel parent, int NumberOfPlayers, int Rows, int Columns, Player[] players, boolean RandomizePlayerStart) {
         this.board = new Board(this, Rows, Columns);
-        numPlayers = NumberOfPlayers;
+        this.numPlayers = NumberOfPlayers;
         this.gamePanel = parent;
         this.turn = 1;
 
-        players = new Player[numPlayers + 1];
-        players[0] = new Player(0);
+        //Set this.players with zeroth player
+        this.players = new Player[numPlayers + 1];
+        this.players[0] = new Player(0);
         for (int i = 1; i <= numPlayers; i++) {
-            players[i] = new Player(i, playerNames[i]);
+            this.players[i] = players[i - 1];
         }
 
         setDoubleBuffered(true);

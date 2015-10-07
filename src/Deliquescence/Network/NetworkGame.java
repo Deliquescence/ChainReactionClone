@@ -32,6 +32,7 @@ package Deliquescence.Network;
 
 import Deliquescence.Game;
 import Deliquescence.Panel.GamePanel;
+import Deliquescence.Player;
 import Deliquescence.Tile;
 
 /**
@@ -43,8 +44,8 @@ public class NetworkGame extends Game {
     GameServer server;
     GameClient client;
 
-    public NetworkGame(GamePanel parent, int NumberOfPlayers, int Rows, int Columns, String[] playerNames, boolean RandomizePlayerStart, GameServer server, GameClient client) {
-        super(parent, NumberOfPlayers, Rows, Columns, playerNames, RandomizePlayerStart);
+    public NetworkGame(GamePanel parent, int NumberOfPlayers, int Rows, int Columns, Player[] players, boolean RandomizePlayerStart, GameServer server, GameClient client) {
+        super(parent, NumberOfPlayers, Rows, Columns, players, RandomizePlayerStart);
         this.server = server;
         this.client = client;
     }
@@ -55,6 +56,10 @@ public class NetworkGame extends Game {
     }
 
     public void doNetworkTurn(int x, int y) {
+
+        if (!this.client.hasLocalPlayer(this.currentPlayer)) {
+            return; //Don't take other peoples turns
+        }
 
         Tile t = this.board.getTile(x, y);
 

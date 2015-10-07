@@ -53,7 +53,6 @@ public class Networking {
         kryo.register(java.util.ArrayList.class);
         kryo.register(NetworkPacket.class);
         kryo.register(NetworkGameSettings.class);
-        kryo.register(Deliquescence.Network.NetworkPlayer.class);
         kryo.register(Deliquescence.Tile.class);
         kryo.register(Deliquescence.Network.NetworkGame.class);
         kryo.register(UUID.class, new UUIDSerializer());

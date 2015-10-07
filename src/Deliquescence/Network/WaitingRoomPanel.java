@@ -33,6 +33,7 @@ package Deliquescence.Network;
 import Deliquescence.Config;
 import static Deliquescence.Network.PacketTitle.GameStartPacket;
 import Deliquescence.Panel.GameManager;
+import Deliquescence.Player;
 import com.esotericsoftware.minlog.Log;
 import java.awt.Dimension;
 import java.awt.event.FocusEvent;
@@ -73,7 +74,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         names n = new names();
         NamesPanel.add(n);
         //this.client.localPlayers.addAll(n.getPlayerNames());//todo add changed names
-        this.client.localPlayers.add(new NetworkPlayer(0, "client"));
+        this.client.localPlayers.add(new Player(0, "client"));
 
         NamesPanel.setPreferredSize(new Dimension(800, 20 * (localPlayers + 1)));
     }
@@ -105,7 +106,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         initComponents();
         names n = new names();
         NamesPanel.add(n);
-        this.client.localPlayers.add(new NetworkPlayer(0, "server"));
+        this.client.localPlayers.add(new Player(0, "server"));
         NamesPanel.setPreferredSize(new Dimension(800, 20 * (localPlayers + 1)));
 
         this.nameUpdateThread = createNameUpdater();
@@ -213,16 +214,8 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
 
     public void startGame(GameClient client) {
         Log.trace("wrp.startgame");
-        //NetworkGameViewer ngv = (NetworkGameViewer) this.getParent();
 
-        String[] myPlayerNames = new String[client.settings.totalPlayers + 1];
-        Log.trace("myPlayerNames: " + myPlayerNames);
-
-        for (int i = 1; i <= client.allPlayers.size(); i++) {
-            myPlayerNames[i] = client.allPlayers.get(i - 1).getName();
-            Log.trace("myPlayerNames[" + i + "]: " + myPlayerNames[i]);
-        }
-        this.networkGamePanel = new NetworkGamePanel(gameList, client.settings.totalPlayers, client.settings.rows, client.settings.cols, myPlayerNames, false, false, 0, 0, server, client);
+        this.networkGamePanel = new NetworkGamePanel(gameList, client.settings.totalPlayers, client.settings.rows, client.settings.cols, client.allPlayers.toArray(new Player[0]), false, false, 0, 0, server, client);
         this.ngv.displayGame(this.networkGamePanel);
     }
 
@@ -233,15 +226,8 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         NetworkPacket p = new NetworkPacket(GameStartPacket);
 
         server.sendToAllTCP(p);
-        NetworkGameViewer ngv = (NetworkGameViewer) this.getParent();
 
-        String[] myPlayerNames = new String[server.settings.totalPlayers + 1];
-
-        for (int i = 1; i <= server.allPlayers.size(); i++) {
-            myPlayerNames[i] = server.allPlayers.get(i - 1).getName();
-        }
-
-        this.networkGamePanel = new NetworkGamePanel(gameList, server.settings.totalPlayers, server.settings.rows, server.settings.cols, myPlayerNames, false, false, 0, 0, server, client);
+        this.networkGamePanel = new NetworkGamePanel(gameList, server.settings.totalPlayers, server.settings.rows, server.settings.cols, server.allPlayers.toArray(new Player[0]), false, false, 0, 0, server, client);
         ngv.displayGame(networkGamePanel);
     }
 

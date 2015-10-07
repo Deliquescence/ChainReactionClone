@@ -60,16 +60,16 @@ public class GamePanel extends javax.swing.JPanel {
      * Creates a new GamePanel with all the specified settings.
      *
      * @param gameManager The parent {@link GameManager} of this GamePanel.
-     * @param players The number of players in the game.
+     * @param numPlayers The number of players in the game.
      * @param rows The number of rows in the game.
      * @param columns The number of columns in the game.
-     * @param playerNames Array containing the names of the players.
+     * @param players Array containing the players.
      * @param RNGEnabled True if the RNG button will be enabled.
      * @param RandomizePlayer True to choose a random player to start.
      * @param timerLength The length of the timer (0 if disabled)
      * @param timeAction 0 for skip turn, 1 for RNG turn
      */
-    public GamePanel(GameManager gameManager, int players, int rows, int columns, String[] playerNames, boolean RNGEnabled, boolean RandomizePlayer, int timerLength, int timeAction) {
+    public GamePanel(GameManager gameManager, int numPlayers, int rows, int columns, Player[] players, boolean RNGEnabled, boolean RandomizePlayer, int timerLength, int timeAction) {
         initComponents();
         this.gameManager = gameManager;
 
@@ -98,7 +98,7 @@ public class GamePanel extends javax.swing.JPanel {
         }
         );
 
-        makeGame(players, rows, columns, playerNames, RandomizePlayer);
+        makeGame(numPlayers, rows, columns, players, RandomizePlayer);
 
         add(game);
         if (totalTime != 0) {
@@ -110,8 +110,8 @@ public class GamePanel extends javax.swing.JPanel {
         }
     }
 
-    protected void makeGame(int players, int rows, int columns, String[] playerNames, boolean RandomizePlayer) {
-        game = new Game(this, players, rows, columns, playerNames, RandomizePlayer);
+    protected void makeGame(int numPlayers, int rows, int columns, Player[] players, boolean RandomizePlayer) {
+        game = new Game(this, numPlayers, rows, columns, players, RandomizePlayer);
     }
 
     /**

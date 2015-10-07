@@ -31,6 +31,7 @@
 package Deliquescence.Panel;
 
 import Deliquescence.Config;
+import Deliquescence.Player;
 
 /**
  * A panel for setting up a local game.
@@ -102,9 +103,9 @@ public class LocalGameSetup extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void StartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartButtonActionPerformed
-        String[] names = new String[Config.getInt("MAX_PLAYERS") + 1];
+        String[] names = new String[Config.getInt("MAX_PLAYERS")];
         for (int i = 1; i <= Config.getInt("MAX_PLAYERS"); i++) {
-            names[i] = playerNames1.getPlayerName(i);
+            names[i - 1] = playerNames1.getPlayerName(i);
         }
         int timerLength;
         if (gameSettingsPanel.EnableTurnTimer()) {
@@ -117,7 +118,7 @@ public class LocalGameSetup extends javax.swing.JPanel {
             timerAction = 1;
         }
 
-        GamePanel gamePanel = new GamePanel(this.gameManager, gameSlidersPanel.getPlayers(), gameSlidersPanel.getRows(), gameSlidersPanel.getColumns(), names, gameSettingsPanel.EnableRNGButton(), gameSettingsPanel.RandomStartPlayer(), timerLength, timerAction);
+        GamePanel gamePanel = new GamePanel(this.gameManager, gameSlidersPanel.getPlayers(), gameSlidersPanel.getRows(), gameSlidersPanel.getColumns(), Player.createPlayers(names), gameSettingsPanel.EnableRNGButton(), gameSettingsPanel.RandomStartPlayer(), timerLength, timerAction);
         gameManager.addGameTab(gamePanel);
     }//GEN-LAST:event_StartButtonActionPerformed
 
