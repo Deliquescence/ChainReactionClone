@@ -30,6 +30,9 @@
  */
 package Deliquescence;
 
+import java.util.Objects;
+import java.util.UUID;
+
 /**
  * A player in the game. Contains name, ID, if the player is alive, etc.
  *
@@ -41,6 +44,8 @@ public class Player {
     protected boolean alive;
     protected String name;
 
+    public final UUID uuid;
+
     /**
      * This is needed for networking...
      * kryonet needs a no-arg constructor
@@ -49,6 +54,7 @@ public class Player {
      * ...shady af
      */
     public Player() {
+        this(0);
     }
 
     /**
@@ -70,6 +76,26 @@ public class Player {
         this.id = n;
         this.name = name;
         this.alive = false;
+
+        uuid = UUID.randomUUID();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o.getClass() != this.getClass()) {
+            return false;
+        }
+        Player p = (Player) o;
+        return p.uuid.compareTo(this.uuid) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 31 *
+                hash +
+                Objects.hashCode(this.uuid);
+        return hash;
     }
 
     /**
