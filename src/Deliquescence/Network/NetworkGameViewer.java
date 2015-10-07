@@ -69,7 +69,7 @@ public class NetworkGameViewer extends javax.swing.JPanel {
             NetworkGameSettings settings = new NetworkGameSettings();
             client.settings = settings;
 
-            client.connect(5000, "localhost", Config.getInt("NETWORK_PORT"));
+            client.connect(5000, addr.getHostAddress(), Config.getInt("NETWORK_PORT"));
 
         } catch (Exception e) {
             e.printStackTrace();
