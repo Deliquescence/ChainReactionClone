@@ -108,6 +108,15 @@ public class Player {
     }
 
     /**
+     * Sets the numeric ID of this player.
+     *
+     * @param id The numeric ID
+     */
+    public void setNumber(int id) {
+        this.id = id;
+    }
+
+    /**
      * Gets the configured color of this player.
      *
      * @return The color of this player.
