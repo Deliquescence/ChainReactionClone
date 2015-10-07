@@ -39,6 +39,7 @@ import java.awt.Dimension;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.net.InetAddress;
+import javax.swing.DefaultListModel;
 import javax.swing.JTextField;
 
 /**
@@ -149,6 +150,15 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         for (int i = 0; i < theNames.length; i++) {
             client.localPlayers[i].setName(theNames[i]);
         }
+
+        //Players display
+        int i = 0;
+        String[] displayNames = new String[this.client.allPlayers.size()];
+        for (Player p : this.client.allPlayers) {
+            displayNames[i] = p.getDisplayName();
+            i++;
+        }
+        playersjList.setListData(displayNames);
     }
 
     /**
@@ -168,7 +178,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        playersjList = new javax.swing.JList();
         LeaveButton = new javax.swing.JButton();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
@@ -199,8 +209,9 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         jLabel3.setText("Players:");
         jPanel1.add(jLabel3);
 
-        jList1.setMaximumSize(new java.awt.Dimension(0, 500));
-        jScrollPane1.setViewportView(jList1);
+        playersjList.setModel(new DefaultListModel());
+        playersjList.setMaximumSize(new java.awt.Dimension(0, 500));
+        jScrollPane1.setViewportView(playersjList);
 
         jPanel1.add(jScrollPane1);
 
@@ -262,9 +273,9 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList playersjList;
     // End of variables declaration//GEN-END:variables
 
     //This doesnt comply with DRY, but extending panel.playerNames wasnt working
