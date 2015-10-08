@@ -248,7 +248,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
                 client.settings.rows,
                 client.settings.cols,
                 client.allPlayers.toArray(new Player[0]),
-                false, false, 0, 0,
+                false, 0, 0,
                 server,
                 client
         );
@@ -288,7 +288,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
 
         server.sendToAllTCP(p);
 
-        this.networkGamePanel = new NetworkGamePanel(gameList, server.settings.totalPlayers, server.settings.rows, server.settings.cols, server.allPlayers.toArray(new Player[0]), false, false, 0, 0, server, client);
+        this.networkGamePanel = new NetworkGamePanel(gameList, server.settings.totalPlayers, server.settings.rows, server.settings.cols, server.allPlayers.toArray(new Player[0]), false, 0, 0, server, client);
         ngv.displayGame(networkGamePanel);
     }
 

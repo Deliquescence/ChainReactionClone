@@ -44,8 +44,8 @@ public class NetworkGame extends Game {
     GameServer server;
     GameClient client;
 
-    public NetworkGame(GamePanel parent, int NumberOfPlayers, int Rows, int Columns, Player[] players, boolean RandomizePlayerStart, GameServer server, GameClient client) {
-        super(parent, NumberOfPlayers, Rows, Columns, players, RandomizePlayerStart);
+    public NetworkGame(GamePanel parent, int NumberOfPlayers, int Rows, int Columns, Player[] players, GameServer server, GameClient client) {
+        super(parent, NumberOfPlayers, Rows, Columns, players, false);
         this.server = server;
         this.client = client;
     }
