@@ -60,10 +60,10 @@ public class Tile {
      * @param b The parent {@link Game} of this tile.
      * @param x The X-Coordinate of this tile.
      * @param y The Y-Coordinate of this tile.
-     * @param Owner The {@link Player} who owns this tile.
+     * @param owner The {@link Player} who owns this tile.
      */
-    public Tile(Board b, int x, int y, Player Owner) {
-        this(b, x, y, Owner, 0);
+    public Tile(Board b, int x, int y, Player owner) {
+        this(b, x, y, owner, 0);
     }
 
     /**
@@ -72,38 +72,48 @@ public class Tile {
      * @param b The parent {@link Game} of this tile.
      * @param x The X-Coordinate of this tile.
      * @param y The Y-Coordinate of this tile.
-     * @param Owner The {@link Player} who owns this tile.
-     * @param Particles How many particles this tile has.
+     * @param owner The {@link Player} who owns this tile.
+     * @param numParticles How many particles this tile has.
      */
-    public Tile(Board b, int x, int y, Player Owner, int Particles) {
+    public Tile(Board b, int x, int y, Player owner, int numParticles) {
+        this(x, y, owner, numParticles, setupCapacity(b, x, y));
+    }
+
+    /**
+     * Create a tile with the specified owner, number of particles, and capacity (rather than board)
+     *
+     * @param x The X-Coordinate of this tile.
+     * @param y The Y-Coordinate of this tile.
+     * @param owner The {@link Player} who owns this tile.
+     * @param numParticles How many particles this tile has.
+     * @param capacity The number of particles needed to explode.
+     */
+    public Tile(int x, int y, Player owner, int numParticles, int capacity) {
         this.xPos = x;
         this.yPos = y;
-        this.numParticles = Particles;
+        this.numParticles = numParticles;
 
-        if (Owner != null) {
-            this.owner = Owner;
+        if (owner != null) {
+            this.owner = owner;
         } else {
             this.owner = new Player(0);
         }
-        setupCapacity(b);
+
+        this.particleCapacity = capacity;
     }
 
-    private void setupCapacity(Board b) {
-        if (particleCapacity > 0) {
-            return;
-        }
-
-        if (xPos == 0 || xPos == b.getCols() - 1) { //On left or right edge
-            if (yPos == 0 || yPos == b.getRows() - 1) { //In a corner
-                this.particleCapacity = 2;
+    private static int setupCapacity(Board b, int x, int y) {
+        if (x == 0 || x == b.getCols() - 1) { //On left or right edge
+            if (y == 0 || y == b.getRows() - 1) { //In a corner
+                return 2;
             } else {//On left or right edge, not in corner
-                this.particleCapacity = 3;
+                return 3;
             }
-        } else if (yPos == 0 || yPos == b.getRows() - 1) {//On top or bottom edge
+        } else if (y == 0 || y == b.getRows() - 1) {//On top or bottom edge
             //If it was a corner it should have been found
-            this.particleCapacity = 3;
+            return 3;
         } else {
-            this.particleCapacity = 4;
+            return 4;
         }
     }
 
@@ -178,20 +188,6 @@ public class Tile {
      */
     public boolean canExplode() {
         return this.numParticles >= this.particleCapacity;
-    }
-
-    public Tile(int x, int y, Player Owner, int Particles, int capacity) {
-        this.xPos = x;
-        this.yPos = y;
-        this.numParticles = Particles;
-
-        if (Owner != null) {
-            this.owner = Owner;
-        } else {
-            this.owner = new Player(0);
-        }
-
-        this.particleCapacity = capacity;
     }
 
     /**
