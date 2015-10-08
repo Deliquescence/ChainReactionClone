@@ -126,11 +126,18 @@ public class GameServer extends Server {
         }));
     }
 
+    /**
+     * Get the names from the clients and update the server
+     * (Which will then send info back to the clients to stay synchronized)
+     */
     public void getNames() {
         NetworkPacket p = new NetworkPacket(PacketTitle.requestNamesPacket);
         sendToAllTCP(p);
     }
 
+    /**
+     * Send the names the server has to the clients for them to update
+     */
     public void updateNames() {
         NetworkPacket p = new NetworkPacket(PacketTitle.namePacket);
         p.setData("names", allPlayers);

@@ -190,6 +190,13 @@ public class Player implements Comparable<Player> {
         }
     }
 
+    /**
+     * Create players out of the given names. There is no zeroth player.
+     *
+     * @param names The names of the players to make
+     *
+     * @return Array of players
+     */
     public static Player[] createPlayers(String[] names) {
         Player[] players = new Player[names.length];
 

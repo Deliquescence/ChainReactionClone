@@ -67,8 +67,8 @@ public class Game extends JPanel {
     /**
      * Create a new game board.
      *
-     * @param parent The {@link GamePanel} that contains this board.
-     * @param NumberOfPlayers The number of players in this board.
+     * @param parent The {@link GamePanel} that contains this game.
+     * @param NumberOfPlayers The number of players in this game.
      * @param Rows The number of rows in this game.
      * @param Columns The number of columns in this game.
      * @param players An array containing the players.
@@ -107,7 +107,7 @@ public class Game extends JPanel {
 
             ArrayList<Player> shuffle = new ArrayList<>(Arrays.asList(players).subList(1, players.length));//Sublist because of the pesky 0th player
             java.util.Collections.shuffle(shuffle);
-            shuffle.add(0, players[0]);//Zeroth player problems 
+            shuffle.add(0, players[0]);//Zeroth player problems
             shuffle.toArray(players);
             setCurrentPlayerByID(random.nextInt(numPlayers) + 1);
         } else {

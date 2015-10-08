@@ -45,6 +45,20 @@ public class NetworkGamePanel extends GamePanel {
 
     public NetworkGame netGame;
 
+    /**
+     * Creates a new NetworkGamePanel with all the specified settings.
+     *
+     * @param gameManager The parent {@link GameManager} of this GamePanel.
+     * @param numPlayers The number of players in the game.
+     * @param rows The number of rows in the game.
+     * @param columns The number of columns in the game.
+     * @param players Array containing the players.
+     * @param RNGEnabled True if the RNG button will be enabled.
+     * @param timerLength The length of the timer (0 if disabled)
+     * @param timeAction 0 for skip turn, 1 for RNG turn
+     * @param server The {@link GameServer}
+     * @param client The {@link GameClient}
+     */
     public NetworkGamePanel(GameManager gameManager, int numPlayers, int rows, int columns, Player[] players, boolean RNGEnabled, int timerLength, int timeAction, GameServer server, GameClient client) {
         super(gameManager, numPlayers, rows, columns, players, RNGEnabled, false, timerLength, timeAction);
         this.server = server;

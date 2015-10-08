@@ -44,6 +44,17 @@ public class NetworkGame extends Game {
     GameServer server;
     GameClient client;
 
+    /**
+     * A game instance over network. Most game logic is still handled underneath by {@link  Game} except how turns are handled over network.
+     *
+     * @param parent The {@link GamePanel} that contains this board. It will probably be {@link NetworkGamePanel} though.
+     * @param NumberOfPlayers The number of players in this game.
+     * @param Rows The number of rows in this game.
+     * @param Columns The number of columns in this game.
+     * @param players An array containing the players.
+     * @param server The {@link GameServer}
+     * @param client The {@link GameClient}
+     */
     public NetworkGame(GamePanel parent, int NumberOfPlayers, int Rows, int Columns, Player[] players, GameServer server, GameClient client) {
         super(parent, NumberOfPlayers, Rows, Columns, players, false);
         this.server = server;
@@ -55,6 +66,12 @@ public class NetworkGame extends Game {
         doNetworkTurn(t.getX(), t.getY());
     }
 
+    /**
+     * Attempt to perform a network turn. Will fail if it's no one on the local clients turn or standard cases from non-network turn.
+     *
+     * @param x The x coordinate of the board to do the turn on.
+     * @param y The y coordinate of the board to do the turn on.
+     */
     public void doNetworkTurn(int x, int y) {
 
         if (!this.client.hasLocalPlayer(this.currentPlayer)) {

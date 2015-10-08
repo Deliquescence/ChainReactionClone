@@ -47,7 +47,16 @@ public class GameClient extends Client {
 
     public NetworkGameSettings settings;
 
+    /**
+     * The local players on this clients machine
+     */
     public Player[] localPlayers;
+
+    /**
+     * All the players in the game, no zeroth player
+     *
+     * Its a tree set (sorted) so that the players are in the same order between clients
+     */
     public TreeSet<Player> allPlayers = new TreeSet<>();
 
     public boolean gameStarted = false;
@@ -90,10 +99,11 @@ public class GameClient extends Client {
                             wrp.startGame(GameClient.this);
                             GameClient.this.game = wrp.networkGamePanel.netGame;
 
+                            //check if the players are randomized
                             boolean randomStartingPlayer = (boolean) np.getData("randomStart");
                             if (randomStartingPlayer) {
                                 Player startPlayer = (Player) np.getData("startPlayer");
-                                GameClient.this.game.setCurrentPlayerByID(startPlayer.getNumber());
+                                GameClient.this.game.setCurrentPlayerByID(startPlayer.getNumber());//Set the start player to was the server randomly picked
                             }
 
                             gameStarted = true;
@@ -102,7 +112,7 @@ public class GameClient extends Client {
 
                         case requestNamesPacket:
                             Log.trace("client", "Client sending names");
-                            GameClient.this.wrp.updateLocalNames();
+                            GameClient.this.wrp.updateLocalNames();//Refresh localPlayers with current values
 
                             NetworkPacket namep = new NetworkPacket(PacketTitle.namePacket);
                             namep.setData("names", new ArrayList<>(Arrays.asList(localPlayers)));
@@ -152,6 +162,13 @@ public class GameClient extends Client {
         }));
     }
 
+    /**
+     * Check if a player is one of the local players on this client.
+     *
+     * @param testPlayer The player to check
+     *
+     * @return if true if the player is local
+     */
     public boolean hasLocalPlayer(Player testPlayer) {
         boolean hasPlayer = false;
         for (Player p : localPlayers) {
