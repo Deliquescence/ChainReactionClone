@@ -88,6 +88,13 @@ public class GameClient extends Client {
 
                             Log.debug("client", "Client starting game");
                             wrp.startGame(GameClient.this);
+                            GameClient.this.game = wrp.networkGamePanel.netGame;
+
+                            boolean randomStartingPlayer = (boolean) np.getData("randomStart");
+                            if (randomStartingPlayer) {
+                                Player startPlayer = (Player) np.getData("startPlayer");
+                                GameClient.this.game.setCurrentPlayerByID(startPlayer.getNumber());
+                            }
 
                             gameStarted = true;
                             Log.debug("client", "Client started game");
@@ -128,7 +135,6 @@ public class GameClient extends Client {
                             break;
 
                         case turnPacket:
-                            GameClient.this.game = wrp.networkGamePanel.netGame;
                             game.doTurn(
                                     game.board.getTile((int) np.getData("x"), (int) np.getData("y"))
                             );

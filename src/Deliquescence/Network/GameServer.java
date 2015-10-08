@@ -130,4 +130,10 @@ public class GameServer extends Server {
         NetworkPacket p = new NetworkPacket(PacketTitle.requestNamesPacket);
         sendToAllTCP(p);
     }
+
+    public void updateNames() {
+        NetworkPacket p = new NetworkPacket(PacketTitle.namePacket);
+        p.setData("names", allPlayers);
+        sendToAllTCP(p);
+    }
 }

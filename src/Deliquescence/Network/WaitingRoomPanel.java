@@ -39,6 +39,7 @@ import java.awt.Dimension;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.net.InetAddress;
+import java.util.Random;
 import javax.swing.DefaultListModel;
 import javax.swing.JTextField;
 
@@ -259,6 +260,31 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         server.getNames();
 
         NetworkPacket p = new NetworkPacket(GameStartPacket);
+
+        //Handle random starting player
+        Random rand = new Random();
+        p.setData("randomStart", server.settings.randomStartingPlayer);
+        if (server.settings.randomStartingPlayer) {
+            Player[] plays = server.allPlayers.toArray(new Player[0]);
+
+            //Shuffle order of players
+            for (int i = plays.length - 1; i > 0; i--) {
+                int index = rand.nextInt(i + 1);
+                int a = plays[index].getNumber();
+                plays[index].setNumber(plays[i].getNumber());
+                plays[i].setNumber(a);
+            }
+
+            try {
+                server.updateNames();
+                Thread.sleep(1111); //Really need names to update properly
+            } catch (InterruptedException ex) {
+            }
+
+            //Random start
+            Player randomPlayer = plays[rand.nextInt(server.allPlayers.size())];
+            p.setData("startPlayer", randomPlayer);
+        }
 
         server.sendToAllTCP(p);
 
