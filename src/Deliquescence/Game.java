@@ -36,6 +36,7 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import javax.swing.JPanel;
 
@@ -71,9 +72,9 @@ public class Game extends JPanel {
      * @param Rows The number of rows in this game.
      * @param Columns The number of columns in this game.
      * @param players An array containing the players.
-     * @param RandomizePlayerStart True to choose a random player to start.
+     * @param RandomizePlayers True to choose a random player to start.
      */
-    public Game(GamePanel parent, int NumberOfPlayers, int Rows, int Columns, Player[] players, boolean RandomizePlayerStart) {
+    public Game(GamePanel parent, int NumberOfPlayers, int Rows, int Columns, Player[] players, boolean RandomizePlayers) {
         this.board = new Board(this, Rows, Columns);
         this.numPlayers = NumberOfPlayers;
         this.gamePanel = parent;
@@ -88,7 +89,7 @@ public class Game extends JPanel {
 
         setDoubleBuffered(true);
         addMouseListener(new MyMouseAdapter());
-        newGame(RandomizePlayerStart);
+        newGame(RandomizePlayers);
         //MyMouseAdapter will get clicks to the board
     }
 
@@ -104,6 +105,10 @@ public class Game extends JPanel {
         if (randomizePlayer) {
             Random random = new Random();
 
+            ArrayList<Player> shuffle = new ArrayList<>(Arrays.asList(players).subList(1, players.length));//Sublist because of the pesky 0th player
+            java.util.Collections.shuffle(shuffle);
+            shuffle.add(0, players[0]);//Zeroth player problems 
+            shuffle.toArray(players);
             setCurrentPlayerByID(random.nextInt(numPlayers) + 1);
         } else {
             setCurrentPlayerByID(1);
@@ -120,7 +125,7 @@ public class Game extends JPanel {
         }
     }
 
-    protected boolean setCurrentPlayerByID(int pID) {
+    public boolean setCurrentPlayerByID(int pID) {
         if (!playerIsAlive(players[pID])) {
             return false;
         }

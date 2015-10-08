@@ -25,7 +25,7 @@
     <Component class="javax.swing.JCheckBox" name="RandomizePlayerCheck">
       <Properties>
         <Property name="selected" type="boolean" value="true"/>
-        <Property name="text" type="java.lang.String" value="Random Starting Player"/>
+        <Property name="text" type="java.lang.String" value="Randomize Players"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RandomizePlayerCheckActionPerformed"/>

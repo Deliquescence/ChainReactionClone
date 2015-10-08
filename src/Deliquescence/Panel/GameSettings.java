@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2014, Deliquescence <Deliquescence1@gmail.com>
  * All rights reserved.
  *
@@ -121,7 +121,7 @@ public class GameSettings extends javax.swing.JPanel {
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
         RandomizePlayerCheck.setSelected(true);
-        RandomizePlayerCheck.setText("Random Starting Player");
+        RandomizePlayerCheck.setText("Randomize Players");
         RandomizePlayerCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RandomizePlayerCheckActionPerformed(evt);
