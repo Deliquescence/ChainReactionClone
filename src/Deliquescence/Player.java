@@ -100,7 +100,11 @@ public class Player implements Comparable<Player> {
 
     @Override
     public int compareTo(Player p) {
-        return this.getNumber() - p.getNumber();
+
+        return this.getNumber() - p.getNumber() - (Integer.MAX_VALUE / 2);
+        //compateTo cant return 0 if the objects are not equal
+        //Therefore adjust to make sure this doesnt return 0
+        //Need to adjust by more than number of players in the game
     }
 
     /**

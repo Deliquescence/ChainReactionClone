@@ -125,7 +125,7 @@ public class Game extends JPanel {
         }
     }
 
-    public boolean setCurrentPlayerByID(int pID) {
+    private boolean setCurrentPlayerByID(int pID) {
         if (!playerIsAlive(players[pID])) {
             return false;
         }
@@ -133,6 +133,15 @@ public class Game extends JPanel {
         this.currentPlayer = players[pID];
         this.gamePanel.setPlayerStatus(currentPlayer.getColor(), currentPlayer.getDisplayName() + "'s Turn");
         return true;
+    }
+
+    public boolean setCurrentPlayer(Player thePlayer) {
+        for (Player p : players) {
+            if (p.equals(thePlayer)) {
+                return setCurrentPlayerByID(p.getNumber());
+            }
+        }
+        return false;
     }
 
     protected void incrementPlayer(int curPlayerID) {

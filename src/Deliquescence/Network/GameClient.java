@@ -37,6 +37,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.TreeSet;
 
 /**
@@ -54,10 +55,8 @@ public class GameClient extends Client {
 
     /**
      * All the players in the game, no zeroth player
-     *
-     * Its a tree set (sorted) so that the players are in the same order between clients
      */
-    public TreeSet<Player> allPlayers = new TreeSet<>();
+    public ArrayList<Player> allPlayers = new ArrayList<>();
 
     public boolean gameStarted = false;
 
@@ -103,7 +102,7 @@ public class GameClient extends Client {
                             boolean randomStartingPlayer = (boolean) np.getData("randomStart");
                             if (randomStartingPlayer) {
                                 Player startPlayer = (Player) np.getData("startPlayer");
-                                GameClient.this.game.setCurrentPlayerByID(startPlayer.getNumber());//Set the start player to was the server randomly picked
+                                GameClient.this.game.setCurrentPlayer(startPlayer);//Set the start player to was the server randomly picked
                             }
 
                             gameStarted = true;
@@ -111,36 +110,19 @@ public class GameClient extends Client {
                             break;
 
                         case requestNamesPacket:
-                            Log.trace("client", "Client sending names");
                             GameClient.this.wrp.updateLocalNames();//Refresh localPlayers with current values
 
                             NetworkPacket namep = new NetworkPacket(PacketTitle.namePacket);
                             namep.setData("names", new ArrayList<>(Arrays.asList(localPlayers)));
 
                             sendTCP(namep);
-                            Log.trace("client", "Client sent names");
+                            Log.trace("client", "Client sent names to server");
                             break;
 
                         case namePacket:
-                            Log.trace("client", "Adding names to client");
+                            ArrayList<Player> thePlayers = (ArrayList<Player>) np.getData("names");
 
-                            TreeSet<Player> thePlayers = (TreeSet<Player>) np.getData("names");
-
-                            for (Player newPlayer : thePlayers) {
-                                boolean addable = true;
-                                for (Player cPlayer : allPlayers) {
-                                    if (newPlayer.equals(cPlayer)) {
-                                        addable = false;
-                                        //Update the player data (name)
-                                        allPlayers.remove(cPlayer);
-                                        allPlayers.add(newPlayer);
-                                        break;
-                                    }
-                                }
-                                if (addable) {
-                                    allPlayers.add(newPlayer);
-                                }
-                            }
+                            updateNames(thePlayers);
 
                             break;
 
@@ -160,6 +142,25 @@ public class GameClient extends Client {
                 }
             }
         }));
+    }
+
+    public synchronized void updateNames(Collection<Player> players) {
+        for (Player newPlayer : players) {
+            boolean addable = true;
+            for (Player cPlayer : allPlayers) {
+                if (newPlayer.equals(cPlayer)) {
+                    addable = false;
+                    //Update the player data (name)
+                    allPlayers.remove(cPlayer);
+                    allPlayers.add(newPlayer);
+                    break;
+                }
+            }
+            if (addable) {
+                allPlayers.add(newPlayer);
+            }
+        }
+        Log.trace("client", "Client updated names");
     }
 
     /**
@@ -188,5 +189,9 @@ public class GameClient extends Client {
 
         p.setData("data", data);
         sendTCP(p);
+    }
+
+    public Collection<Player> getAllPlayers() {
+        return new TreeSet<>(allPlayers);
     }
 }

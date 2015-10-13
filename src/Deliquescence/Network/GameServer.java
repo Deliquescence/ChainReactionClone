@@ -36,6 +36,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.TreeSet;
 
 /**
@@ -46,7 +47,7 @@ public class GameServer extends Server {
 
     public NetworkGameSettings settings;
 
-    public TreeSet<Player> allPlayers = new TreeSet<>();
+    public ArrayList<Player> allPlayers = new ArrayList<>();
 
     public GameServer() {
         super();
@@ -72,8 +73,6 @@ public class GameServer extends Server {
 
                     switch (np.packetTitle) {
                         case namePacket:
-                            Log.trace("server", "Adding names to server");
-
                             ArrayList<Player> thePlayers = (ArrayList<Player>) np.getData("names");
                             for (Player newPlayer : thePlayers) {
                                 boolean addable = true;
@@ -92,13 +91,9 @@ public class GameServer extends Server {
                                     allPlayers.add(newPlayer);
                                 }
                             }
+                            Log.trace("server", "Server updated internal names");
 
-                            Log.trace("server", "sending names to client");
-
-                            NetworkPacket p = new NetworkPacket(PacketTitle.namePacket);
-                            p.setData("names", allPlayers);
-                            //p.setData("names", (ArrayList<NetworkPlayer>) np.getData("names"));
-                            c.sendTCP(p);
+                            updateNames();
 
                             break;
 
@@ -130,7 +125,7 @@ public class GameServer extends Server {
      * Get the names from the clients and update the server
      * (Which will then send info back to the clients to stay synchronized)
      */
-    public void getNames() {
+    public synchronized void getNames() {
         NetworkPacket p = new NetworkPacket(PacketTitle.requestNamesPacket);
         sendToAllTCP(p);
     }
@@ -138,9 +133,14 @@ public class GameServer extends Server {
     /**
      * Send the names the server has to the clients for them to update
      */
-    public void updateNames() {
+    public synchronized void updateNames() {
+        Log.debug("server", "Server pushing names to clients");
         NetworkPacket p = new NetworkPacket(PacketTitle.namePacket);
         p.setData("names", allPlayers);
         sendToAllTCP(p);
+    }
+
+    public Collection<Player> getAllPlayers() {
+        return new TreeSet<>(allPlayers);
     }
 }

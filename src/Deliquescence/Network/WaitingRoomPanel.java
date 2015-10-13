@@ -155,7 +155,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         //Players display
         int i = 0;
         String[] displayNames = new String[this.client.allPlayers.size()];
-        for (Player p : this.client.allPlayers) {
+        for (Player p : this.client.getAllPlayers()) {
             displayNames[i] = p.getDisplayName();
             i++;
         }
@@ -247,7 +247,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
                 client.settings.totalPlayers,
                 client.settings.rows,
                 client.settings.cols,
-                client.allPlayers.toArray(new Player[0]),
+                client.getAllPlayers().toArray(new Player[0]),
                 false, 0, 0,
                 server,
                 client
@@ -259,13 +259,18 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         this.nameUpdateThread.interrupt();
         server.getNames();
 
+        try {
+            Thread.sleep(1111); //Really need names to update properly
+        } catch (InterruptedException ex) {
+        }
+
         NetworkPacket p = new NetworkPacket(GameStartPacket);
 
         //Handle random starting player
         Random rand = new Random();
         p.setData("randomStart", server.settings.randomStartingPlayer);
         if (server.settings.randomStartingPlayer) {
-            Player[] plays = server.allPlayers.toArray(new Player[0]);
+            Player[] plays = server.getAllPlayers().toArray(new Player[0]);
 
             //Shuffle order of players
             for (int i = plays.length - 1; i > 0; i--) {
@@ -284,11 +289,15 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
             //Random start
             Player randomPlayer = plays[rand.nextInt(server.allPlayers.size())];
             p.setData("startPlayer", randomPlayer);
+            try {
+                Thread.sleep(1111); //Really need names to update properly
+            } catch (InterruptedException ex) {
+            }
         }
 
         server.sendToAllTCP(p);
 
-        this.networkGamePanel = new NetworkGamePanel(gameList, server.settings.totalPlayers, server.settings.rows, server.settings.cols, server.allPlayers.toArray(new Player[0]), false, 0, 0, server, client);
+        this.networkGamePanel = new NetworkGamePanel(gameList, server.settings.totalPlayers, server.settings.rows, server.settings.cols, server.getAllPlayers().toArray(new Player[0]), false, 0, 0, server, client);
         ngv.displayGame(networkGamePanel);
     }
 
