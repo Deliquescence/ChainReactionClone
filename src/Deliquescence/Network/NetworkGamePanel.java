@@ -66,6 +66,9 @@ public class NetworkGamePanel extends GamePanel {
 
         this.netGame.server = server;
         this.netGame.client = client;
+
+        this.UndoButton.setEnabled(false);
+        this.UndoButton.setVisible(false);
     }
 
     @Override

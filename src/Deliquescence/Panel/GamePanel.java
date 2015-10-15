@@ -48,13 +48,13 @@ import javax.swing.Timer;
  */
 public class GamePanel extends javax.swing.JPanel {
 
-    GameManager gameManager;
+    protected GameManager gameManager;
     public Game game;
-    Timer timer;
+    protected Timer timer;
 
-    int totalTime;
-    int currentTime;
-    final int timerAction;
+    protected int totalTime;
+    protected int currentTime;
+    protected final int timerAction;
 
     /**
      * Creates a new GamePanel with all the specified settings.
@@ -287,6 +287,6 @@ public class GamePanel extends javax.swing.JPanel {
     private javax.swing.JLabel TimerCounter;
     private javax.swing.JLabel TimerLabel1;
     private javax.swing.JPanel TimerPanel;
-    private javax.swing.JButton UndoButton;
+    protected javax.swing.JButton UndoButton;
     // End of variables declaration//GEN-END:variables
 }
