@@ -31,6 +31,9 @@
 package Deliquescence.Network;
 
 import Deliquescence.Panel.GameManager;
+import com.esotericsoftware.minlog.Log;
+import java.io.IOException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -186,7 +189,12 @@ public class NetworkSetupPanel extends javax.swing.JPanel {
         settings.timerLength = gameSettings1.TimerLength();
         settings.turnTimerEnabled = gameSettings1.EnableTurnTimer();
 
-        gameListPanel.addTab("Hosted Game", new NetworkGameViewer(gameListPanel, settings, LocalPlayersSlider.getValue()), false, true);
+        try {
+            gameListPanel.addTab("Hosted Game", new NetworkGameViewer(gameListPanel, settings, LocalPlayersSlider.getValue()), false, true);
+        } catch (IOException ex) {
+            Log.error("Start server error", ex);
+            JOptionPane.showMessageDialog(null, "Error trying to start server", "Error on server start", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_StartButtonActionPerformed
 
     /* private void createServer() {

@@ -33,9 +33,11 @@ package Deliquescence.Network;
 import Deliquescence.Config;
 import Deliquescence.Panel.GameManager;
 import Deliquescence.Refreshable;
+import com.esotericsoftware.minlog.Log;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 //import org.apache.commons.net.util.SubnetUtils;
 //import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
 
@@ -182,7 +184,8 @@ public class BrowserPanel extends javax.swing.JPanel implements Refreshable {
             gameListPanel.addTab(addr.getHostName(), new NetworkGameViewer(gameListPanel, addr, localPlayers), false, true);
             gameManager.switchToTabByTitle("Games");
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.error("joinGame error", e);
+            JOptionPane.showMessageDialog(null, "Error trying to connect to server", "Error on client connect", JOptionPane.WARNING_MESSAGE);
         }
     }
 

@@ -34,6 +34,7 @@ import Deliquescence.Config;
 import Deliquescence.Panel.GameManager;
 import Deliquescence.Panel.GamePanel;
 import com.esotericsoftware.minlog.Log;
+import java.io.IOException;
 import java.net.InetAddress;
 import javax.swing.BoxLayout;
 
@@ -50,55 +51,61 @@ public class NetworkGameViewer extends javax.swing.JPanel {
     int localPlayers;
 
     /**
+     * Client version
      * Contains waiting room panel, until wait is done and game panel is displayed.
      *
-     * Creates new form NetworkGameViewer
+     * @param listPanel Parent game manager of this
+     * @param addr The address client will try and connect to after calling tryClientConnect()
+     * @param localPlayers number of local players
+     *
+     * @throws java.io.IOException Client connect errors
      */
-    public NetworkGameViewer(GameManager listPanel, InetAddress addr, int localPlayers) {
+    public NetworkGameViewer(GameManager listPanel, InetAddress addr, int localPlayers) throws IOException {
         this.gameList = listPanel;
         this.localPlayers = localPlayers;
         initComponents();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        try {
-            client = new GameClient();
-            Networking.register(client);
+        client = new GameClient();
+        Networking.register(client);
 
-            client.start();
+        client.start();
 
-            NetworkGameSettings settings = new NetworkGameSettings();
-            client.settings = settings;
+        NetworkGameSettings settings = new NetworkGameSettings();
+        client.settings = settings;
 
-            client.connect(5000, addr.getHostAddress(), Config.getInt("NETWORK_PORT"));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        client.connect(5000, addr.getHostAddress(), Config.getInt("NETWORK_PORT"));
 
         WaitingRoomPanel wrp = new WaitingRoomPanel(listPanel, client, localPlayers, this);
         add(wrp);
 
     }
 
-    public NetworkGameViewer(GameManager listPanel, NetworkGameSettings settings, int localPlayers) {
+    /**
+     * Server version
+     * Contains waiting room panel, until wait is done and game panel is displayed.
+     *
+     * @param listPanel Parent game manager of this
+     * @param settings The initial game settings for the server
+     * @param localPlayers number of local players
+     *
+     * @throws IOException Server bind errors
+     */
+    public NetworkGameViewer(GameManager listPanel, NetworkGameSettings settings, int localPlayers) throws IOException {
         this.gameList = listPanel;
         this.localPlayers = localPlayers;
         initComponents();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        try {
-            server = new GameServer();
-            Networking.register(server);
+        server = new GameServer();
+        Networking.register(server);
 
-            server.start();
+        server.start();
 
-            server.settings = settings;
+        server.settings = settings;
 
-            server.bind(Config.getInt("NETWORK_PORT"));
+        server.bind(Config.getInt("NETWORK_PORT"));
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         add(new WaitingRoomPanel(listPanel, server, localPlayers, this));
     }
 
