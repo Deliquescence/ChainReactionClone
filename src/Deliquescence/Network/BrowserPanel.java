@@ -185,7 +185,7 @@ public class BrowserPanel extends javax.swing.JPanel implements Refreshable {
             gameManager.switchToTabByTitle("Games");
         } catch (Exception e) {
             Log.error("joinGame error", e);
-            JOptionPane.showMessageDialog(null, "Error trying to connect to server", "Error on client connect", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error trying to connect to server", "Error on client connect", JOptionPane.ERROR_MESSAGE);
         }
     }
 

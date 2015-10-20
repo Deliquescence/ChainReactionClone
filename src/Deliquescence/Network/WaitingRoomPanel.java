@@ -41,6 +41,7 @@ import java.awt.event.FocusListener;
 import java.net.InetAddress;
 import java.util.Random;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -235,7 +236,8 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         if (isServer) {
             startGame(server);
         } else {
-            Log.warn("Only server can start");
+            Log.info("Only server can start");
+            JOptionPane.showMessageDialog(null, "Only server can start", "Silly", JOptionPane.INFORMATION_MESSAGE);//Todo ready up
         }
     }//GEN-LAST:event_StartButtonActionPerformedWaitingRoom
 

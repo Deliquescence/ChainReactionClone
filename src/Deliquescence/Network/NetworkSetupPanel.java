@@ -131,7 +131,7 @@ public class NetworkSetupPanel extends javax.swing.JPanel {
             gameListPanel.addTab("Hosted Game", new NetworkGameViewer(gameListPanel, settings, LocalPlayersSlider.getValue()), false, true);
         } catch (IOException ex) {
             Log.error("Start server error", ex);
-            JOptionPane.showMessageDialog(null, "Error trying to start server", "Error on server start", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error trying to start server", "Error on server start", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_StartButtonActionPerformed
 
