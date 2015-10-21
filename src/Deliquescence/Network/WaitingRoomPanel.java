@@ -274,8 +274,8 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
 
         //Handle random starting player
         Random rand = new Random();
-        p.setData("randomStart", server.settings.randomStartingPlayer);
-        if (server.settings.randomStartingPlayer) {
+        p.setData("randomStart", server.getSettings().randomStartingPlayer);
+        if (server.getSettings().randomStartingPlayer) {
             Player[] plays = server.getAllPlayers().toArray(new Player[0]);
 
             //Shuffle order of players
@@ -303,7 +303,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
 
         server.sendToAllTCP(p);
 
-        this.networkGamePanel = new NetworkGamePanel(gameList, server.settings.totalPlayers, server.settings.rows, server.settings.cols, server.getAllPlayers().toArray(new Player[0]), false, 0, 0, server, client);
+        this.networkGamePanel = new NetworkGamePanel(gameList, server.getSettings().totalPlayers, server.getSettings().rows, server.getSettings().cols, server.getAllPlayers().toArray(new Player[0]), false, 0, 0, server, client);
         ngv.displayGame(networkGamePanel);
     }
 

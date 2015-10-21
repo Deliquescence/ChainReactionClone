@@ -102,7 +102,7 @@ public class NetworkGameViewer extends javax.swing.JPanel {
 
         server.start();
 
-        server.settings = settings;
+        server.setSettings(settings);
 
         server.bind(Config.getInt("NETWORK_PORT"));
 

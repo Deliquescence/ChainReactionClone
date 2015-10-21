@@ -45,7 +45,7 @@ import java.util.TreeSet;
  */
 public class GameServer extends Server {
 
-    public NetworkGameSettings settings;
+    private NetworkGameSettings settings;
 
     public ArrayList<Player> allPlayers = new ArrayList<>();
 
@@ -119,6 +119,25 @@ public class GameServer extends Server {
                 }
             }
         }));
+    }
+
+    /**
+     * Get the settings of the server
+     *
+     * @return the server's settings
+     */
+    public synchronized NetworkGameSettings getSettings() {
+        return this.settings;
+    }
+
+    /**
+     * Set the settings of the server
+     *
+     * @param settings The new settings
+     */
+    public synchronized void setSettings(NetworkGameSettings settings) {
+        this.settings = settings;
+        sendToAllTCP(this.settings);
     }
 
     /**
