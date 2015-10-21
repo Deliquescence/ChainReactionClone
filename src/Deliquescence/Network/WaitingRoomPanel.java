@@ -40,6 +40,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.net.InetAddress;
 import java.util.Random;
+import java.util.concurrent.Callable;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -112,31 +113,15 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         updateLocalNames();
         NamesPanel.setPreferredSize(new Dimension(800, 20 * (numLocalPlayers + 1)));
 
-        this.nameUpdateThread = createNameUpdater();
-        this.nameUpdateThread.start();
-    }
+        this.nameUpdateThread = Updater.createUpdater("names", new Callable() {
 
-    private Thread createNameUpdater() {
-        final int delayMills = 1000;
-
-        Runnable nameUpdater = new Runnable() {
             @Override
-            public void run() {
-                try {
-                    while (true) {
-                        Log.trace("NameUpdater", "Name updater tick");
-                        WaitingRoomPanel.this.server.getNames();
-
-                        Thread.sleep(delayMills);
-                    }
-                } catch (InterruptedException ex) {
-                    Log.info(WaitingRoomPanel.class.getName(), "Name updater was interrupetd, probably on purpose though", ex);
-                }
+            public Object call() throws Exception {
+                WaitingRoomPanel.this.server.getNames();
+                return 0;
             }
-        };
-
-        Thread nameUpdaterThread = new Thread(nameUpdater, "NameUpdater");
-        return nameUpdaterThread;
+        });
+        this.nameUpdateThread.start();
     }
 
     public void updateLocalNames() {
