@@ -35,6 +35,8 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -63,12 +65,20 @@ public class GameClient extends Client {
     public WaitingRoomPanel wrp;
     public NetworkGame game;
 
+    public InetAddress serverAddress;
+
     public GameClient() {
         super();
+
         this.addListener(new Listener.ThreadedListener(new Listener() {
             @Override
             public void connected(Connection c) {
                 //Log.set(Log.LEVEL_TRACE);
+
+                try {
+                    serverAddress = InetAddress.getByName(GameClient.this.getRemoteAddressTCP().getHostString());
+                } catch (UnknownHostException ex) {
+                }
 
                 Log.info("client", "Client Connect");
             }

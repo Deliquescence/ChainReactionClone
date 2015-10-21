@@ -26,17 +26,20 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="StartButtonActionPerformedWaitingRoom"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="editSettingsButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Edit Settings (Host Only) (TODO)"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editSettingsButtonActionPerformed"/>
+      </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel1">
+    <Component class="javax.swing.JLabel" name="serverAddressLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Server Address:"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jLabel1.setText(&quot;Server Address: &quot; + serverAddress);&#xd;&#xa;"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="serverAddressLabel.setText(&quot;Server Address: &quot; + serverAddress);&#xd;&#xa;"/>
       </AuxValues>
     </Component>
     <Container class="javax.swing.JPanel" name="NamesPanel">
@@ -56,13 +59,13 @@
         <Property name="axis" type="int" value="1"/>
       </Layout>
     </Container>
-    <Container class="javax.swing.JPanel" name="jPanel1">
+    <Container class="javax.swing.JPanel" name="playersListPanel">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout">
         <Property name="axis" type="int" value="1"/>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="jLabel3">
+        <Component class="javax.swing.JLabel" name="playersListLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value="Players:"/>
           </Properties>

@@ -39,6 +39,7 @@ import java.awt.Dimension;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import javax.swing.DefaultListModel;
@@ -67,14 +68,17 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
      * Creates new form WaitingRoomPanel
      */
     public WaitingRoomPanel(GameManager listPanel, GameClient client, int numLocalPlayers, NetworkGameViewer ngv) {
+        initComponents();
+
         this.gameList = listPanel;
         this.numLocalPlayers = numLocalPlayers;
         this.client = client;
+        this.serverAddress = client.serverAddress;
+        serverAddressLabel.setText("Server Address: " + serverAddress.getHostName());
         this.ngv = ngv;
         isServer = false;
         client.wrp = this;
 
-        initComponents();
         names = new NamesEditor();
         NamesPanel.add(names);
 
@@ -84,11 +88,18 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     }
 
     public WaitingRoomPanel(GameManager listPanel, GameServer server, int numLocalPlayers, NetworkGameViewer ngv) {
+        initComponents();
+
         this.gameList = listPanel;
         this.numLocalPlayers = numLocalPlayers;
         this.server = server;
         this.ngv = ngv;
         isServer = true;
+        try {
+            this.serverAddress = InetAddress.getLocalHost();//Since is server
+            serverAddressLabel.setText("Server Address: " + this.serverAddress.getHostName());
+        } catch (UnknownHostException ex) {
+        }
 
         try {
             this.client = new GameClient();
@@ -107,7 +118,6 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
             Log.error(WaitingRoomPanel.class.getName(), "", e);
         }
 
-        initComponents();
         names = new NamesEditor();
         NamesPanel.add(names);
         updateLocalNames();
@@ -159,11 +169,11 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         StartButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        editSettingsButton = new javax.swing.JButton();
+        serverAddressLabel = new javax.swing.JLabel();
         NamesPanel = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        playersListPanel = new javax.swing.JPanel();
+        playersListLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         playersjList = new javax.swing.JList();
         LeaveButton = new javax.swing.JButton();
@@ -178,12 +188,17 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         });
         add(StartButton);
 
-        jButton1.setText("Edit Settings (Host Only) (TODO)");
-        add(jButton1);
+        editSettingsButton.setText("Edit Settings (Host Only) (TODO)");
+        editSettingsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editSettingsButtonActionPerformed(evt);
+            }
+        });
+        add(editSettingsButton);
 
-        jLabel1.setText("Server Address:");
-        jLabel1.setText("Server Address: " + serverAddress);
-        add(jLabel1);
+        serverAddressLabel.setText("Server Address:");
+        serverAddressLabel.setText("Server Address: " + serverAddress);
+        add(serverAddressLabel);
 
         NamesPanel.setMaximumSize(new java.awt.Dimension(999999, 2000));
         NamesPanel.setMinimumSize(new java.awt.Dimension(200, 25));
@@ -191,18 +206,18 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         NamesPanel.setLayout(new javax.swing.BoxLayout(NamesPanel, javax.swing.BoxLayout.Y_AXIS));
         add(NamesPanel);
 
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
+        playersListPanel.setLayout(new javax.swing.BoxLayout(playersListPanel, javax.swing.BoxLayout.Y_AXIS));
 
-        jLabel3.setText("Players:");
-        jPanel1.add(jLabel3);
+        playersListLabel.setText("Players:");
+        playersListPanel.add(playersListLabel);
 
         playersjList.setModel(new DefaultListModel());
         playersjList.setMaximumSize(new java.awt.Dimension(0, 500));
         jScrollPane1.setViewportView(playersjList);
 
-        jPanel1.add(jScrollPane1);
+        playersListPanel.add(jScrollPane1);
 
-        add(jPanel1);
+        add(playersListPanel);
 
         LeaveButton.setText("Exit");
         LeaveButton.addActionListener(new java.awt.event.ActionListener() {
@@ -225,6 +240,10 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Only server can start", "Silly", JOptionPane.INFORMATION_MESSAGE);//Todo ready up
         }
     }//GEN-LAST:event_StartButtonActionPerformedWaitingRoom
+
+    private void editSettingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editSettingsButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editSettingsButtonActionPerformed
 
     public void startGame(GameClient client) {
         Log.trace("wrp.startgame");
@@ -292,12 +311,12 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     private javax.swing.JButton LeaveButton;
     private javax.swing.JPanel NamesPanel;
     private javax.swing.JButton StartButton;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton editSettingsButton;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel playersListLabel;
+    private javax.swing.JPanel playersListPanel;
     private javax.swing.JList playersjList;
+    private javax.swing.JLabel serverAddressLabel;
     // End of variables declaration//GEN-END:variables
 
     //This doesnt comply with DRY, but extending panel.playerNames wasnt working
