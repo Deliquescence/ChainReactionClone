@@ -250,7 +250,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
                 client.settings.rows,
                 client.settings.cols,
                 client.getAllPlayers().toArray(new Player[0]),
-                false, 0, 0,
+                client.settings.RNGEnabled, 0, 0,
                 server,
                 client
         );

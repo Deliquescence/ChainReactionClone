@@ -61,6 +61,33 @@ public class NetworkGame extends Game {
         this.client = client;
     }
 
+    /**
+     * Determine if a player is on the local game
+     *
+     * @param p The Player to check
+     *
+     * @return true if the payer is local
+     */
+    public boolean playerIsLocal(Player p) {
+        return this.client.hasLocalPlayer(this.currentPlayer);
+    }
+
+    @Override
+    public void RNGTurn() {
+        if (!playerIsLocal(this.currentPlayer)) {
+            return; //Don't take other peoples turns
+        }
+        if (!inGame || inReaction) {
+            return;
+        }
+        int x, y;
+        do {//Try random tiles until works
+            Tile t = board.getRandomTile();
+            x = t.getX();
+            y = t.getY();
+        } while (!doNetworkTurn(x, y));
+    }
+
     @Override
     public void clickFunction(Tile t) {
         doNetworkTurn(t.getX(), t.getY());
@@ -68,14 +95,17 @@ public class NetworkGame extends Game {
 
     /**
      * Attempt to perform a network turn. Will fail if it's no one on the local clients turn or standard cases from non-network turn.
+     * X and Y instead of a {@link Tile} because of network serialization
      *
      * @param x The x coordinate of the board to do the turn on.
      * @param y The y coordinate of the board to do the turn on.
+     *
+     * @return if the turn was successful
      */
-    public void doNetworkTurn(int x, int y) {
+    public boolean doNetworkTurn(int x, int y) {
 
-        if (!this.client.hasLocalPlayer(this.currentPlayer)) {
-            return; //Don't take other peoples turns
+        if (!playerIsLocal(this.currentPlayer)) {
+            return false; //Don't take other peoples turns
         }
 
         Tile t = this.board.getTile(x, y);
@@ -88,6 +118,9 @@ public class NetworkGame extends Game {
             p.setData("player", this.currentPlayer);
 
             client.sendTCP(p);
+            return true;
+        } else {
+            return false;
         }
     }
 }
