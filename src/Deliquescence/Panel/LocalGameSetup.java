@@ -76,9 +76,11 @@ public class LocalGameSetup extends javax.swing.JPanel {
         SplitPane.setMinimumSize(new java.awt.Dimension(100, 202));
         SplitPane.setPreferredSize(new java.awt.Dimension(100, 102));
 
-        NumbersPanel.setMinimumSize(new java.awt.Dimension(600, 400));
+        NumbersPanel.setMinimumSize(new java.awt.Dimension(200, 400));
         NumbersPanel.setPreferredSize(new java.awt.Dimension(1000, 600));
         NumbersPanel.setLayout(new javax.swing.BoxLayout(NumbersPanel, javax.swing.BoxLayout.Y_AXIS));
+
+        gameSlidersPanel.setMinimumSize(new java.awt.Dimension(50, 150));
         NumbersPanel.add(gameSlidersPanel);
 
         StartButton.setText("Start");

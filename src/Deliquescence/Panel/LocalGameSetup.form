@@ -38,7 +38,7 @@
         <Container class="javax.swing.JPanel" name="NumbersPanel">
           <Properties>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[600, 400]"/>
+              <Dimension value="[200, 400]"/>
             </Property>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[1000, 600]"/>
@@ -55,6 +55,11 @@
           </Layout>
           <SubComponents>
             <Component class="Deliquescence.Panel.GameSliders" name="gameSlidersPanel">
+              <Properties>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[50, 150]"/>
+                </Property>
+              </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="StartButton">
               <Properties>

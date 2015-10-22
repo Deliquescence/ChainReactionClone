@@ -100,6 +100,8 @@ public class Config {
     private static Properties setDefaultProperties(Properties p) {
         p.setProperty("FRAME_WIDTH", "800");
         p.setProperty("FRAME_HEIGHT", "800");
+        p.setProperty("MIN_WIDTH", "500");
+        p.setProperty("MIN_HEIGHT", "500");
         p.setProperty("MAX_PLAYERS", "8");
         p.setProperty("CELL_SIZE", "50");//Size of board tiles
         p.setProperty("MAX_COLUMNS", "15");

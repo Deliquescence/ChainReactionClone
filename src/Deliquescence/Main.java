@@ -36,6 +36,7 @@ import Deliquescence.Panel.ColorConfigPanel;
 import Deliquescence.Panel.ConfigPanel;
 import Deliquescence.Panel.GameManager;
 import Deliquescence.Panel.LocalGameSetup;
+import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
@@ -54,6 +55,7 @@ public class Main extends JFrame implements Refreshable {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(Config.getInt("FRAME_WIDTH"), Config.getInt("FRAME_HEIGHT"));
+        setMinimumSize(new Dimension(Config.getInt("MIN_WIDTH"), Config.getInt("MIN_HEIGHT")));
 
         setTitle(Config.getString("TITLE"));
 
@@ -61,7 +63,7 @@ public class Main extends JFrame implements Refreshable {
 
         GameManager localGamesPanel = new GameManager();
 
-        GameManager networkGamesPanel = new GameManager();//Todo networking
+        GameManager networkGamesPanel = new GameManager();
         GameManager networkGamesListPanel = new GameManager();//List of network games; tab in networkGamesPanel
 
         ConfigPanel configPanel = new ConfigPanel();

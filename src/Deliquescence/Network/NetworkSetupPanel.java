@@ -142,8 +142,16 @@ public class NetworkSetupPanel extends javax.swing.JPanel {
         RightPanel = new javax.swing.JPanel();
         gameSettings1 = new Deliquescence.Panel.GameSettings();
 
+        setMinimumSize(new java.awt.Dimension(100, 102));
+        setPreferredSize(new java.awt.Dimension(100, 102));
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
 
+        jSplitPane1.setDividerLocation(550);
+        jSplitPane1.setMinimumSize(new java.awt.Dimension(100, 202));
+        jSplitPane1.setPreferredSize(new java.awt.Dimension(100, 102));
+
+        LeftPanel.setMinimumSize(new java.awt.Dimension(200, 400));
+        LeftPanel.setPreferredSize(new java.awt.Dimension(1000, 600));
         LeftPanel.setLayout(new javax.swing.BoxLayout(LeftPanel, javax.swing.BoxLayout.Y_AXIS));
 
         jLabel1.setLabelFor(LocalPlayersSlider);
@@ -172,7 +180,11 @@ public class NetworkSetupPanel extends javax.swing.JPanel {
 
         jSplitPane1.setLeftComponent(LeftPanel);
 
+        RightPanel.setMaximumSize(new java.awt.Dimension(175, 60));
+        RightPanel.setMinimumSize(new java.awt.Dimension(175, 60));
         RightPanel.setLayout(new java.awt.GridLayout(1, 0));
+
+        gameSettings1.setMaximumSize(new java.awt.Dimension(175, 60));
         RightPanel.add(gameSettings1);
 
         jSplitPane1.setRightComponent(RightPanel);
