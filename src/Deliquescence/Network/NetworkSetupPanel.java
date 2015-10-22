@@ -32,7 +32,10 @@ package Deliquescence.Network;
 
 import Deliquescence.Panel.GameManager;
 import com.esotericsoftware.minlog.Log;
+import java.awt.Dimension;
 import java.io.IOException;
+import java.util.concurrent.Callable;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -44,13 +47,79 @@ public class NetworkSetupPanel extends javax.swing.JPanel {
     GameManager gameManager;
     GameManager gameListPanel;
 
+    private final Callable doneButtonAction;
+
     /**
-     * Creates new form NetworkSetupPanel
+     * Creates new form NetworkSetupPanel in tabbed form
+     *
+     * @param gameManager The parent game manager for this when used in tab form
+     * @param gameList The game manager to add the new game to
      */
     public NetworkSetupPanel(GameManager gameManager, GameManager gameList) {
         this.gameManager = gameManager;
         this.gameListPanel = gameList;
         initComponents();
+
+        doneButtonAction = new Callable() {
+
+            @Override
+            public Boolean call() throws Exception {
+                GameManager man = (GameManager) NetworkSetupPanel.this.getParent().getParent();//Sketchy
+                man.switchToTabByTitle("Games");
+
+                NetworkGameSettings settings = getCurrentSettings();
+
+                try {
+                    gameListPanel.addTab("Hosted Game", new NetworkGameViewer(gameListPanel, settings, LocalPlayersSlider.getValue()), false, true);
+                } catch (IOException ex) {
+                    Log.error("Start server error", ex);
+                    JOptionPane.showMessageDialog(null, "Error trying to start server", "Error on server start", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+                return true;
+            }
+        };
+    }
+
+    public NetworkSetupPanel(final JFrame parent, final GameServer server) {
+        initComponents();
+        this.doneButton.setText("Done");
+
+        doneButtonAction = new Callable() {
+
+            @Override
+            public Boolean call() throws Exception {
+                server.setSettings(NetworkSetupPanel.this.getCurrentSettings());
+                parent.setVisible(false);
+                parent.dispose();
+                return true;
+            }
+        };
+    }
+
+    public NetworkGameSettings getCurrentSettings() {
+        NetworkGameSettings settings = new NetworkGameSettings();
+
+        settings.RNGEnabled = gameSettings1.EnableRNGButton();
+        settings.cols = gameSliders1.getColumns();
+        settings.totalPlayers = gameSliders1.getPlayers();
+        settings.randomStartingPlayer = gameSettings1.RandomStartPlayer();
+        settings.rows = gameSliders1.getRows();
+
+        //settings.timerAction = TOdO
+        settings.timerLength = gameSettings1.TimerLength();
+        settings.turnTimerEnabled = gameSettings1.EnableTurnTimer();
+
+        return settings;
+    }
+
+    public static void popupSettingsEditor(GameServer server) {
+        JFrame frame = new JFrame();
+        NetworkSetupPanel nsp = new NetworkSetupPanel(frame, server);
+        frame.add(nsp);
+        frame.setMinimumSize(new Dimension(400, 400));
+        frame.setPreferredSize(new Dimension(500, 500));
+        frame.setVisible(true);
     }
 
     /**
@@ -69,7 +138,7 @@ public class NetworkSetupPanel extends javax.swing.JPanel {
         LocalPlayersSlider = new javax.swing.JSlider();
         jSeparator1 = new javax.swing.JSeparator();
         gameSliders1 = new Deliquescence.Panel.GameSliders();
-        StartButton = new javax.swing.JButton();
+        doneButton = new javax.swing.JButton();
         RightPanel = new javax.swing.JPanel();
         gameSettings1 = new Deliquescence.Panel.GameSettings();
 
@@ -93,13 +162,13 @@ public class NetworkSetupPanel extends javax.swing.JPanel {
         LeftPanel.add(jSeparator1);
         LeftPanel.add(gameSliders1);
 
-        StartButton.setText("Start");
-        StartButton.addActionListener(new java.awt.event.ActionListener() {
+        doneButton.setText("Start");
+        doneButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                StartButtonActionPerformed(evt);
+                doneButtonActionPerformed(evt);
             }
         });
-        LeftPanel.add(StartButton);
+        LeftPanel.add(doneButton);
 
         jSplitPane1.setLeftComponent(LeftPanel);
 
@@ -111,35 +180,19 @@ public class NetworkSetupPanel extends javax.swing.JPanel {
         add(jSplitPane1);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void StartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartButtonActionPerformed
-        GameManager man = (GameManager) this.getParent().getParent();//Sketchy
-        man.switchToTabByTitle("Games");
-
-        NetworkGameSettings settings = new NetworkGameSettings();
-
-        settings.RNGEnabled = gameSettings1.EnableRNGButton();
-        settings.cols = gameSliders1.getColumns();
-        settings.totalPlayers = gameSliders1.getPlayers();
-        settings.randomStartingPlayer = gameSettings1.RandomStartPlayer();
-        settings.rows = gameSliders1.getRows();
-
-        //settings.timerAction = TOdO
-        settings.timerLength = gameSettings1.TimerLength();
-        settings.turnTimerEnabled = gameSettings1.EnableTurnTimer();
-
+    private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
         try {
-            gameListPanel.addTab("Hosted Game", new NetworkGameViewer(gameListPanel, settings, LocalPlayersSlider.getValue()), false, true);
-        } catch (IOException ex) {
-            Log.error("Start server error", ex);
-            JOptionPane.showMessageDialog(null, "Error trying to start server", "Error on server start", JOptionPane.ERROR_MESSAGE);
+            this.doneButtonAction.call();
+        } catch (Exception ex) {
+            Log.error("NetworkSetupPanel", ex);
         }
-    }//GEN-LAST:event_StartButtonActionPerformed
+    }//GEN-LAST:event_doneButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel LeftPanel;
     private javax.swing.JSlider LocalPlayersSlider;
     private javax.swing.JPanel RightPanel;
-    private javax.swing.JButton StartButton;
+    private javax.swing.JButton doneButton;
     private Deliquescence.Panel.GameSettings gameSettings1;
     private Deliquescence.Panel.GameSliders gameSliders1;
     private javax.swing.JLabel jLabel1;

@@ -55,12 +55,12 @@
             </Component>
             <Component class="Deliquescence.Panel.GameSliders" name="gameSliders1">
             </Component>
-            <Component class="javax.swing.JButton" name="StartButton">
+            <Component class="javax.swing.JButton" name="doneButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Start"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="StartButtonActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="doneButtonActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

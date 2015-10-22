@@ -242,7 +242,9 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_StartButtonActionPerformedWaitingRoom
 
     private void editSettingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editSettingsButtonActionPerformed
-        // TODO add your handling code here:
+        if (isServer) {
+            NetworkSetupPanel.popupSettingsEditor(this.server);
+        }
     }//GEN-LAST:event_editSettingsButtonActionPerformed
 
     public void startGame(GameClient client) {
@@ -303,7 +305,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
 
         server.sendToAllTCP(p);
 
-        this.networkGamePanel = new NetworkGamePanel(gameList, server.getSettings().totalPlayers, server.getSettings().rows, server.getSettings().cols, server.getAllPlayers().toArray(new Player[0]), false, 0, 0, server, client);
+        this.networkGamePanel = new NetworkGamePanel(gameList, server.getSettings().totalPlayers, server.getSettings().rows, server.getSettings().cols, server.getAllPlayers().toArray(new Player[0]), server.getSettings().RNGEnabled, 0, 0, server, client);
         ngv.displayGame(networkGamePanel);
     }
 
