@@ -261,35 +261,8 @@ public class Config {
      */
     public static int[] getRGBFromPlayerID(int p) {
         String[] stringInts;
-        switch (p) {
-            case 1:
-                stringInts = props.getProperty("Color_" + p).split(",");
-                break;
-            case 2:
-                stringInts = props.getProperty("Color_" + p).split(",");
-                break;
-            case 3:
-                stringInts = props.getProperty("Color_" + p).split(",");
-                break;
-            case 4:
-                stringInts = props.getProperty("Color_" + p).split(",");
-                break;
-            case 5:
-                stringInts = props.getProperty("Color_" + p).split(",");
-                break;
-            case 6:
-                stringInts = props.getProperty("Color_" + p).split(",");
-                break;
-            case 7:
-                stringInts = props.getProperty("Color_" + p).split(",");
-                break;
-            case 8:
-                stringInts = props.getProperty("Color_" + p).split(",");
-                break;
-            default:
-                stringInts = props.getProperty("Color_" + p, "0,0,0").split(",");
-                break;
-        }
+        stringInts = props.getProperty("Color_" + p, "0,0,0").split(",");
+
         int[] RGB = new int[3];
         RGB[0] = Integer.valueOf(stringInts[0]);
         RGB[1] = Integer.valueOf(stringInts[1]);
