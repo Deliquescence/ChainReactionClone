@@ -43,7 +43,6 @@ import java.net.UnknownHostException;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import javax.swing.DefaultListModel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -128,6 +127,28 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
             @Override
             public Object call() throws Exception {
                 WaitingRoomPanel.this.server.getNames();
+                if (WaitingRoomPanel.this.server.allPlayers.size() > 1) {
+                    int remainingPlayers = WaitingRoomPanel.this.server.allPlayers.size() - WaitingRoomPanel.this.server.getReadyPlayers().size();
+                    if (remainingPlayers != 0) {
+                        WaitingRoomPanel.this.server.timer = -1;
+                    } else {
+                        if (WaitingRoomPanel.this.server.timer == -1) {
+                            WaitingRoomPanel.this.server.timer = 10;
+                        } else {
+                            WaitingRoomPanel.this.server.timer--;
+                        }
+                    }
+                    NetworkPacket np = new NetworkPacket(PacketTitle.readyStatusPacket);
+                    np.setData("numWaitingFor", remainingPlayers);
+                    np.setData("seconds", WaitingRoomPanel.this.server.timer);
+                    WaitingRoomPanel.this.server.sendToAllTCP(np);
+
+                    if (remainingPlayers == 0 && WaitingRoomPanel.this.server.timer == 0) {
+                        WaitingRoomPanel.this.startGame(WaitingRoomPanel.this.server);
+                        WaitingRoomPanel.this.nameUpdateThread.interrupt();
+                        Thread.sleep(1000);//Wait for interrupt to catch up
+                    }
+                }
                 return 0;
             }
         });
@@ -168,7 +189,8 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        StartButton = new javax.swing.JButton();
+        readyToggleButton = new javax.swing.JToggleButton();
+        readyStatusLabel = new javax.swing.JLabel();
         editSettingsButton = new javax.swing.JButton();
         serverAddressLabel = new javax.swing.JLabel();
         NamesPanel = new javax.swing.JPanel();
@@ -180,13 +202,17 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
-        StartButton.setText("Start");
-        StartButton.addActionListener(new java.awt.event.ActionListener() {
+        readyToggleButton.setText("Ready");
+        readyToggleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                StartButtonActionPerformedWaitingRoom(evt);
+                readyToggleButtonActionPerformed(evt);
             }
         });
-        add(StartButton);
+        add(readyToggleButton);
+
+        readyStatusLabel.setMaximumSize(new java.awt.Dimension(400, 25));
+        readyStatusLabel.setMinimumSize(new java.awt.Dimension(63, 25));
+        add(readyStatusLabel);
 
         editSettingsButton.setText("Edit Settings (Host Only) (TODO)");
         editSettingsButton.addActionListener(new java.awt.event.ActionListener() {
@@ -232,20 +258,25 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         this.gameList.removeTab(this);//todo cleaner exit of server and client
     }//GEN-LAST:event_LeaveButtonActionPerformed
 
-    private void StartButtonActionPerformedWaitingRoom(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartButtonActionPerformedWaitingRoom
-        if (isServer) {
-            startGame(server);
-        } else {
-            Log.info("Only server can start");
-            JOptionPane.showMessageDialog(null, "Only server can start", "Silly", JOptionPane.INFORMATION_MESSAGE);//Todo ready up
-        }
-    }//GEN-LAST:event_StartButtonActionPerformedWaitingRoom
-
     private void editSettingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editSettingsButtonActionPerformed
         if (isServer) {
             NetworkSetupPanel.popupSettingsEditor(this.server);
         }
     }//GEN-LAST:event_editSettingsButtonActionPerformed
+
+    private void readyToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readyToggleButtonActionPerformed
+        for (int i = 0; i < this.client.localPlayers.length; i++) {
+            this.client.localPlayers[i].setReady(readyToggleButton.isSelected());
+        }
+    }//GEN-LAST:event_readyToggleButtonActionPerformed
+
+    public void setReadyInfo(int playersRemaining, int secondsRemaining) {
+        if (playersRemaining != 0) {
+            readyStatusLabel.setText("Waiting for " + playersRemaining + " players to ready up");
+        } else {
+            readyStatusLabel.setText("About " + secondsRemaining + " seconds until start");
+        }
+    }
 
     public void startGame(GameClient client) {
         Log.trace("wrp.startgame");
@@ -265,7 +296,6 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
 
     private void startGame(GameServer server) {
         this.nameUpdateThread.interrupt();
-        server.getNames();
 
         try {
             Thread.sleep(1111); //Really need names to update properly
@@ -312,12 +342,13 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton LeaveButton;
     private javax.swing.JPanel NamesPanel;
-    private javax.swing.JButton StartButton;
     private javax.swing.JButton editSettingsButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel playersListLabel;
     private javax.swing.JPanel playersListPanel;
     private javax.swing.JList playersjList;
+    private javax.swing.JLabel readyStatusLabel;
+    private javax.swing.JToggleButton readyToggleButton;
     private javax.swing.JLabel serverAddressLabel;
     // End of variables declaration//GEN-END:variables
 

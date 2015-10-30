@@ -142,6 +142,13 @@ public class GameClient extends Client {
                             );
                             break;
 
+                        case readyStatusPacket:
+                            int remaining = (int) np.getData("numWaitingFor");
+                            int seconds = (int) np.getData("seconds");
+                            GameClient.this.wrp.setReadyInfo(remaining, seconds);
+
+                            break;
+
                         case debugPacket:
 
                             Log.warn("client", "Debug packet received on client");

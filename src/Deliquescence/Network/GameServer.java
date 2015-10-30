@@ -49,6 +49,8 @@ public class GameServer extends Server {
 
     public ArrayList<Player> allPlayers = new ArrayList<>();
 
+    public int timer;//For ready countdown
+
     public GameServer() {
         super();
         this.addListener(new Listener.ThreadedListener(new Listener() {
@@ -161,5 +163,15 @@ public class GameServer extends Server {
 
     public Collection<Player> getAllPlayers() {
         return new TreeSet<>(allPlayers);
+    }
+
+    public Collection<Player> getReadyPlayers() {
+        Collection<Player> readyPlayers = new ArrayList<>();
+        for (Player p : this.allPlayers) {
+            if (p.isReady()) {
+                readyPlayers.add(p);
+            }
+        }
+        return readyPlayers;
     }
 }

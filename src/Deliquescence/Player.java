@@ -45,6 +45,7 @@ public class Player implements Comparable<Player> {
     protected String name;
 
     public final UUID uuid;
+    protected boolean ready;
 
     /**
      * This is needed for networking...
@@ -209,5 +210,23 @@ public class Player implements Comparable<Player> {
         }
 
         return players;
+    }
+
+    /**
+     * Check if this player is ready
+     *
+     * @return true if this player is marked ready
+     */
+    public boolean isReady() {
+        return ready;
+    }
+
+    /**
+     * Set whether this player is ready
+     *
+     * @param ready if this player is ready
+     */
+    public void setReady(boolean ready) {
+        this.ready = ready;
     }
 }
