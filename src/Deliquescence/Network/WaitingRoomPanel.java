@@ -35,6 +35,7 @@ import static Deliquescence.Network.PacketTitle.GameStartPacket;
 import Deliquescence.Panel.GameManager;
 import Deliquescence.Player;
 import com.esotericsoftware.minlog.Log;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -43,6 +44,7 @@ import java.net.UnknownHostException;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import javax.swing.DefaultListModel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
@@ -265,8 +267,29 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_editSettingsButtonActionPerformed
 
     private void readyToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readyToggleButtonActionPerformed
+        boolean toggle = readyToggleButton.isSelected();
+
+        //Flag this clients players as toggled
         for (int i = 0; i < this.client.localPlayers.length; i++) {
-            this.client.localPlayers[i].setReady(readyToggleButton.isSelected());
+            this.client.localPlayers[i].setReady(toggle);
+        }
+
+        //Lock the name editors if ready so no weird changes
+        for (Component p : names.getComponents()) {
+            //names has JLabel and then JPanel to contiain text fields
+            if (p.getClass() == JPanel.class) {//Get the JPanel with the fields
+                JPanel jp = (JPanel) p;//Need for call to getComponents
+                for (Component c : jp.getComponents()) {//Get the fields
+                    if (c.getClass() == JTextField.class) {
+                        c.setEnabled(!toggle);//Should only editable if not ready
+                    }
+                }
+            }
+        }
+
+        //Lock the settings edit button
+        if (isServer) {
+            editSettingsButton.setEnabled(!toggle);
         }
     }//GEN-LAST:event_readyToggleButtonActionPerformed
 
