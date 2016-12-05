@@ -175,13 +175,13 @@ public class Game extends JPanel {
 		}
 
 		//Next iteration
-		if (increasedTiles.size() > 0) {
+		if (increasedTiles.size() > 0) { //Do not iterate if nothing was changed
 			//Update the board, with delay so it looks nice
 			paintImmediately(0, 0, board.numCols * Config.getInt("CELL_SIZE"), board.numRows * Config.getInt("CELL_SIZE"));
+			refreshPlayersDisplay();
 			sleep();
 
 			doReaction();
-		} else { //Do not iterate if nothing was changed
 		}
 	}
 
@@ -280,6 +280,7 @@ public class Game extends JPanel {
 	 * Update the list of players on the side to show who is alive
 	 */
 	private void refreshPlayersDisplay() {
+		updateLivingPlayers();
 		gamePanel.refreshPlayerList(this.players);
 	}
 
@@ -318,25 +319,32 @@ public class Game extends JPanel {
 		repaint();
 	}
 
+	/*
+	 * For each player in this game, determine if they are actually alive and
+	 * setLiving() accordingly.
+	 */
+	protected void updateLivingPlayers() {
+		//If not everyone has taken their first turn, everyone is alive
+		//Otherwise, set everyone to dead and check tiles for who is actually alive
+		for (Player player : players) {
+			player.setLiving(turn <= numPlayers);
+		}
+		//Determine living players
+		for (Tile tile : board.getAllTiles()) {
+			if (tile.getNumberOfParticles() > 0) {
+				tile.getOwner().setLiving(true);
+			}
+		}
+	}
+
 	protected boolean gameWon() {
+
 		refreshPlayersDisplay();
 
 		//If the first turn is checked things dont work right
 		if (turn <= numPlayers) {
 			return false;
 		}
-		//Reset everyone to dead and fill in the live ones later
-		for (Player player : players) {
-			player.setLiving(false);
-		}
-		//Determine living players
-		repaint();
-		for (Tile tile : board.getAllTiles()) {
-			if (tile.getNumberOfParticles() > 0) {
-				tile.getOwner().setLiving(true);
-			}
-		}
-		refreshPlayersDisplay();
 
 		//check if more than one player living; if not winner is found
 		int numberAlive = 0;
