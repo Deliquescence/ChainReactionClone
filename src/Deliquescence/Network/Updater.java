@@ -40,50 +40,50 @@ import java.util.concurrent.Callable;
  */
 public class Updater {
 
-    public final static int defaultDelay = 1000;
+	public final static int DEFAULT_DELAY = 1000;
 
-    /**
-     * Create a new Thread that will perodically run the given function
-     *
-     * @param description Short description of updaters function
-     * @param function Callable to call periodically
-     * @param delayMills The delay between update ticks in milliseconds
-     *
-     * @return A Thread, probably will have .start() called
-     */
-    public static Thread createUpdater(final String description, final Callable function, final int delayMills) {
+	/**
+	 * Create a new Thread that will periodically run the given function
+	 *
+	 * @param description Short description of updaters function
+	 * @param function Callable to call periodically
+	 * @param delayMills The delay between update ticks in milliseconds
+	 *
+	 * @return A Thread, not started
+	 */
+	public static Thread createUpdater(final String description, final Callable function, final int delayMills) {
 
-        Runnable updater = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (true) {
-                        Log.trace("updater: " + description, "Updater tick");
+		Runnable updater = new Runnable() {
+			@Override
+			public void run() {
+				try {
+					while (true) {
+						Log.trace("updater: " + description, "Updater tick");
 
-                        function.call();
-                        Thread.sleep(delayMills);
-                    }
-                } catch (InterruptedException ex) {
-                    Log.info("updater: " + description, "Updater was interrupted", ex);
-                } catch (Exception e) {
-                    Log.error("updater: " + description, e);
-                }
-            }
-        };
+						function.call();
+						Thread.sleep(delayMills);
+					}
+				} catch (InterruptedException ex) {
+					Log.info("updater: " + description, "Updater was interrupted", ex);
+				} catch (Exception e) {
+					Log.error("updater: " + description, e);
+				}
+			}
+		};
 
-        Thread updaterThread = new Thread(updater, "updater: " + description);
-        return updaterThread;
-    }
+		Thread updaterThread = new Thread(updater, "updater: " + description);
+		return updaterThread;
+	}
 
-    /**
-     * Create a new Thread that will perodically run the given function
-     *
-     * @param description Short description of updaters function
-     * @param function Callable to call periodically
-     *
-     * @return A Thread, probably will have .start() called
-     */
-    public static Thread createUpdater(final String description, final Callable function) {
-        return createUpdater(description, function, defaultDelay);
-    }
+	/**
+	 * Create a new Thread that will periodically run the given function
+	 *
+	 * @param description Short description of updaters function
+	 * @param function Callable to call periodically
+	 *
+	 * @return A Thread, not started yet
+	 */
+	public static Thread createUpdater(final String description, final Callable function) {
+		return createUpdater(description, function, DEFAULT_DELAY);
+	}
 }
