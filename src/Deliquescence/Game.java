@@ -133,9 +133,9 @@ public class Game extends JPanel {
 	}
 
 	public boolean setCurrentPlayer(Player thePlayer) {
-		for (Player p : players) {
-			if (p.equals(thePlayer)) {
-				return setCurrentPlayerByIndex(p.getNumber());
+		for (int i = 0; i < this.players.length; i++) {
+			if (this.players[i].equals(thePlayer)) {
+				return setCurrentPlayerByIndex(i);
 			}
 		}
 
@@ -152,7 +152,9 @@ public class Game extends JPanel {
 			gamePanel.resetTimer();
 			turn++;
 		} else {
-			System.err.println("Help!");
+			//The next player is dead
+			this.currentPlayerIndex = newIndex;
+			incrementPlayer();
 		}
 	}
 
