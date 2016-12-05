@@ -46,152 +46,152 @@ import java.util.TreeSet;
  */
 public class GameServer extends Server {
 
-    private NetworkGameSettings settings;
+	private NetworkGameSettings settings;
 
-    public ArrayList<Player> allPlayers = new ArrayList<>();
+	public ArrayList<Player> allPlayers = new ArrayList<>();
 
-    public int timer;//For ready countdown
+	public int timer;//For ready countdown
 
-    public GameServer() {
-        super();
-        this.addListener(new Listener.ThreadedListener(new Listener() {
-            @Override
-            public void connected(Connection c) {
-                Log.info("server", "Server Connect");
-                Log.debug("server", "Sending server settings");
-                sendToTCP(c.getID(), settings);
-            }
+	public GameServer() {
+		super();
+		this.addListener(new Listener.ThreadedListener(new Listener() {
+			@Override
+			public void connected(Connection c) {
+				Log.info("server", "Server Connect");
+				Log.debug("server", "Sending server settings");
+				sendToTCP(c.getID(), settings);
+			}
 
-            @Override
-            public void disconnected(Connection c) {
-                Log.info("server", "Server Disconnect");
-            }
+			@Override
+			public void disconnected(Connection c) {
+				Log.info("server", "Server Disconnect");
+			}
 
-            @Override
-            public void received(Connection c, Object object) {
-                //Log.debug("Server recieved: " + object);
-                try {
-                    NetworkPacket np = (NetworkPacket) object;
-                    Log.trace("server", "Server recieved network packet with title " + np.packetTitle);
+			@Override
+			public void received(Connection c, Object object) {
+				//Log.debug("Server recieved: " + object);
+				try {
+					NetworkPacket np = (NetworkPacket) object;
+					Log.trace("server", "Server recieved network packet with title " + np.packetTitle);
 
-                    switch (np.packetTitle) {
-                        case namePacket:
-                            ArrayList<Player> thePlayers = (ArrayList<Player>) np.getData("names");
-                            for (Player newPlayer : thePlayers) {
-                                boolean addable = true;
-                                for (Player cPlayer : allPlayers) {
-                                    if (newPlayer.equals(cPlayer)) {
-                                        addable = false;
-                                        //Update the player data (name)
-                                        newPlayer.setNumber(cPlayer.getNumber());
-                                        allPlayers.remove(cPlayer);
-                                        allPlayers.add(newPlayer);
-                                        break;
-                                    }
-                                }
-                                if (addable) {
-                                    newPlayer.setNumber(allPlayers.size() + 1);
-                                    allPlayers.add(newPlayer);
-                                }
-                            }
-                            Log.trace("server", "Server updated internal names");
+					switch (np.packetTitle) {
+						case namePacket:
+							ArrayList<Player> thePlayers = (ArrayList<Player>) np.getData("names");
+							for (Player newPlayer : thePlayers) {
+								boolean addable = true;
+								for (Player cPlayer : allPlayers) {
+									if (newPlayer.equals(cPlayer)) {
+										addable = false;
 
-                            updateNames();
+										newPlayer.setNumber(cPlayer.getNumber()); //localPlayers are not numbered properly
+										allPlayers.remove(cPlayer);
+										allPlayers.add(newPlayer);
+										break;
+									}
+								}
+								if (addable) {
+									newPlayer.setNumber(allPlayers.size() + 1);
+									allPlayers.add(newPlayer);
+								}
+							}
+							Log.trace("server", "Server updated internal names");
 
-                            break;
+							updateNames();
 
-                        case turnPacket:
-                            Log.debug("server", "Server recieved turn");
-                            for (Connection con : GameServer.this.getConnections()) {
-                                if (con.getID() != c.getID()) {
-                                    sendToTCP(con.getID(), object);
-                                }
-                            }
-                            break;
+							break;
 
-                        case debugPacket:
-                            Log.warn("server", "Debug packet received on server");
+						case turnPacket:
+							Log.debug("server", "Server recieved turn");
+							for (Connection con : GameServer.this.getConnections()) {
+								if (con.getID() != c.getID()) {
+									sendToTCP(con.getID(), object);
+								}
+							}
+							break;
 
-                            NetworkPacket p1 = new NetworkPacket(PacketTitle.debugPacket);
-                            // sendTCP(p);
-                            GameServer.this.sendToAllTCP(p1);
+						case debugPacket:
+							Log.warn("server", "Debug packet received on server");
 
-                            break;
-                    }
-                } catch (ClassCastException ignore) {
-                }
-            }
-        }));
-    }
+							NetworkPacket p1 = new NetworkPacket(PacketTitle.debugPacket);
+							// sendTCP(p);
+							GameServer.this.sendToAllTCP(p1);
 
-    /**
-     * Get the settings of the server
-     *
-     * @return the server's settings
-     */
-    public synchronized NetworkGameSettings getSettings() {
-        return this.settings;
-    }
+							break;
+					}
+				} catch (ClassCastException ignore) {
+				}
+			}
+		}));
+	}
 
-    /**
-     * Set the settings of the server
-     *
-     * @param settings The new settings
-     */
-    public synchronized void setSettings(NetworkGameSettings settings) {
-        this.settings = settings;
-        sendToAllTCP(this.settings);
-    }
+	/**
+	 * Get the settings of the server
+	 *
+	 * @return the server's settings
+	 */
+	public synchronized NetworkGameSettings getSettings() {
+		return this.settings;
+	}
 
-    /**
-     * Get the names from the clients and update the server
-     * (Which will then send info back to the clients to stay synchronized)
-     */
-    public synchronized void getNames() {
-        NetworkPacket p = new NetworkPacket(PacketTitle.requestNamesPacket);
-        sendToAllTCP(p);
-    }
+	/**
+	 * Set the settings of the server
+	 *
+	 * @param settings The new settings
+	 */
+	public synchronized void setSettings(NetworkGameSettings settings) {
+		this.settings = settings;
+		sendToAllTCP(this.settings);
+	}
 
-    /**
-     * Send the names the server has to the clients for them to update
-     */
-    public synchronized void updateNames() {
-        Log.debug("server", "Server pushing names to clients");
-        NetworkPacket p = new NetworkPacket(PacketTitle.namePacket);
-        p.setData("names", allPlayers);
-        sendToAllTCP(p);
-    }
+	/**
+	 * Get the names from the clients and update the server
+	 * (Which will then send info back to the clients to stay synchronized)
+	 */
+	public synchronized void getNames() {
+		NetworkPacket p = new NetworkPacket(PacketTitle.requestNamesPacket);
+		sendToAllTCP(p);
+	}
 
-    public Collection<Player> getAllPlayers() {
-        return new TreeSet<>(allPlayers);
-    }
+	/**
+	 * Send the names the server has to the clients for them to update
+	 */
+	public synchronized void updateNames() {
+		Log.debug("server", "Server pushing names to clients");
+		NetworkPacket p = new NetworkPacket(PacketTitle.namePacket);
+		p.setData("names", allPlayers);
+		sendToAllTCP(p);
+	}
 
-    public Collection<Player> getReadyPlayers() {
-        Collection<Player> readyPlayers = new ArrayList<>();
-        for (Player p : this.allPlayers) {
-            if (p.isReady()) {
-                readyPlayers.add(p);
-            }
-        }
-        return readyPlayers;
-    }
+	public Collection<Player> getAllPlayers() {
+		return new TreeSet<>(allPlayers);
+	}
 
-    public void shufflePlayers() {
-        Random rand = new Random();
+	public Collection<Player> getReadyPlayers() {
+		Collection<Player> readyPlayers = new ArrayList<>();
+		for (Player p : this.allPlayers) {
+			if (p.isReady()) {
+				readyPlayers.add(p);
+			}
+		}
+		return readyPlayers;
+	}
 
-        Player[] plays = getAllPlayers().toArray(new Player[0]);
+	public void shufflePlayers() {
+		Random rand = new Random();
 
-        //Shuffle order of players
-        for (int i = plays.length - 1; i > 0; i--) {
-            int index = rand.nextInt(i + 1);
-            int a = plays[index].getNumber();
-            plays[index].setNumber(plays[i].getNumber());
-            plays[i].setNumber(a);
-        }
-        for (int i = 0; i < plays.length; i++) {
-            allPlayers.set(i, plays[i]);
-        }
+		Player[] plays = getAllPlayers().toArray(new Player[0]);
 
-        updateNames();
-    }
+		//Shuffle order of players
+		for (int i = plays.length - 1; i > 0; i--) {
+			int index = rand.nextInt(i + 1);
+			int a = plays[index].getNumber();
+			plays[index].setNumber(plays[i].getNumber());
+			plays[i].setNumber(a);
+		}
+		for (int i = 0; i < plays.length; i++) {
+			allPlayers.set(i, plays[i]);
+		}
+
+		updateNames();
+	}
 }
