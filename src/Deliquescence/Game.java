@@ -48,7 +48,7 @@ public class Game extends JPanel {
 	public Board board;
 
 	protected int turn;
-	protected int currentPlayerID;
+	protected int currentPlayerIndex;
 	protected Player currentPlayer;
 	protected int numPlayers;
 
@@ -69,7 +69,7 @@ public class Game extends JPanel {
 	 * @param NumberOfPlayers The number of players in this game.
 	 * @param Rows The number of rows in this game.
 	 * @param Columns The number of columns in this game.
-	 * @param players An array containing the players.
+	 * @param players An array containing players, of which the first {@code NumberOfPlayers} will be used.
 	 * @param RandomizePlayers True to choose a random player to start.
 	 */
 	public Game(GamePanel parent, int NumberOfPlayers, int Rows, int Columns, Player[] players, boolean RandomizePlayers) {
@@ -78,13 +78,9 @@ public class Game extends JPanel {
 		this.numPlayers = NumberOfPlayers;
 		this.gamePanel = parent;
 		this.turn = 1;
+		this.currentPlayerIndex = 0;
 
-		//Set this.players with zeroth player
-		this.players = new Player[numPlayers + 1];
-		this.players[0] = new Player(0);
-		for (int i = 1; i <= numPlayers; i++) {
-			this.players[i] = players[i - 1];
-		}
+		this.players = Arrays.copyOf(players, NumberOfPlayers);
 
 		setDoubleBuffered(true);
 		addMouseListener(new MyMouseAdapter());
@@ -104,16 +100,14 @@ public class Game extends JPanel {
 		if (randomizePlayer) {
 			Random random = new Random();
 
-			ArrayList<Player> shuffle = new ArrayList<>(Arrays.asList(players).subList(1, players.length));
-			//Sublist because of the pesky 0th player
+			ArrayList<Player> shuffle = new ArrayList<>(Arrays.asList(players));
 
 			java.util.Collections.shuffle(shuffle);
-			shuffle.add(0, players[0]); //Zeroth player problems
+
 			shuffle.toArray(players);
-			setCurrentPlayerByID(random.nextInt(numPlayers) + 1);
-		} else {
-			setCurrentPlayerByID(1);
 		}
+		setCurrentPlayerByIndex(0); //Since the entire order was shuffled, it doesn't really matter who starts
+
 		refreshPlayersDisplay();
 		repaint();
 	}
@@ -126,12 +120,13 @@ public class Game extends JPanel {
 		}
 	}
 
-	private boolean setCurrentPlayerByID(int pID) {
-		if (!playerIsAlive(players[pID])) {
+	private boolean setCurrentPlayerByIndex(int index) {
+		this.currentPlayerIndex = index;
+
+		if (!playerIsAlive(players[index])) {
 			return false;
 		}
-		this.currentPlayerID = pID;
-		this.currentPlayer = players[pID];
+		this.currentPlayer = players[this.currentPlayerIndex];
 		this.gamePanel.setPlayerStatus(currentPlayer.getColor(), currentPlayer.getDisplayName() + "'s Turn");
 
 		return true;
@@ -140,27 +135,24 @@ public class Game extends JPanel {
 	public boolean setCurrentPlayer(Player thePlayer) {
 		for (Player p : players) {
 			if (p.equals(thePlayer)) {
-				return setCurrentPlayerByID(p.getNumber());
+				return setCurrentPlayerByIndex(p.getNumber());
 			}
 		}
 
 		return false;
 	}
 
-	protected void incrementPlayer(int curPlayerID) {
-		int targetID = 0;
-
-		if (curPlayerID == numPlayers) {
-			targetID = 1;
-		} else {
-			targetID = curPlayerID + 1;
+	protected void incrementPlayer() {
+		int newIndex = this.currentPlayerIndex + 1;
+		if (newIndex >= numPlayers) {
+			newIndex = 0;
 		}
 
-		if (setCurrentPlayerByID(targetID)) {
+		if (setCurrentPlayerByIndex(newIndex)) {
 			gamePanel.resetTimer();
 			turn++;
 		} else {
-			incrementPlayer(targetID);
+			System.err.println("Help!");
 		}
 	}
 
@@ -215,7 +207,7 @@ public class Game extends JPanel {
 		if (!inGame || inReaction) {
 			return;
 		}
-		incrementPlayer(currentPlayerID);
+		incrementPlayer();
 	}
 
 	/**
@@ -229,7 +221,7 @@ public class Game extends JPanel {
 	 */
 	public boolean moveIsValid(Tile onTile, Player onPlayer) {
 		if (inGame) {
-			if (onTile.getOwnerID() == 0) { //Unowned, can claim
+			if (onTile.getOwner() == null) { //Unowned, can claim
 				return true;
 			} else { //Is owned
 				return onTile.getOwner() == onPlayer; //Make sure it is their tile
@@ -251,10 +243,6 @@ public class Game extends JPanel {
 
 		if (moveIsValid(onTile, currentPlayer)) {
 
-			//Increase particle count and update owner
-			onTile.setOwner(currentPlayer);
-			onTile.setNumberOfParticles(onTile.getNumberOfParticles() + 1);
-
 			//Generate undo information
 			Tile[][] fieldPreviousTemp = new Tile[board.numCols][board.numRows];
 			for (int fieldx = 0; fieldx < board.numCols; fieldx++) {
@@ -263,6 +251,10 @@ public class Game extends JPanel {
 				}
 			}
 			board.fieldPrevious = fieldPreviousTemp;
+
+			//Increase particle count and update owner
+			onTile.setOwner(currentPlayer);
+			onTile.setNumberOfParticles(onTile.getNumberOfParticles() + 1);
 
 			//Do the reaction
 			inReaction = true;
@@ -273,7 +265,7 @@ public class Game extends JPanel {
 			inReaction = false;
 
 			if (!gameWon()) {
-				incrementPlayer(currentPlayerID); //Only increment if not won
+				incrementPlayer(); //Only increment if not won
 			}
 
 			repaint();
@@ -288,16 +280,7 @@ public class Game extends JPanel {
 	 * Update the list of players on the side to show who is alive
 	 */
 	private void refreshPlayersDisplay() {
-		ArrayList<Player> displayPlayers = new ArrayList<>();
-		if (turn <= numPlayers) {
-			for (int i = 1; i <= numPlayers; i++) {
-				players[i].setLiving(true);
-			}
-		}
-		for (int i = 1; i <= numPlayers; i++) {
-			displayPlayers.add(players[i]);
-		}
-		gamePanel.refreshPlayerList(displayPlayers.toArray(new Player[0]));
+		gamePanel.refreshPlayerList(this.players);
 	}
 
 	/**
@@ -325,10 +308,10 @@ public class Game extends JPanel {
 
 		board.field = board.fieldPrevious.clone();
 		//Decrement player
-		if (currentPlayerID == 1) {
-			setCurrentPlayerByID(numPlayers);
+		if (this.currentPlayerIndex == 0) {
+			setCurrentPlayerByIndex(numPlayers);
 		} else {
-			setCurrentPlayerByID(currentPlayerID - 1);
+			setCurrentPlayerByIndex(this.currentPlayerIndex - 1);
 		}
 		turn--;
 
@@ -386,7 +369,13 @@ public class Game extends JPanel {
 		for (Tile tile : board.getAllTiles()) {
 			//Draw particles (spheres)
 			Image theImage;
-			theImage = Config.getImageByPlayerID(tile.getOwnerID(), tile.getNumberOfParticles());
+
+			int playerNum = 0;
+			if (tile.getOwner() != null) {
+				playerNum = tile.getOwner().getNumber();
+			}
+
+			theImage = Config.getImageByPlayerID(playerNum, tile.getNumberOfParticles());
 
 			g.drawImage(theImage, (tile.getX() * Config.getInt("CELL_SIZE")), (tile.getY() * Config.getInt("CELL_SIZE")), this);
 		}

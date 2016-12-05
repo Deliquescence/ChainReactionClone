@@ -109,7 +109,7 @@ public class Board {
 			tile.setNumberOfParticles(1); //If two particles explode into a tile of three, it should be left with one after it explodes four.
 		} else {
 			tile.setNumberOfParticles(0);
-			tile.setOwner(parentGame.players[0]);
+			tile.setOwner(null);
 		}
 
 		return dirtyTiles;
