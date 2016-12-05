@@ -114,7 +114,7 @@ public class Game extends JPanel {
 		} else {
 			setCurrentPlayerByID(1);
 		}
-		refreshDisplayPlayers();
+		refreshPlayersDisplay();
 		repaint();
 	}
 
@@ -284,7 +284,10 @@ public class Game extends JPanel {
 		return false; //Move wasn't valid
 	}
 
-	private void refreshDisplayPlayers() {
+	/*
+	 * Update the list of players on the side to show who is alive
+	 */
+	private void refreshPlayersDisplay() {
 		ArrayList<Player> displayPlayers = new ArrayList<>();
 		if (turn <= numPlayers) {
 			for (int i = 1; i <= numPlayers; i++) {
@@ -333,7 +336,7 @@ public class Game extends JPanel {
 	}
 
 	protected boolean gameWon() {
-		refreshDisplayPlayers();
+		refreshPlayersDisplay();
 
 		//If the first turn is checked things dont work right
 		if (turn <= numPlayers) {
@@ -350,7 +353,7 @@ public class Game extends JPanel {
 				tile.getOwner().setLiving(true);
 			}
 		}
-		refreshDisplayPlayers();
+		refreshPlayersDisplay();
 
 		//check if more than one player living; if not winner is found
 		int numberAlive = 0;
