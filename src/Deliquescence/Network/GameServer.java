@@ -37,6 +37,7 @@ import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Random;
 import java.util.TreeSet;
 
 /**
@@ -173,5 +174,24 @@ public class GameServer extends Server {
             }
         }
         return readyPlayers;
+    }
+
+    public void shufflePlayers() {
+        Random rand = new Random();
+
+        Player[] plays = getAllPlayers().toArray(new Player[0]);
+
+        //Shuffle order of players
+        for (int i = plays.length - 1; i > 0; i--) {
+            int index = rand.nextInt(i + 1);
+            int a = plays[index].getNumber();
+            plays[index].setNumber(plays[i].getNumber());
+            plays[i].setNumber(a);
+        }
+        for (int i = 0; i < plays.length; i++) {
+            allPlayers.set(i, plays[i]);
+        }
+
+        updateNames();
     }
 }

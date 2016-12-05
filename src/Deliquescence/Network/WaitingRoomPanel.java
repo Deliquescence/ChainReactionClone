@@ -140,6 +140,9 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
                             WaitingRoomPanel.this.server.timer--;
                         }
                     }
+                    if (WaitingRoomPanel.this.server.timer == 5) {
+                        WaitingRoomPanel.this.server.shufflePlayers();
+                    }
                     NetworkPacket np = new NetworkPacket(PacketTitle.readyStatusPacket);
                     np.setData("numWaitingFor", remainingPlayers);
                     np.setData("seconds", WaitingRoomPanel.this.server.timer);
@@ -320,11 +323,6 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     private void startGame(GameServer server) {
         this.nameUpdateThread.interrupt();
 
-        try {
-            Thread.sleep(1111); //Really need names to update properly
-        } catch (InterruptedException ex) {
-        }
-
         NetworkPacket p = new NetworkPacket(GameStartPacket);
 
         //Handle random starting player
@@ -332,20 +330,6 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
         p.setData("randomStart", server.getSettings().randomStartingPlayer);
         if (server.getSettings().randomStartingPlayer) {
             Player[] plays = server.getAllPlayers().toArray(new Player[0]);
-
-            //Shuffle order of players
-            for (int i = plays.length - 1; i > 0; i--) {
-                int index = rand.nextInt(i + 1);
-                int a = plays[index].getNumber();
-                plays[index].setNumber(plays[i].getNumber());
-                plays[i].setNumber(a);
-            }
-
-            try {
-                server.updateNames();
-                Thread.sleep(1111); //Really need names to update properly
-            } catch (InterruptedException ex) {
-            }
 
             //Random start
             Player randomPlayer = plays[rand.nextInt(server.allPlayers.size())];
