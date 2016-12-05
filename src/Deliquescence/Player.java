@@ -40,193 +40,194 @@ import java.util.UUID;
  */
 public class Player implements Comparable<Player> {
 
-    protected int id;
-    protected boolean alive;
-    protected String name;
+	protected int id;
+	protected boolean alive;
+	protected String name;
 
-    public final UUID uuid;
-    protected boolean ready;
+	public final UUID uuid;
+	protected boolean ready;
 
-    /**
-     * This is needed for networking...
-     * kryonet needs a no-arg constructor
-     *
-     * Dont actually use this?
-     * ...shady af
-     */
-    public Player() {
-        this(0);
-    }
+	/**
+	 * This is needed for networking...
+	 * kryonet needs a no-arg constructor
+	 *
+	 * Dont actually use this?
+	 * ...shady af
+	 */
+	public Player() {
+		this(0);
+	}
 
-    /**
-     * Create a player with the specified numeric ID. Is assumed to be dead.
-     *
-     * @param n The numeric ID of this player.
-     */
-    public Player(int n) {
-        this(n, "");
-    }
+	/**
+	 * Create a player with the specified numeric ID. Is assumed to be dead.
+	 *
+	 * @param n The numeric ID of this player.
+	 */
+	public Player(int n) {
+		this(n, "");
+	}
 
-    /**
-     * Create a player with the specified numeric ID and string name.
-     *
-     * @param n The numeric ID of this player.
-     * @param name The name of this player.
-     */
-    public Player(int n, String name) {
-        this.id = n;
-        this.name = name;
-        this.alive = false;
+	/**
+	 * Create a player with the specified numeric ID and string name.
+	 *
+	 * @param n The numeric ID of this player.
+	 * @param name The name of this player.
+	 */
+	public Player(int n, String name) {
+		this.id = n;
+		this.name = name;
+		this.alive = false;
 
-        uuid = UUID.randomUUID();
-    }
+		uuid = UUID.randomUUID();
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (o.getClass() != this.getClass()) {
-            return false;
-        }
-        Player p = (Player) o;
-        return p.uuid.compareTo(this.uuid) == 0;
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (o.getClass() != this.getClass()) {
+			return false;
+		}
+		Player p = (Player) o;
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 31 *
-                hash +
-                Objects.hashCode(this.uuid);
-        return hash;
-    }
+		return p.uuid.compareTo(this.uuid) == 0;
+	}
 
-    @Override
-    public int compareTo(Player p) {
+	@Override
+	public int hashCode() {
+		int hash = 3;
 
-        return this.getNumber() - p.getNumber() - (Integer.MAX_VALUE / 2);
-        //compateTo cant return 0 if the objects are not equal
-        //Therefore adjust to make sure this doesnt return 0
-        //Need to adjust by more than number of players in the game
-    }
+		hash = 31 * hash + Objects.hashCode(this.uuid);
 
-    /**
-     * Gets the numeric ID of this player.
-     *
-     * @return The numeric ID of this player.
-     */
-    public int getNumber() {
-        return this.id;
-    }
+		return hash;
+	}
 
-    /**
-     * Sets the numeric ID of this player.
-     *
-     * @param id The numeric ID
-     */
-    public void setNumber(int id) {
-        this.id = id;
-    }
+	@Override
+	public int compareTo(Player p) {
 
-    /**
-     * Gets the configured color of this player.
-     *
-     * @return The color of this player.
-     */
-    public java.awt.Color getColor() {
-        return Colorizer.getPlayerColor(this.id);
-    }
+		return this.getNumber() - p.getNumber() - (Integer.MAX_VALUE / 2);
+		//compateTo cant return 0 if the objects are not equal
+		//Therefore adjust to make sure this doesnt return 0
+		//Need to adjust by more than number of players in the game
+	}
 
-    /**
-     * You can use this to kill the player.
-     *
-     * @param life If this player is alive.
-     *
-     * @see isAlive()
-     */
-    public void setLiving(boolean life) {
-        this.alive = life;
-    }
+	/**
+	 * Gets the numeric ID of this player.
+	 *
+	 * @return The numeric ID of this player.
+	 */
+	public int getNumber() {
+		return this.id;
+	}
 
-    /**
-     * Gets if this player is alive.
-     *
-     * @return If this player is alive.
-     *
-     * @see setLiving
-     */
-    public boolean isAlive() {
-        return this.alive;
-    }
+	/**
+	 * Sets the numeric ID of this player.
+	 *
+	 * @param id The numeric ID
+	 */
+	public void setNumber(int id) {
+		this.id = id;
+	}
 
-    /**
-     * Sets the friendly name of this player.
-     *
-     * @param name The name of this player.
-     *
-     * @see getName()
-     * @see getDisplayName()
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+	/**
+	 * Gets the configured color of this player.
+	 *
+	 * @return The color of this player.
+	 */
+	public java.awt.Color getColor() {
+		return Colorizer.getPlayerColor(this.id);
+	}
 
-    /**
-     * Gets the friendly name of this player. Returns "" if no name is set.
-     *
-     * @return The name of this player.
-     *
-     * @see getDisplayName()
-     */
-    public String getName() {
-        return this.name;
-    }
+	/**
+	 * You can use this to kill the player.
+	 *
+	 * @param life If this player is alive.
+	 *
+	 * @see isAlive()
+	 */
+	public void setLiving(boolean life) {
+		this.alive = life;
+	}
 
-    /**
-     * Gets the display name of this player. Returns string "Player {ID}" if no name is set.
-     *
-     * @return The friendly display name of this player.
-     *
-     * @see getName()
-     */
-    public String getDisplayName() {
-        if (this.name != "") {
-            return this.name;
-        } else {
-            return "Player " + Integer.toString(this.id);
-        }
-    }
+	/**
+	 * Gets if this player is alive.
+	 *
+	 * @return If this player is alive.
+	 *
+	 * @see setLiving
+	 */
+	public boolean isAlive() {
+		return this.alive;
+	}
 
-    /**
-     * Create players out of the given names. There is no zeroth player.
-     *
-     * @param names The names of the players to make
-     *
-     * @return Array of players
-     */
-    public static Player[] createPlayers(String[] names) {
-        Player[] players = new Player[names.length];
+	/**
+	 * Sets the friendly name of this player.
+	 *
+	 * @param name The name of this player.
+	 *
+	 * @see getName()
+	 * @see getDisplayName()
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
 
-        for (int i = 0; i < names.length; i++) {
-            players[i] = new Player(i + 1, names[i]);//i+1 becuase this sets id and it needs to not be 0
-        }
+	/**
+	 * Gets the friendly name of this player. Returns "" if no name is set.
+	 *
+	 * @return The name of this player.
+	 *
+	 * @see getDisplayName()
+	 */
+	public String getName() {
+		return this.name;
+	}
 
-        return players;
-    }
+	/**
+	 * Gets the display name of this player. Returns string "Player {ID}" if no name is set.
+	 *
+	 * @return The friendly display name of this player.
+	 *
+	 * @see getName()
+	 */
+	public String getDisplayName() {
+		if (this.name != "") {
+			return this.name;
+		} else {
+			return "Player " + Integer.toString(this.id);
+		}
+	}
 
-    /**
-     * Check if this player is ready
-     *
-     * @return true if this player is marked ready
-     */
-    public boolean isReady() {
-        return ready;
-    }
+	/**
+	 * Create players out of the given names. There is no zeroth player.
+	 *
+	 * @param names The names of the players to make
+	 *
+	 * @return Array of players
+	 */
+	public static Player[] createPlayers(String[] names) {
+		Player[] players = new Player[names.length];
 
-    /**
-     * Set whether this player is ready
-     *
-     * @param ready if this player is ready
-     */
-    public void setReady(boolean ready) {
-        this.ready = ready;
-    }
+		for (int i = 0; i < names.length; i++) {
+			players[i] = new Player(i + 1, names[i]); //i+1 becuase this sets id and it needs to not be 0
+		}
+
+		return players;
+	}
+
+	/**
+	 * Check if this player is ready
+	 *
+	 * @return true if this player is marked ready
+	 */
+	public boolean isReady() {
+		return ready;
+	}
+
+	/**
+	 * Set whether this player is ready
+	 *
+	 * @param ready if this player is ready
+	 */
+	public void setReady(boolean ready) {
+		this.ready = ready;
+	}
 }

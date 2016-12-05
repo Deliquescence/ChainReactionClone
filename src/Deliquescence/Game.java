@@ -41,371 +41,377 @@ import java.util.Random;
 import javax.swing.JPanel;
 
 /**
- * A Game of the game. It has the {@link Tile}s that make up gameplay.
- *
- * @author Josh
+ * An instance of the game, handles all the game logic.
  */
 public class Game extends JPanel {
 
-    public Board board;
+	public Board board;
 
-    protected int turn;
-    protected int currentPlayerID;
-    protected Player currentPlayer;
-    protected int numPlayers;
+	protected int turn;
+	protected int currentPlayerID;
+	protected Player currentPlayer;
+	protected int numPlayers;
 
-    /**
-     * Array of the {@link Player}s in the game.
-     */
-    public Player[] players;
+	/**
+	 * Array of the {@link Player}s in the game.
+	 */
+	public Player[] players;
 
-    protected boolean inGame;
-    protected boolean inReaction;
+	protected boolean inGame;
+	protected boolean inReaction;
 
-    private final GamePanel gamePanel;
+	private final GamePanel gamePanel;
 
-    /**
-     * Create a new game board.
-     *
-     * @param parent The {@link GamePanel} that contains this game.
-     * @param NumberOfPlayers The number of players in this game.
-     * @param Rows The number of rows in this game.
-     * @param Columns The number of columns in this game.
-     * @param players An array containing the players.
-     * @param RandomizePlayers True to choose a random player to start.
-     */
-    public Game(GamePanel parent, int NumberOfPlayers, int Rows, int Columns, Player[] players, boolean RandomizePlayers) {
-        this.board = new Board(this, Rows, Columns);
-        this.numPlayers = NumberOfPlayers;
-        this.gamePanel = parent;
-        this.turn = 1;
+	/**
+	 * Create a new game.
+	 *
+	 * @param parent The {@link GamePanel} that contains this game.
+	 * @param NumberOfPlayers The number of players in this game.
+	 * @param Rows The number of rows in this game.
+	 * @param Columns The number of columns in this game.
+	 * @param players An array containing the players.
+	 * @param RandomizePlayers True to choose a random player to start.
+	 */
+	public Game(GamePanel parent, int NumberOfPlayers, int Rows, int Columns, Player[] players, boolean RandomizePlayers) {
 
-        //Set this.players with zeroth player
-        this.players = new Player[numPlayers + 1];
-        this.players[0] = new Player(0);
-        for (int i = 1; i <= numPlayers; i++) {
-            this.players[i] = players[i - 1];
-        }
+		this.board = new Board(this, Rows, Columns);
+		this.numPlayers = NumberOfPlayers;
+		this.gamePanel = parent;
+		this.turn = 1;
 
-        setDoubleBuffered(true);
-        addMouseListener(new MyMouseAdapter());
-        newGame(RandomizePlayers);
-        //MyMouseAdapter will get clicks to the board
-    }
+		//Set this.players with zeroth player
+		this.players = new Player[numPlayers + 1];
+		this.players[0] = new Player(0);
+		for (int i = 1; i <= numPlayers; i++) {
+			this.players[i] = players[i - 1];
+		}
 
-    protected void newGame(boolean randomizePlayer) {
-        //Create blank tiles
-        board.field = new Tile[board.numCols][board.numRows];
-        for (int x = 0; x < board.numCols; x++) {
-            for (int y = 0; y < board.numRows; y++) {
-                board.field[x][y] = new Tile(this.board, x, y);
-            }
-        }
-        inGame = true;
-        if (randomizePlayer) {
-            Random random = new Random();
+		setDoubleBuffered(true);
+		addMouseListener(new MyMouseAdapter());
+		newGame(RandomizePlayers);
+		//MyMouseAdapter will get clicks to the board
+	}
 
-            ArrayList<Player> shuffle = new ArrayList<>(Arrays.asList(players).subList(1, players.length));//Sublist because of the pesky 0th player
-            java.util.Collections.shuffle(shuffle);
-            shuffle.add(0, players[0]);//Zeroth player problems
-            shuffle.toArray(players);
-            setCurrentPlayerByID(random.nextInt(numPlayers) + 1);
-        } else {
-            setCurrentPlayerByID(1);
-        }
-        refreshDisplayPlayers();
-        repaint();
-    }
+	protected void newGame(boolean randomizePlayer) {
+		//Create blank tiles
+		board.field = new Tile[board.numCols][board.numRows];
+		for (int x = 0; x < board.numCols; x++) {
+			for (int y = 0; y < board.numRows; y++) {
+				board.field[x][y] = new Tile(this.board, x, y);
+			}
+		}
+		inGame = true;
+		if (randomizePlayer) {
+			Random random = new Random();
 
-    protected boolean playerIsAlive(Player p) {
-        if (this.turn <= numPlayers) {
-            return true;//Players may be incorrectly labled as dead
-        } else {
-            return p.isAlive();
-        }
-    }
+			ArrayList<Player> shuffle = new ArrayList<>(Arrays.asList(players).subList(1, players.length));
+			//Sublist because of the pesky 0th player
 
-    private boolean setCurrentPlayerByID(int pID) {
-        if (!playerIsAlive(players[pID])) {
-            return false;
-        }
-        this.currentPlayerID = pID;
-        this.currentPlayer = players[pID];
-        this.gamePanel.setPlayerStatus(currentPlayer.getColor(), currentPlayer.getDisplayName() + "'s Turn");
-        return true;
-    }
+			java.util.Collections.shuffle(shuffle);
+			shuffle.add(0, players[0]); //Zeroth player problems
+			shuffle.toArray(players);
+			setCurrentPlayerByID(random.nextInt(numPlayers) + 1);
+		} else {
+			setCurrentPlayerByID(1);
+		}
+		refreshDisplayPlayers();
+		repaint();
+	}
 
-    public boolean setCurrentPlayer(Player thePlayer) {
-        for (Player p : players) {
-            if (p.equals(thePlayer)) {
-                return setCurrentPlayerByID(p.getNumber());
-            }
-        }
-        return false;
-    }
+	protected boolean playerIsAlive(Player p) {
+		if (this.turn <= numPlayers) {
+			return true; //Players may be incorrectly labled as dead
+		} else {
+			return p.isAlive();
+		}
+	}
 
-    protected void incrementPlayer(int curPlayerID) {
-        int targetID = 0;
-        if (curPlayerID == numPlayers) {
-            targetID = 1;
-        } else {
-            targetID = curPlayerID + 1;
-        }
+	private boolean setCurrentPlayerByID(int pID) {
+		if (!playerIsAlive(players[pID])) {
+			return false;
+		}
+		this.currentPlayerID = pID;
+		this.currentPlayer = players[pID];
+		this.gamePanel.setPlayerStatus(currentPlayer.getColor(), currentPlayer.getDisplayName() + "'s Turn");
 
-        if (setCurrentPlayerByID(targetID)) {
-            gamePanel.resetTimer();
-            turn++;
-        } else {
-            incrementPlayer(targetID);
-        }
-    }
+		return true;
+	}
 
-    protected void doReaction() throws StackOverflowError {
-        //-Xss JVM arg will change stack size
-        if (gameWon()) {//Do not run reaction if game is over
-            return;
-        }
+	public boolean setCurrentPlayer(Player thePlayer) {
+		for (Player p : players) {
+			if (p.equals(thePlayer)) {
+				return setCurrentPlayerByID(p.getNumber());
+			}
+		}
 
-        ArrayList<Tile> explodingTiles = new ArrayList<>();
-        for (Tile tile : board.getAllTiles()) {//Get the tiles that need to explode
-            if (tile.canExplode()) {
-                explodingTiles.add(tile);
-            }
-        }
+		return false;
+	}
 
-        ArrayList<Tile> increasedTiles = new ArrayList<>();
-        for (Tile tile : explodingTiles) {//Explode the tiles and add to the neighbors
-            increasedTiles.addAll(board.explodeTile(tile));
-        }
+	protected void incrementPlayer(int curPlayerID) {
+		int targetID = 0;
 
-        //Next iteration
-        if (increasedTiles.size() > 0) {
-            //Update the board, with delay so it looks nice
-            paintImmediately(0, 0, board.numCols * Config.getInt("CELL_SIZE"), board.numRows * Config.getInt("CELL_SIZE"));
-            sleep();
+		if (curPlayerID == numPlayers) {
+			targetID = 1;
+		} else {
+			targetID = curPlayerID + 1;
+		}
 
-            doReaction();
-        } else {//Do not iterate if nothing was changed
-        }
-    }
+		if (setCurrentPlayerByID(targetID)) {
+			gamePanel.resetTimer();
+			turn++;
+		} else {
+			incrementPlayer(targetID);
+		}
+	}
 
-    private void sleep() {
-        try {
-            Thread.sleep(Config.getInt("REACTION_DELAY"));
-        } catch (Exception er) {
+	protected void doReaction() throws StackOverflowError {
+		//-Xss JVM arg will change stack size
+		if (gameWon()) { //Do not run reaction if game is over
+			return;
+		}
 
-        }
-    }
+		ArrayList<Tile> explodingTiles = new ArrayList<>();
+		for (Tile tile : board.getAllTiles()) { //Get the tiles that need to explode
+			if (tile.canExplode()) {
+				explodingTiles.add(tile);
+			}
+		}
 
-    /**
-     * Preform a move as the current player on a random tile.
-     */
-    public void RNGTurn() {
-        if (!inGame || inReaction) {
-            return;
-        }
-        while (!doTurn(board.getRandomTile())) {//Try random tiles until works
+		ArrayList<Tile> increasedTiles = new ArrayList<>();
+		for (Tile tile : explodingTiles) { //Explode the tiles and add to the neighbors
+			increasedTiles.addAll(board.explodeTile(tile));
+		}
 
-        }
-    }
+		//Next iteration
+		if (increasedTiles.size() > 0) {
+			//Update the board, with delay so it looks nice
+			paintImmediately(0, 0, board.numCols * Config.getInt("CELL_SIZE"), board.numRows * Config.getInt("CELL_SIZE"));
+			sleep();
 
-    public void SkipTurn() {//This might be glitchy and may need to be removed
-        if (!inGame || inReaction) {
-            return;
-        }
-        incrementPlayer(currentPlayerID);
-    }
+			doReaction();
+		} else { //Do not iterate if nothing was changed
+		}
+	}
 
-    /**
-     * Checks if a move is valid for the specified tile and player. Will fail if the tile is not owned by the current player or the game is not running.
-     *
-     * @param onTile The tile to check
-     * @param onPlayer The player to check
-     *
-     * @return if the move is valid
-     */
-    public boolean moveIsValid(Tile onTile, Player onPlayer) {
-        if (inGame) {
-            if (onTile.getOwnerID() == 0) { //Unowned, can claim
-                return true;
-            } else { //Is owned
-                return onTile.getOwner() == onPlayer; //Make sure it is their tile
-                //Cannot play on others tiles
-            }
-        } else {
-            return false;
-        }
-    }
+	private void sleep() {
+		try {
+			Thread.sleep(Config.getInt("REACTION_DELAY"));
+		} catch (Exception er) {
+		}
+	}
 
-    /**
-     * Attempts to add a particle to the specified {@link Tile}, but may not be successful if move is invalid.
-     *
-     * @param onTile The tile that will be added to.
-     *
-     * @return True if the particle was successfully added.
-     */
-    public boolean doTurn(Tile onTile) {
+	/**
+	 * Perform a move as the current player on a random tile.
+	 */
+	public void RNGTurn() {
+		if (!inGame || inReaction) {
+			return;
+		}
+		while (!doTurn(board.getRandomTile())) { //Try random tiles until works
+		}
+	}
 
-        if (moveIsValid(onTile, currentPlayer)) {
+	public void SkipTurn() { //This might be glitchy and may need to be removed
+		if (!inGame || inReaction) {
+			return;
+		}
+		incrementPlayer(currentPlayerID);
+	}
 
-            //Increase particle count and update owner
-            onTile.setOwner(currentPlayer);
-            onTile.setNumberOfParticles(onTile.getNumberOfParticles() + 1);
+	/**
+	 * Checks if a move is valid for the specified tile and player.
+	 * Will fail if the tile is not owned by the current player or the game is not running.
+	 *
+	 * @param onTile The tile to check
+	 * @param onPlayer The player to check
+	 *
+	 * @return if the move is valid
+	 */
+	public boolean moveIsValid(Tile onTile, Player onPlayer) {
+		if (inGame) {
+			if (onTile.getOwnerID() == 0) { //Unowned, can claim
+				return true;
+			} else { //Is owned
+				return onTile.getOwner() == onPlayer; //Make sure it is their tile
+				//Cannot play on others tiles
+			}
+		} else {
+			return false;
+		}
+	}
 
-            //Generate undo information
-            Tile[][] fieldPreviousTemp = new Tile[board.numCols][board.numRows];
-            for (int fieldx = 0; fieldx < board.numCols; fieldx++) {
-                for (int fieldy = 0; fieldy < board.numRows; fieldy++) {
-                    fieldPreviousTemp[fieldx][fieldy] = board.field[fieldx][fieldy].cloneTile();
-                }
-            }
-            board.fieldPrevious = fieldPreviousTemp;
+	/**
+	 * Attempts to add a particle to the specified {@link Tile}, but may not be successful if move is invalid.
+	 *
+	 * @param onTile The tile that will be added to.
+	 *
+	 * @return True if the particle was successfully added.
+	 */
+	public boolean doTurn(Tile onTile) {
 
-            //Do the reaction
-            inReaction = true;
-            try {
-                doReaction();
-            } catch (StackOverflowError er) {
+		if (moveIsValid(onTile, currentPlayer)) {
 
-            }
-            inReaction = false;
+			//Increase particle count and update owner
+			onTile.setOwner(currentPlayer);
+			onTile.setNumberOfParticles(onTile.getNumberOfParticles() + 1);
 
-            if (!gameWon()) {
-                incrementPlayer(currentPlayerID);//Only increment if not won
-            }
+			//Generate undo information
+			Tile[][] fieldPreviousTemp = new Tile[board.numCols][board.numRows];
+			for (int fieldx = 0; fieldx < board.numCols; fieldx++) {
+				for (int fieldy = 0; fieldy < board.numRows; fieldy++) {
+					fieldPreviousTemp[fieldx][fieldy] = board.field[fieldx][fieldy].cloneTile();
+				}
+			}
+			board.fieldPrevious = fieldPreviousTemp;
 
-            repaint();
-            return true;
-        }
-        return false;//Move wasn't valid
-    }
+			//Do the reaction
+			inReaction = true;
+			try {
+				doReaction();
+			} catch (StackOverflowError er) {
+			}
+			inReaction = false;
 
-    private void refreshDisplayPlayers() {
-        ArrayList<Player> displayPlayers = new ArrayList<>();
-        if (turn <= numPlayers) {
-            for (int i = 1; i <= numPlayers; i++) {
-                players[i].setLiving(true);
-            }
-        }
-        for (int i = 1; i <= numPlayers; i++) {
-            displayPlayers.add(players[i]);
-        }
-        gamePanel.refreshPlayerList(displayPlayers.toArray(new Player[0]));
-    }
+			if (!gameWon()) {
+				incrementPlayer(currentPlayerID); //Only increment if not won
+			}
 
-    /**
-     * Undos the last move made on the board. Can only undo once.
-     */
-    public void undo() {
-        if (inReaction || !inGame) {
-            return;
-        }
-        //Check if tiles are same
-        boolean allSame = true;
-        for (int x = 0; x < board.numCols; x++) {
-            for (int y = 0; y < board.numRows; y++) {
-                if (board.field[x][y].equals(board.fieldPrevious[x][y])) {
-                } else {
-                    allSame = false;
-                    break;
-                }
-            }
-        }
+			repaint();
 
-        if (allSame) {
-            return;
-        }
+			return true;
+		}
 
-        board.field = board.fieldPrevious.clone();
-        //Decrement player
-        if (currentPlayerID == 1) {
-            setCurrentPlayerByID(numPlayers);
-        } else {
-            setCurrentPlayerByID(currentPlayerID - 1);
-        }
-        turn--;
+		return false; //Move wasn't valid
+	}
 
-        repaint();
-    }
+	private void refreshDisplayPlayers() {
+		ArrayList<Player> displayPlayers = new ArrayList<>();
+		if (turn <= numPlayers) {
+			for (int i = 1; i <= numPlayers; i++) {
+				players[i].setLiving(true);
+			}
+		}
+		for (int i = 1; i <= numPlayers; i++) {
+			displayPlayers.add(players[i]);
+		}
+		gamePanel.refreshPlayerList(displayPlayers.toArray(new Player[0]));
+	}
 
-    protected boolean gameWon() {
-        refreshDisplayPlayers();
+	/**
+	 * Undos the last move made on the board. Can only undo once.
+	 */
+	public void undo() {
+		if (inReaction || !inGame) {
+			return;
+		}
+		//Check if tiles are same
+		boolean allSame = true;
+		for (int x = 0; x < board.numCols; x++) {
+			for (int y = 0; y < board.numRows; y++) {
+				if (board.field[x][y].equals(board.fieldPrevious[x][y])) {
+				} else {
+					allSame = false;
+					break;
+				}
+			}
+		}
 
-        //If the first turn is checked things dont work right
-        if (turn <= numPlayers) {
-            return false;
-        }
-        //Reset everyone to dead and fill in the live ones later
-        for (Player player : players) {
-            player.setLiving(false);
-        }
-        //Determine living players
-        repaint();
-        for (Tile tile : board.getAllTiles()) {
-            if (tile.getNumberOfParticles() > 0) {
-                tile.getOwner().setLiving(true);
-            }
-        }
-        refreshDisplayPlayers();
+		if (allSame) {
+			return;
+		}
 
-        //check if more than one player living; if not winner is found
-        int numberAlive = 0;
-        for (Player p : players) {
-            if (p.isAlive()) {
-                numberAlive++;
-            }
-        }
-        if (numberAlive > 1) {//no winner
-            return false;
-        } else {
-            for (Player p : players) {
-                if (p.isAlive()) {
-                    inGame = false;
-                    gamePanel.setPlayerStatus(currentPlayer.getColor(), p.getDisplayName() + " Wins!");
-                    gamePanel.stopTimer();
-                }
-            }
-            return true;
-        }
-    }
+		board.field = board.fieldPrevious.clone();
+		//Decrement player
+		if (currentPlayerID == 1) {
+			setCurrentPlayerByID(numPlayers);
+		} else {
+			setCurrentPlayerByID(currentPlayerID - 1);
+		}
+		turn--;
 
-    @Override
-    public void paintComponent(Graphics g) {
-        //Clear everything, resolves a graphical glitch at bottom of grid
-        g.setColor(gamePanel.getBackground());
-        g.fillRect(0, 0, board.numCols * Config.getInt("CELL_SIZE") + 1000, board.numRows * Config.getInt("CELL_SIZE") + 1000);
+		repaint();
+	}
 
-        for (Tile tile : board.getAllTiles()) {
-            //Draw particles (spheres)
-            Image theImage;
-            theImage = Config.getImageByPlayerID(tile.getOwnerID(), tile.getNumberOfParticles());
+	protected boolean gameWon() {
+		refreshDisplayPlayers();
 
-            g.drawImage(theImage, (tile.getX() * Config.getInt("CELL_SIZE")), (tile.getY() * Config.getInt("CELL_SIZE")), this);
-        }
-    }
+		//If the first turn is checked things dont work right
+		if (turn <= numPlayers) {
+			return false;
+		}
+		//Reset everyone to dead and fill in the live ones later
+		for (Player player : players) {
+			player.setLiving(false);
+		}
+		//Determine living players
+		repaint();
+		for (Tile tile : board.getAllTiles()) {
+			if (tile.getNumberOfParticles() > 0) {
+				tile.getOwner().setLiving(true);
+			}
+		}
+		refreshDisplayPlayers();
 
-    public class MyMouseAdapter extends MouseAdapter {
+		//check if more than one player living; if not winner is found
+		int numberAlive = 0;
+		for (Player p : players) {
+			if (p.isAlive()) {
+				numberAlive++;
+			}
+		}
+		if (numberAlive > 1) { //no winner
+			return false;
+		} else {
+			for (Player p : players) {
+				if (p.isAlive()) {
+					inGame = false;
+					gamePanel.setPlayerStatus(currentPlayer.getColor(), p.getDisplayName() + " Wins!");
+					gamePanel.stopTimer();
+				}
+			}
 
-        @Override
-        public void mousePressed(MouseEvent e) {
-            int x = e.getX();
-            int y = e.getY();
+			return true;
+		}
+	}
 
-            int clickedCol = x / Config.getInt("CELL_SIZE");
-            int clickedRow = y / Config.getInt("CELL_SIZE");
+	@Override
+	public void paintComponent(Graphics g) {
+		//Clear everything, resolves a graphical glitch at bottom of grid
+		g.setColor(gamePanel.getBackground());
+		g.fillRect(0, 0, board.numCols * Config.getInt("CELL_SIZE") + 1000, board.numRows * Config.getInt("CELL_SIZE") + 1000);
 
-            if ((clickedCol >= board.numCols) || (clickedRow >= board.numRows)) { //Out of bounds
-                return;
-            }
+		for (Tile tile : board.getAllTiles()) {
+			//Draw particles (spheres)
+			Image theImage;
+			theImage = Config.getImageByPlayerID(tile.getOwnerID(), tile.getNumberOfParticles());
 
-            Tile tile = board.field[clickedCol][clickedRow];
-            if ((x < board.numCols * Config.getInt("CELL_SIZE")) && (y < board.numRows * Config.getInt("CELL_SIZE"))) { //in bounds
-                clickFunction(tile);
-            }
-        }
-    }
+			g.drawImage(theImage, (tile.getX() * Config.getInt("CELL_SIZE")), (tile.getY() * Config.getInt("CELL_SIZE")), this);
+		}
+	}
 
-    public void clickFunction(Tile t) {
-        doTurn(t);
-    }
+	public class MyMouseAdapter extends MouseAdapter {
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			int x = e.getX();
+			int y = e.getY();
+
+			int clickedCol = x / Config.getInt("CELL_SIZE");
+			int clickedRow = y / Config.getInt("CELL_SIZE");
+
+			if ((clickedCol >= board.numCols) || (clickedRow >= board.numRows)) { //Out of bounds
+				return;
+			}
+
+			Tile tile = board.field[clickedCol][clickedRow];
+			if ((x < board.numCols * Config.getInt("CELL_SIZE")) &&
+					(y < board.numRows * Config.getInt("CELL_SIZE"))) { //in bounds
+				clickFunction(tile);
+			}
+		}
+	}
+
+	public void clickFunction(Tile t) {
+		doTurn(t);
+	}
 }
