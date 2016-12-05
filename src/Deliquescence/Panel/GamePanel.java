@@ -48,148 +48,149 @@ import javax.swing.Timer;
  */
 public class GamePanel extends javax.swing.JPanel {
 
-    protected GameManager gameManager;
-    public Game game;
-    protected Timer timer;
+	protected GameManager gameManager;
+	public Game game;
+	protected Timer timer;
 
-    protected int totalTime;
-    protected int currentTime;
-    protected final int timerAction;
+	protected int totalTime;
+	protected int currentTime;
+	protected final int timerAction;
 
-    /**
-     * Creates a new GamePanel with all the specified settings.
-     *
-     * @param gameManager The parent {@link GameManager} of this GamePanel.
-     * @param numPlayers The number of players in the game.
-     * @param rows The number of rows in the game.
-     * @param columns The number of columns in the game.
-     * @param players Array containing the players.
-     * @param RNGEnabled True if the RNG button will be enabled.
-     * @param RandomizePlayer True to choose a random player to start.
-     * @param timerLength The length of the timer (0 if disabled)
-     * @param timeAction 0 for skip turn, 1 for RNG turn
-     */
-    public GamePanel(GameManager gameManager, int numPlayers, int rows, int columns, Player[] players, boolean RNGEnabled, boolean RandomizePlayer, int timerLength, int timeAction) {
-        initComponents();
-        this.gameManager = gameManager;
+	/**
+	 * Creates a new GamePanel with all the specified settings.
+	 *
+	 * @param gameManager The parent {@link GameManager} of this GamePanel.
+	 * @param numPlayers The number of players in the game.
+	 * @param rows The number of rows in the game.
+	 * @param columns The number of columns in the game.
+	 * @param players Array containing the players.
+	 * @param RNGEnabled True if the RNG button will be enabled.
+	 * @param RandomizePlayer True to choose a random player to start.
+	 * @param timerLength The length of the timer (0 if disabled)
+	 * @param timeAction 0 for skip turn, 1 for RNG turn
+	 */
+	public GamePanel(GameManager gameManager, int numPlayers, int rows, int columns, Player[] players, boolean RNGEnabled, boolean RandomizePlayer, int timerLength, int timeAction) {
+		initComponents();
+		this.gameManager = gameManager;
 
-        RNGButton.setEnabled(RNGEnabled);
+		RNGButton.setEnabled(RNGEnabled);
 
-        this.totalTime = timerLength;
-        this.currentTime = totalTime;
-        this.timerAction = timeAction;
+		this.totalTime = timerLength;
+		this.currentTime = totalTime;
+		this.timerAction = timeAction;
 
-        timer = new Timer(1000, new ActionListener() {
+		timer = new Timer(1000, new ActionListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                TimerCounter.setText(Integer.toString(currentTime));
-                if (currentTime > 0) {
-                    currentTime--;
-                } else {
-                    currentTime = totalTime;
-                    if (timerAction == 0) {//Skip
-                        game.SkipTurn();
-                    } else if (timerAction == 1) {//RNG
-                        game.RNGTurn();
-                    }
-                }
-            }
-        }
-        );
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TimerCounter.setText(Integer.toString(currentTime));
+				if (currentTime > 0) {
+					currentTime--;
+				} else {
+					currentTime = totalTime;
+					if (timerAction == 0) {//Skip
+						game.SkipTurn();
+					} else if (timerAction == 1) {//RNG
+						game.RNGTurn();
+					}
+				}
+			}
+		}
+		);
 
-        makeGame(numPlayers, rows, columns, players, RandomizePlayer);
+		makeGame(numPlayers, rows, columns, players, RandomizePlayer);
 
-        add(game);
-        if (totalTime != 0) {
-            TimerLabel1.setText("Timer:");
-            //startTimer();
-            //TODO stop when lose focus
-            //todo fix wins with early skipped turns
-            //maybe dont start until after first turns
-        }
-    }
+		add(game);
+		if (totalTime != 0) {
+			TimerLabel1.setText("Timer:");
+			//startTimer();
+			//TODO stop when lose focus
+			//todo fix wins with early skipped turns
+			//maybe dont start until after first turns
+		}
+	}
 
-    protected void makeGame(int numPlayers, int rows, int columns, Player[] players, boolean RandomizePlayer) {
-        game = new Game(this, numPlayers, rows, columns, players, RandomizePlayer);
-    }
+	protected void makeGame(int numPlayers, int rows, int columns, Player[] players, boolean RandomizePlayer) {
+		game = new Game(this, numPlayers, rows, columns, players, RandomizePlayer);
+	}
 
-    /**
-     * Reset the turn timer to its starting value.
-     */
-    public void resetTimer() {//TODO glitch when turn done near end of timer
-        currentTime = totalTime;
-    }
+	/**
+	 * Reset the turn timer to its starting value.
+	 */
+	public void resetTimer() {//TODO glitch when turn done near end of timer
+		currentTime = totalTime;
+	}
 
-    /**
-     * End the turn timer.
-     */
-    public void stopTimer() {
-        if (totalTime != 0) {
-            timer.stop();
-        }
-    }
+	/**
+	 * End the turn timer.
+	 */
+	public void stopTimer() {
+		if (totalTime != 0) {
+			timer.stop();
+		}
+	}
 
-    /**
-     * Start the turn timer.
-     */
-    public void startTimer() {
-        if (totalTime != 0) {
-            timer.start();
-        }
-    }
+	/**
+	 * Start the turn timer.
+	 */
+	public void startTimer() {
+		if (totalTime != 0) {
+			timer.start();
+		}
+	}
 
-    /**
-     * Set the color and text of the large player turn label.
-     *
-     * @param color The color of the label .
-     * @param text The text of the label, usually "Player _'s turn"
-     */
-    public void setPlayerStatus(Color color, String text) {
-        PlayerStatusLabel.setForeground(color);
-        PlayerStatusLabel.setText(text);
-    }
+	/**
+	 * Set the color and text of the large player turn label.
+	 *
+	 * @param color The color of the label .
+	 * @param text The text of the label, usually "Player _'s turn"
+	 */
+	public void setPlayerStatus(Color color, String text) {
+		PlayerStatusLabel.setForeground(color);
+		PlayerStatusLabel.setText(text);
+	}
 
-    /**
-     * Update the list of players on the side so it displays if a player has died.
-     *
-     * @param players Array of all the players that are/were part of this game.
-     */
-    @SuppressWarnings("unchecked") //attributes.put()
-    public void refreshPlayerList(Player[] players) {
-        PlayerListPanel.removeAll();
-        JLabel title = new JLabel("Players:");
-        title.setFont(new Font("Gulium", Font.BOLD, 22));
-        title.setHorizontalAlignment(SwingConstants.CENTER);
-        title.setHorizontalTextPosition(SwingConstants.CENTER);
-        PlayerListPanel.add(title);
-        for (Player p : players) {
-            String labelText = p.getDisplayName();
-            Font baseFont = new Font("Gulium", Font.BOLD, 16);
-            Font labelFont;
-            if (!p.isAlive()) {
-                java.util.Map attributes = baseFont.getAttributes();
-                attributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
-                attributes.put(TextAttribute.FONT, new Font("Gulium", Font.PLAIN, 16));
+	/**
+	 * Update the list of players on the side so it displays if a player has died.
+	 *
+	 * @param players Array of all the players that are/were part of this game.
+	 */
+	@SuppressWarnings("unchecked") //attributes.put()
+	public void refreshPlayerList(Player[] players) {
+		PlayerListPanel.removeAll();
+		JLabel title = new JLabel("Players:");
+		title.setFont(new Font("Gulium", Font.BOLD, 22));
+		title.setHorizontalAlignment(SwingConstants.CENTER);
+		title.setHorizontalTextPosition(SwingConstants.CENTER);
+		PlayerListPanel.add(title);
+		for (Player p : players) {
+			String labelText = p.getDisplayName();
+			Font baseFont = new Font("Gulium", Font.BOLD, 16);
+			Font labelFont;
+			if (!p.isAlive()) {
+				java.util.Map attributes = baseFont.getAttributes();
+				attributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
+				attributes.put(TextAttribute.FONT, new Font("Gulium", Font.PLAIN, 16));
 
-                labelFont = new Font(attributes);
-            } else {
-                labelFont = baseFont;
-            }
+				labelFont = new Font(attributes);
+			} else {
+				labelFont = baseFont;
+			}
 
-            JLabel label = new JLabel(labelText);
-            label.setForeground(p.getColor());
-            label.setFont(labelFont);
-            label.setHorizontalAlignment(SwingConstants.CENTER);
-            label.setHorizontalTextPosition(SwingConstants.CENTER);
-            PlayerListPanel.add(label);
-        }
-    }
+			JLabel label = new JLabel(labelText);
+			label.setForeground(p.getColor());
+			label.setFont(labelFont);
+			label.setHorizontalAlignment(SwingConstants.CENTER);
+			label.setHorizontalTextPosition(SwingConstants.CENTER);
+			PlayerListPanel.add(label);
+		}
+	}
 
-    /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
+	/**
+	 * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is
+	 * always regenerated by the Form Editor.
+	 */
+	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -265,15 +266,15 @@ public class GamePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CloseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseButtonActionPerformed
-        this.gameManager.removeTab(this);
+		this.gameManager.removeTab(this);
     }//GEN-LAST:event_CloseButtonActionPerformed
 
     private void UndoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UndoButtonActionPerformed
-        game.undo();
+		game.undo();
     }//GEN-LAST:event_UndoButtonActionPerformed
 
     private void RNGButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RNGButtonActionPerformed
-        game.RNGTurn();
+		game.RNGTurn();
     }//GEN-LAST:event_RNGButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

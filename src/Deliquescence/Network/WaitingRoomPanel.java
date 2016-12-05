@@ -53,144 +53,144 @@ import javax.swing.JTextField;
  */
 public class WaitingRoomPanel extends javax.swing.JPanel {
 
-    InetAddress serverAddress;
-    GameManager gameList;
-    NetworkGameViewer ngv;
-    int numLocalPlayers;
-    GameClient client;
-    GameServer server;
-    boolean isServer;
-    private Thread nameUpdateThread;
-    NamesEditor names;
+	InetAddress serverAddress;
+	GameManager gameList;
+	NetworkGameViewer ngv;
+	int numLocalPlayers;
+	GameClient client;
+	GameServer server;
+	boolean isServer;
+	private Thread nameUpdateThread;
+	NamesEditor names;
 
-    public NetworkGamePanel networkGamePanel;
+	public NetworkGamePanel networkGamePanel;
 
-    /**
-     * Creates new form WaitingRoomPanel
-     */
-    public WaitingRoomPanel(GameManager listPanel, GameClient client, int numLocalPlayers, NetworkGameViewer ngv) {
-        initComponents();
+	/**
+	 * Creates new form WaitingRoomPanel
+	 */
+	public WaitingRoomPanel(GameManager listPanel, GameClient client, int numLocalPlayers, NetworkGameViewer ngv) {
+		initComponents();
 
-        this.gameList = listPanel;
-        this.numLocalPlayers = numLocalPlayers;
-        this.client = client;
-        this.serverAddress = client.serverAddress;
-        serverAddressLabel.setText("Server Address: " + serverAddress.getHostName());
-        this.ngv = ngv;
-        isServer = false;
-        client.wrp = this;
+		this.gameList = listPanel;
+		this.numLocalPlayers = numLocalPlayers;
+		this.client = client;
+		this.serverAddress = client.serverAddress;
+		serverAddressLabel.setText("Server Address: " + serverAddress.getHostName());
+		this.ngv = ngv;
+		isServer = false;
+		client.wrp = this;
 
-        names = new NamesEditor();
-        NamesPanel.add(names);
+		names = new NamesEditor();
+		NamesPanel.add(names);
 
-        updateLocalNames();
+		updateLocalNames();
 
-        NamesPanel.setPreferredSize(new Dimension(800, 20 * (numLocalPlayers + 1)));
-    }
+		NamesPanel.setPreferredSize(new Dimension(800, 20 * (numLocalPlayers + 1)));
+	}
 
-    public WaitingRoomPanel(GameManager listPanel, GameServer server, int numLocalPlayers, NetworkGameViewer ngv) {
-        initComponents();
+	public WaitingRoomPanel(GameManager listPanel, GameServer server, int numLocalPlayers, NetworkGameViewer ngv) {
+		initComponents();
 
-        this.gameList = listPanel;
-        this.numLocalPlayers = numLocalPlayers;
-        this.server = server;
-        this.ngv = ngv;
-        isServer = true;
-        try {
-            this.serverAddress = InetAddress.getLocalHost();//Since is server
-            serverAddressLabel.setText("Server Address: " + this.serverAddress.getHostName());
-        } catch (UnknownHostException ex) {
-        }
+		this.gameList = listPanel;
+		this.numLocalPlayers = numLocalPlayers;
+		this.server = server;
+		this.ngv = ngv;
+		isServer = true;
+		try {
+			this.serverAddress = InetAddress.getLocalHost();//Since is server
+			serverAddressLabel.setText("Server Address: " + this.serverAddress.getHostName());
+		} catch (UnknownHostException ex) {
+		}
 
-        try {
-            this.client = new GameClient();
+		try {
+			this.client = new GameClient();
 
-            Networking.register(client);
+			Networking.register(client);
 
-            client.start();
+			client.start();
 
-            NetworkGameSettings settings = new NetworkGameSettings();
-            client.settings = settings;
+			NetworkGameSettings settings = new NetworkGameSettings();
+			client.settings = settings;
 
-            client.connect(5000, "localhost", Config.getInt("NETWORK_PORT"));
+			client.connect(5000, "localhost", Config.getInt("NETWORK_PORT"));
 
-            client.wrp = this;
-        } catch (Exception e) {
-            Log.error(WaitingRoomPanel.class.getName(), "", e);
-        }
+			client.wrp = this;
+		} catch (Exception e) {
+			Log.error(WaitingRoomPanel.class.getName(), "", e);
+		}
 
-        names = new NamesEditor();
-        NamesPanel.add(names);
-        updateLocalNames();
-        NamesPanel.setPreferredSize(new Dimension(800, 20 * (numLocalPlayers + 1)));
+		names = new NamesEditor();
+		NamesPanel.add(names);
+		updateLocalNames();
+		NamesPanel.setPreferredSize(new Dimension(800, 20 * (numLocalPlayers + 1)));
 
-        this.nameUpdateThread = Updater.createUpdater("names", new Callable() {
+		this.nameUpdateThread = Updater.createUpdater("names", new Callable() {
 
-            @Override
-            public Object call() throws Exception {
-                WaitingRoomPanel.this.server.getNames();
-                if (WaitingRoomPanel.this.server.allPlayers.size() > 1) {
-                    int remainingPlayers = WaitingRoomPanel.this.server.allPlayers.size() - WaitingRoomPanel.this.server.getReadyPlayers().size();
-                    if (remainingPlayers != 0) {
-                        WaitingRoomPanel.this.server.timer = -1;
-                    } else {
-                        if (WaitingRoomPanel.this.server.timer == -1) {
-                            WaitingRoomPanel.this.server.timer = 10;
-                        } else {
-                            WaitingRoomPanel.this.server.timer--;
-                        }
-                    }
-                    if (WaitingRoomPanel.this.server.timer == 5) {
-                        WaitingRoomPanel.this.server.shufflePlayers();
-                    }
-                    NetworkPacket np = new NetworkPacket(PacketTitle.readyStatusPacket);
-                    np.setData("numWaitingFor", remainingPlayers);
-                    np.setData("seconds", WaitingRoomPanel.this.server.timer);
-                    WaitingRoomPanel.this.server.sendToAllTCP(np);
+			@Override
+			public Object call() throws Exception {
+				WaitingRoomPanel.this.server.getNames();
+				if (WaitingRoomPanel.this.server.allPlayers.size() > 1) {
+					int remainingPlayers = WaitingRoomPanel.this.server.allPlayers.size() - WaitingRoomPanel.this.server.getReadyPlayers().size();
+					if (remainingPlayers != 0) {
+						WaitingRoomPanel.this.server.timer = -1;
+					} else {
+						if (WaitingRoomPanel.this.server.timer == -1) {
+							WaitingRoomPanel.this.server.timer = 10;
+						} else {
+							WaitingRoomPanel.this.server.timer--;
+						}
+					}
+					if (WaitingRoomPanel.this.server.timer == 5) {
+						WaitingRoomPanel.this.server.shufflePlayers();
+					}
+					NetworkPacket np = new NetworkPacket(PacketTitle.readyStatusPacket);
+					np.setData("numWaitingFor", remainingPlayers);
+					np.setData("seconds", WaitingRoomPanel.this.server.timer);
+					WaitingRoomPanel.this.server.sendToAllTCP(np);
 
-                    if (remainingPlayers == 0 && WaitingRoomPanel.this.server.timer == 0) {
-                        WaitingRoomPanel.this.startGame(WaitingRoomPanel.this.server);
-                        WaitingRoomPanel.this.nameUpdateThread.interrupt();
-                        Thread.sleep(1000);//Wait for interrupt to catch up
-                    }
-                }
-                return 0;
-            }
-        });
-        this.nameUpdateThread.start();
-    }
+					if (remainingPlayers == 0 && WaitingRoomPanel.this.server.timer == 0) {
+						WaitingRoomPanel.this.startGame(WaitingRoomPanel.this.server);
+						WaitingRoomPanel.this.nameUpdateThread.interrupt();
+						Thread.sleep(1000);//Wait for interrupt to catch up
+					}
+				}
+				return 0;
+			}
+		});
+		this.nameUpdateThread.start();
+	}
 
-    public void updateLocalNames() {
-        String[] theNames = names.getPlayerNames();
+	public void updateLocalNames() {
+		String[] theNames = names.getPlayerNames();
 
-        if (client.localPlayers == null) { //Need to init
-            client.localPlayers = new Player[numLocalPlayers];
-            for (int i = 0; i < theNames.length; i++) {
-                client.localPlayers[i] = new Player(i, theNames[i]);
-            }
-        }
+		if (client.localPlayers == null) { //Need to init
+			client.localPlayers = new Player[numLocalPlayers];
+			for (int i = 0; i < theNames.length; i++) {
+				client.localPlayers[i] = new Player(i, theNames[i]);
+			}
+		}
 
-        for (int i = 0; i < theNames.length; i++) {
-            client.localPlayers[i].setName(theNames[i]);
-        }
+		for (int i = 0; i < theNames.length; i++) {
+			client.localPlayers[i].setName(theNames[i]);
+		}
 
-        //Players display
-        int i = 0;
-        String[] displayNames = new String[this.client.allPlayers.size()];
-        for (Player p : this.client.getAllPlayers()) {
-            displayNames[i] = p.getDisplayName();
-            i++;
-        }
-        playersjList.setListData(displayNames);
-    }
+		//Players display
+		int i = 0;
+		String[] displayNames = new String[this.client.allPlayers.size()];
+		for (Player p : this.client.getAllPlayers()) {
+			displayNames[i] = p.getDisplayName();
+			i++;
+		}
+		playersjList.setListData(displayNames);
+	}
 
-    /**
-     * This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
+	/**
+	 * This method is called from within the constructor to
+	 * initialize the form.
+	 * WARNING: Do NOT modify this code. The content of this method is
+	 * always regenerated by the Form Editor.
+	 */
+	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -260,91 +260,99 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LeaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LeaveButtonActionPerformed
-        this.gameList.removeTab(this);//todo cleaner exit of server and client
+		this.gameList.removeTab(this);//todo cleaner exit of server and client
     }//GEN-LAST:event_LeaveButtonActionPerformed
 
     private void editSettingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editSettingsButtonActionPerformed
-        if (isServer) {
-            NetworkSetupPanel.popupSettingsEditor(this.server);
-        }
+		if (isServer) {
+			NetworkSetupPanel.popupSettingsEditor(this.server);
+		}
     }//GEN-LAST:event_editSettingsButtonActionPerformed
 
     private void readyToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readyToggleButtonActionPerformed
-        boolean toggle = readyToggleButton.isSelected();
+		boolean toggle = readyToggleButton.isSelected();
 
-        //Flag this clients players as toggled
-        for (int i = 0; i < this.client.localPlayers.length; i++) {
-            this.client.localPlayers[i].setReady(toggle);
-        }
+		//Flag this clients players as toggled
+		for (int i = 0; i < this.client.localPlayers.length; i++) {
+			this.client.localPlayers[i].setReady(toggle);
+		}
 
-        //Lock the name editors if ready so no weird changes
-        for (Component p : names.getComponents()) {
-            //names has JLabel and then JPanel to contiain text fields
-            if (p.getClass() == JPanel.class) {//Get the JPanel with the fields
-                JPanel jp = (JPanel) p;//Need for call to getComponents
-                for (Component c : jp.getComponents()) {//Get the fields
-                    if (c.getClass() == JTextField.class) {
-                        c.setEnabled(!toggle);//Should only editable if not ready
-                    }
-                }
-            }
-        }
+		//Lock the name editors if ready so no weird changes
+		for (Component p : names.getComponents()) {
+			//names has JLabel and then JPanel to contiain text fields
+			if (p.getClass() == JPanel.class) {//Get the JPanel with the fields
+				JPanel jp = (JPanel) p;//Need for call to getComponents
+				for (Component c : jp.getComponents()) {//Get the fields
+					if (c.getClass() == JTextField.class) {
+						c.setEnabled(!toggle);//Should only editable if not ready
+					}
+				}
+			}
+		}
 
-        //Lock the settings edit button
-        if (isServer) {
-            editSettingsButton.setEnabled(!toggle);
-        }
+		//Lock the settings edit button
+		if (isServer) {
+			editSettingsButton.setEnabled(!toggle);
+		}
     }//GEN-LAST:event_readyToggleButtonActionPerformed
 
-    public void setReadyInfo(int playersRemaining, int secondsRemaining) {
-        if (playersRemaining != 0) {
-            readyStatusLabel.setText("Waiting for " + playersRemaining + " players to ready up");
-        } else {
-            readyStatusLabel.setText("About " + secondsRemaining + " seconds until start");
-        }
-    }
+	public void setReadyInfo(int playersRemaining, int secondsRemaining) {
+		if (playersRemaining != 0) {
+			readyStatusLabel.setText("Waiting for " + playersRemaining + " players to ready up");
+		} else {
+			readyStatusLabel.setText("About " + secondsRemaining + " seconds until start");
+		}
+	}
 
-    public void startGame(GameClient client) {
-        Log.trace("wrp.startgame");
+	public void startGame(GameClient client) {
+		Log.trace("wrp.startgame");
 
-        this.networkGamePanel = new NetworkGamePanel(
-                gameList,
-                client.settings.totalPlayers,
-                client.settings.rows,
-                client.settings.cols,
-                client.getAllPlayers().toArray(new Player[0]),
-                client.settings.RNGEnabled, 0, 0,
-                server,
-                client
-        );
-        this.ngv.displayGame(this.networkGamePanel);
-    }
+		this.networkGamePanel = new NetworkGamePanel(
+				gameList,
+				client.settings.totalPlayers,
+				client.settings.rows,
+				client.settings.cols,
+				client.getAllPlayers().toArray(new Player[0]),
+				client.settings.RNGEnabled, 0, 0,
+				server,
+				client
+		);
+		this.ngv.displayGame(this.networkGamePanel);
+	}
 
-    private void startGame(GameServer server) {
-        this.nameUpdateThread.interrupt();
+	private void startGame(GameServer server) {
+		this.nameUpdateThread.interrupt();
 
-        NetworkPacket p = new NetworkPacket(GameStartPacket);
+		NetworkPacket p = new NetworkPacket(GameStartPacket);
 
-        //Handle random starting player
-        Random rand = new Random();
-        p.setData("randomStart", server.getSettings().randomStartingPlayer);
-        if (server.getSettings().randomStartingPlayer) {
-            Player[] plays = server.getAllPlayers().toArray(new Player[0]);
+		//Handle random starting player
+		Random rand = new Random();
+		p.setData("randomStart", server.getSettings().randomStartingPlayer);
+		if (server.getSettings().randomStartingPlayer) {
+			Player[] plays = server.getAllPlayers().toArray(new Player[0]);
 
-            //Random start
-            Player randomPlayer = plays[rand.nextInt(server.allPlayers.size())];
-            p.setData("startPlayer", randomPlayer);
-            try {
-                Thread.sleep(1111); //Really need names to update properly
-            } catch (InterruptedException ex) {
-            }
-        }
+			//Random start
+			Player randomPlayer = plays[rand.nextInt(server.allPlayers.size())];
+			p.setData("startPlayer", randomPlayer);
+			try {
+				Thread.sleep(1111); //Really need names to update properly
+			} catch (InterruptedException ex) {
+			}
+		}
 
-        server.sendToAllTCP(p);
+		server.sendToAllTCP(p);
 
-        this.networkGamePanel = new NetworkGamePanel(gameList, server.getSettings().totalPlayers, server.getSettings().rows, server.getSettings().cols, server.getAllPlayers().toArray(new Player[0]), server.getSettings().RNGEnabled, 0, 0, server, client);
-        ngv.displayGame(networkGamePanel);
-    }
+		this.networkGamePanel = new NetworkGamePanel(
+				gameList,
+				server.getSettings().totalPlayers,
+				server.getSettings().rows,
+				server.getSettings().cols,
+				server.getAllPlayers().toArray(new Player[0]),
+				server.getSettings().RNGEnabled, 0, 0,
+				server,
+				client);
+		ngv.displayGame(networkGamePanel);
+	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton LeaveButton;
@@ -359,108 +367,108 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
     private javax.swing.JLabel serverAddressLabel;
     // End of variables declaration//GEN-END:variables
 
-    //This doesnt comply with DRY, but extending panel.playerNames wasnt working
-    class NamesEditor extends javax.swing.JPanel {
+	//This doesnt comply with DRY, but extending panel.playerNames wasnt working
+	class NamesEditor extends javax.swing.JPanel {
 
-        private JTextField[] playerTextFields;
-        private int numPlayers;
+		private JTextField[] playerTextFields;
+		private int numPlayers;
 
-        /**
-         * Creates new form PlayerNames
-         */
-        public NamesEditor() {
-            initComponents();
-            numPlayers = numLocalPlayers;
-            playerTextFields = new JTextField[numPlayers + 1];
-            makeTextFields(null);
+		/**
+		 * Creates new form PlayerNames
+		 */
+		public NamesEditor() {
+			initComponents();
+			numPlayers = numLocalPlayers;
+			playerTextFields = new JTextField[numPlayers + 1];
+			makeTextFields(null);
 
-        }
+		}
 
-        /**
-         * Gets the configured name of a player from its text field.
-         *
-         * @param ID The id of the numLocalPlayers name to be found
-         *
-         * @return The name of the player
-         */
-        public String[] getPlayerNames() {
-            String[] out = new String[numPlayers];
-            for (int i = 0; i < out.length; i++) {
-                out[i] = playerTextFields[i + 1].getText();//playerTextFields is 1 based index
-            }
-            return out;
-        }
+		/**
+		 * Gets the configured name of a player from its text field.
+		 *
+		 * @param ID The id of the numLocalPlayers name to be found
+		 *
+		 * @return The name of the player
+		 */
+		public String[] getPlayerNames() {
+			String[] out = new String[numPlayers];
+			for (int i = 0; i < out.length; i++) {
+				out[i] = playerTextFields[i + 1].getText();//playerTextFields is 1 based index
+			}
+			return out;
+		}
 
-        private void makeTextFields(String[] preConfiguredNames) {
-            fieldsPanel.removeAll();
+		private void makeTextFields(String[] preConfiguredNames) {
+			fieldsPanel.removeAll();
 
-            //Add player text boxes
-            for (int i = 1; i <= numPlayers; i++) {
+			//Add player text boxes
+			for (int i = 1; i <= numPlayers; i++) {
 
-                //If the config is changed, do not overwrite the old player name
-                JTextField temp = null;
-                try {
-                    temp = new JTextField(preConfiguredNames[i]);
-                } catch (Exception e) {
-                }
-                if (temp == null || "".equals(temp.getText())) { //temp.getText() == ""
-                    temp = new JTextField(Deliquescence.Config.getDefaultPlayerName(i));
-                }
-                final JTextField textField = temp;
-                playerTextFields[i] = textField;
+				//If the config is changed, do not overwrite the old player name
+				JTextField temp = null;
+				try {
+					temp = new JTextField(preConfiguredNames[i]);
+				} catch (Exception e) {
+				}
+				if (temp == null || "".equals(temp.getText())) { //temp.getText() == ""
+					temp = new JTextField(Deliquescence.Config.getDefaultPlayerName(i));
+				}
+				final JTextField textField = temp;
+				playerTextFields[i] = textField;
 
-                textField.setName(Integer.toString(i));
+				textField.setName(Integer.toString(i));
 
-                textField.setMaximumSize(new Dimension(800, 20));
-                textField.setMinimumSize(new Dimension(200, 20));
-                textField.setPreferredSize(new Dimension(400, 20));
+				textField.setMaximumSize(new Dimension(800, 20));
+				textField.setMinimumSize(new Dimension(200, 20));
+				textField.setPreferredSize(new Dimension(400, 20));
 
-                textField.addFocusListener(new FocusListener() {
-                    @Override
-                    public void focusGained(FocusEvent e) {
-                        if (textField.getText().contains("Player ")) {
-                            textField.setText("");
-                        }
-                    }
+				textField.addFocusListener(new FocusListener() {
+					@Override
+					public void focusGained(FocusEvent e) {
+						if (textField.getText().contains("Player ")) {
+							textField.setText("");
+						}
+					}
 
-                    @Override
-                    public void focusLost(FocusEvent e) {
-                        if (textField.getText().equals("")) {
-                            textField.setText("Player " + textField.getName());
-                        }
-                    }
-                });
-                playerTextFields[i].setVisible(true);
-                fieldsPanel.add(playerTextFields[i]);
-            }
-        }
+					@Override
+					public void focusLost(FocusEvent e) {
+						if (textField.getText().equals("")) {
+							textField.setText("Player " + textField.getName());
+						}
+					}
+				});
+				playerTextFields[i].setVisible(true);
+				fieldsPanel.add(playerTextFields[i]);
+			}
+		}
 
-        /**
-         * This method is called from within the constructor to
-         * initialize the form.
-         * WARNING: Do NOT modify this code. The content of this method is
-         * always regenerated by the Form Editor.
-         */
-        @SuppressWarnings("unchecked")
-        // <editor-fold defaultstate="collapsed" desc="Generated Code">
-        private void initComponents() {
+		/**
+		 * This method is called from within the constructor to
+		 * initialize the form.
+		 * WARNING: Do NOT modify this code. The content of this method is
+		 * always regenerated by the Form Editor.
+		 */
+		@SuppressWarnings("unchecked")
+		// <editor-fold defaultstate="collapsed" desc="Generated Code">
+		private void initComponents() {
 
-            fieldsPanel = new javax.swing.JPanel();
-            jLabel1 = new javax.swing.JLabel();
+			fieldsPanel = new javax.swing.JPanel();
+			jLabel1 = new javax.swing.JLabel();
 
-            setLayout(new java.awt.BorderLayout());
+			setLayout(new java.awt.BorderLayout());
 
-            fieldsPanel.setLayout(new javax.swing.BoxLayout(fieldsPanel, javax.swing.BoxLayout.Y_AXIS));
-            add(fieldsPanel, java.awt.BorderLayout.CENTER);
+			fieldsPanel.setLayout(new javax.swing.BoxLayout(fieldsPanel, javax.swing.BoxLayout.Y_AXIS));
+			add(fieldsPanel, java.awt.BorderLayout.CENTER);
 
-            jLabel1.setText("Local Player Names:");
-            jLabel1.setToolTipText("");
-            add(jLabel1, java.awt.BorderLayout.PAGE_START);
-        }// </editor-fold>
+			jLabel1.setText("Local Player Names:");
+			jLabel1.setToolTipText("");
+			add(jLabel1, java.awt.BorderLayout.PAGE_START);
+		}// </editor-fold>
 
-        // Variables declaration - do not modify
-        private javax.swing.JPanel fieldsPanel;
-        private javax.swing.JLabel jLabel1;
-        // End of variables declaration
-    }
+		// Variables declaration - do not modify
+		private javax.swing.JPanel fieldsPanel;
+		private javax.swing.JLabel jLabel1;
+		// End of variables declaration
+	}
 }

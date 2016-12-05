@@ -40,40 +40,40 @@ import Deliquescence.Player;
  */
 public class NetworkGamePanel extends GamePanel {
 
-    public final GameServer server;
-    public final GameClient client;
+	public final GameServer server;
+	public final GameClient client;
 
-    public NetworkGame netGame;
+	public NetworkGame netGame;
 
-    /**
-     * Creates a new NetworkGamePanel with all the specified settings.
-     *
-     * @param gameManager The parent {@link GameManager} of this GamePanel.
-     * @param numPlayers The number of players in the game.
-     * @param rows The number of rows in the game.
-     * @param columns The number of columns in the game.
-     * @param players Array containing the players.
-     * @param RNGEnabled True if the RNG button will be enabled.
-     * @param timerLength The length of the timer (0 if disabled)
-     * @param timeAction 0 for skip turn, 1 for RNG turn
-     * @param server The {@link GameServer}
-     * @param client The {@link GameClient}
-     */
-    public NetworkGamePanel(GameManager gameManager, int numPlayers, int rows, int columns, Player[] players, boolean RNGEnabled, int timerLength, int timeAction, GameServer server, GameClient client) {
-        super(gameManager, numPlayers, rows, columns, players, RNGEnabled, false, timerLength, timeAction);
-        this.server = server;
-        this.client = client;
+	/**
+	 * Creates a new NetworkGamePanel with all the specified settings.
+	 *
+	 * @param gameManager The parent {@link GameManager} of this GamePanel.
+	 * @param numPlayers The number of players in the game.
+	 * @param rows The number of rows in the game.
+	 * @param columns The number of columns in the game.
+	 * @param players Array containing the players.
+	 * @param RNGEnabled True if the RNG button will be enabled.
+	 * @param timerLength The length of the timer (0 if disabled)
+	 * @param timeAction 0 for skip turn, 1 for RNG turn
+	 * @param server The {@link GameServer}
+	 * @param client The {@link GameClient}
+	 */
+	public NetworkGamePanel(GameManager gameManager, int numPlayers, int rows, int columns, Player[] players, boolean RNGEnabled, int timerLength, int timeAction, GameServer server, GameClient client) {
+		super(gameManager, numPlayers, rows, columns, players, RNGEnabled, false, timerLength, timeAction);
+		this.server = server;
+		this.client = client;
 
-        this.netGame.server = server;
-        this.netGame.client = client;
+		this.netGame.server = server;
+		this.netGame.client = client;
 
-        this.UndoButton.setEnabled(false);
-        this.UndoButton.setVisible(false);
-    }
+		this.UndoButton.setEnabled(false);
+		this.UndoButton.setVisible(false);
+	}
 
-    @Override
-    protected void makeGame(int numPlayers, int rows, int columns, Player[] players, boolean RandomizePlayer) {
-        game = new NetworkGame(this, numPlayers, rows, columns, players, server, client);
-        netGame = (NetworkGame) game;
-    }
+	@Override
+	protected void makeGame(int numPlayers, int rows, int columns, Player[] players, boolean RandomizePlayer) {
+		game = new NetworkGame(this, numPlayers, rows, columns, players, server, client);
+		netGame = (NetworkGame) game;
+	}
 }
