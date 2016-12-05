@@ -48,11 +48,9 @@ public class Player implements Comparable<Player> {
 	protected boolean ready;
 
 	/**
-	 * This is needed for networking...
-	 * kryonet needs a no-arg constructor
+	 * Create a blank Player with id of 0 and no name.
 	 *
-	 * Dont actually use this?
-	 * ...shady af
+	 * This is needed for networking; kryonet needs a no-arg constructor
 	 */
 	public Player() {
 		this(0);
