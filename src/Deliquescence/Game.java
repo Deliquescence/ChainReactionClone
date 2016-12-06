@@ -312,7 +312,7 @@ public class Game extends JPanel {
 		board.field = board.fieldPrevious.clone();
 		//Decrement player
 		if (this.currentPlayerIndex == 0) {
-			setCurrentPlayerByIndex(numPlayers);
+			setCurrentPlayerByIndex(numPlayers - 1);
 		} else {
 			setCurrentPlayerByIndex(this.currentPlayerIndex - 1);
 		}
