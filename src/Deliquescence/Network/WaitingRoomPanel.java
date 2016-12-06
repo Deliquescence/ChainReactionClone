@@ -140,7 +140,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
 							WaitingRoomPanel.this.server.timer--;
 						}
 					}
-					if (WaitingRoomPanel.this.server.timer == 5) {
+					if (WaitingRoomPanel.this.server.timer == 5 && WaitingRoomPanel.this.server.getSettings().randomStartingPlayer) {
 						WaitingRoomPanel.this.server.shufflePlayers();
 					}
 					NetworkPacket np = new NetworkPacket(PacketTitle.readyStatusPacket);
