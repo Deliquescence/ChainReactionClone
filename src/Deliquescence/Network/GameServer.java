@@ -36,9 +36,11 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
-import java.util.TreeSet;
 
 /**
  *
@@ -48,7 +50,7 @@ public class GameServer extends Server {
 
 	private NetworkGameSettings settings;
 
-	public ArrayList<Player> allPlayers = new ArrayList<>();
+	public List<Player> allPlayers = new ArrayList<>();
 
 	public int timer;//For ready countdown
 
@@ -79,13 +81,14 @@ public class GameServer extends Server {
 							ArrayList<Player> thePlayers = (ArrayList<Player>) np.getData("names");
 							for (Player newPlayer : thePlayers) {
 								boolean addable = true;
-								for (Player cPlayer : allPlayers) {
-									if (newPlayer.equals(cPlayer)) {
+								for (Player currentPlayer : allPlayers) {
+									if (newPlayer.equals(currentPlayer)) {
+										//Update existing player with new data
 										addable = false;
+										currentPlayer.setLiving(newPlayer.isAlive());
+										currentPlayer.setName(newPlayer.getName());
+										currentPlayer.setReady(newPlayer.isReady());
 
-										newPlayer.setNumber(cPlayer.getNumber()); //localPlayers are not numbered properly
-										allPlayers.remove(cPlayer);
-										allPlayers.add(newPlayer);
 										break;
 									}
 								}
@@ -94,6 +97,7 @@ public class GameServer extends Server {
 									allPlayers.add(newPlayer);
 								}
 							}
+							Collections.sort(allPlayers);
 							Log.trace("server", "Server updated internal names");
 
 							updateNames();
@@ -162,8 +166,8 @@ public class GameServer extends Server {
 		sendToAllTCP(p);
 	}
 
-	public Collection<Player> getAllPlayers() {
-		return new TreeSet<>(allPlayers);
+	public List<Player> getAllPlayers() {
+		return allPlayers;
 	}
 
 	public Collection<Player> getReadyPlayers() {
@@ -181,17 +185,14 @@ public class GameServer extends Server {
 
 		Player[] plays = getAllPlayers().toArray(new Player[0]);
 
-		//Shuffle order of players
+		//Shuffle the number of each player
 		for (int i = plays.length - 1; i > 0; i--) {
 			int index = rand.nextInt(i + 1);
 			int a = plays[index].getNumber();
 			plays[index].setNumber(plays[i].getNumber());
 			plays[i].setNumber(a);
 		}
-		for (int i = 0; i < plays.length; i++) {
-			allPlayers.set(i, plays[i]);
-		}
-
+		allPlayers = new ArrayList<>(Arrays.asList(plays));
 		updateNames();
 	}
 }

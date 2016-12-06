@@ -40,7 +40,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.TreeSet;
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
@@ -58,7 +59,7 @@ public class GameClient extends Client {
 	/**
 	 * All the players in the game, no zeroth player
 	 */
-	public ArrayList<Player> allPlayers = new ArrayList<>();
+	public List<Player> allPlayers = new ArrayList<>();
 
 	public boolean gameStarted = false;
 
@@ -108,13 +109,7 @@ public class GameClient extends Client {
 							wrp.startGame(GameClient.this);
 							GameClient.this.game = wrp.networkGamePanel.netGame;
 
-							//check if the players are randomized
-							boolean randomStartingPlayer = (boolean) np.getData("randomStart");
-							if (randomStartingPlayer) {
-								Player startPlayer = (Player) np.getData("startPlayer");
-								GameClient.this.game.setCurrentPlayer(startPlayer);//Set the start player to was the server randomly picked
-							}
-
+							//Note: not setting a random starting player because the entire order was shuffled anyways
 							gameStarted = true;
 							Log.debug("client", "Client started game");
 							break;
@@ -130,7 +125,8 @@ public class GameClient extends Client {
 							break;
 
 						case namePacket:
-							ArrayList<Player> thePlayers = (ArrayList<Player>) np.getData("names");
+
+							Collection<Player> thePlayers = (Collection<Player>) np.getData("names");
 
 							updateNames(thePlayers);
 
@@ -176,6 +172,8 @@ public class GameClient extends Client {
 			if (addable) {
 				allPlayers.add(newPlayer);
 			}
+
+			Collections.sort(allPlayers);
 		}
 		Log.trace("client", "Client updated names");
 	}
@@ -208,7 +206,8 @@ public class GameClient extends Client {
 		sendTCP(p);
 	}
 
-	public Collection<Player> getAllPlayers() {
-		return new TreeSet<>(allPlayers);
+	public List<Player> getAllPlayers() {
+		Collections.sort(allPlayers);
+		return allPlayers;
 	}
 }

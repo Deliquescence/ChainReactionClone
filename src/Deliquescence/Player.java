@@ -101,7 +101,7 @@ public class Player implements Comparable<Player> {
 	@Override
 	public int compareTo(Player p) {
 
-		return this.uuid.compareTo(p.uuid);
+		return this.getNumber() - p.getNumber();
 	}
 
 	/**

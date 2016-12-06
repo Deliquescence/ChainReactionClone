@@ -41,6 +41,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import javax.swing.DefaultListModel;
@@ -175,11 +176,10 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
 		}
 
 		//Players display
-		int i = 0;
+		List<Player> allPlays = this.client.getAllPlayers();
 		String[] displayNames = new String[this.client.allPlayers.size()];
-		for (Player p : this.client.getAllPlayers()) {
-			displayNames[i] = p.getDisplayName();
-			i++;
+		for (int i = 0; i < displayNames.length; i++) {
+			displayNames[i] = allPlays.get(i).getDisplayName();
 		}
 		playersjList.setListData(displayNames);
 	}
