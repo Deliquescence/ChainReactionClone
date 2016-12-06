@@ -249,7 +249,7 @@ public class Game extends JPanel {
 			Tile[][] fieldPreviousTemp = new Tile[board.numCols][board.numRows];
 			for (int fieldx = 0; fieldx < board.numCols; fieldx++) {
 				for (int fieldy = 0; fieldy < board.numRows; fieldy++) {
-					fieldPreviousTemp[fieldx][fieldy] = board.field[fieldx][fieldy].cloneTile();
+					fieldPreviousTemp[fieldx][fieldy] = board.field[fieldx][fieldy].clone();
 				}
 			}
 			board.fieldPrevious = fieldPreviousTemp;

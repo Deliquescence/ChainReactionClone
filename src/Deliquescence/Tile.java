@@ -35,7 +35,7 @@ package Deliquescence;
  *
  * @author Josh
  */
-public class Tile {
+public class Tile implements Cloneable {
 
 	private final int xPos, yPos;
 	private int particleCapacity; //Particles needed to explode
@@ -181,7 +181,8 @@ public class Tile {
 	 *
 	 * @return A new {link Tile} object with the same data.
 	 */
-	public Tile cloneTile() {
+	@Override
+	public Tile clone() {
 		return new Tile(this.getX(), this.getY(), this.getOwner(), this.getNumberOfParticles(), this.particleCapacity);
 	}
 
