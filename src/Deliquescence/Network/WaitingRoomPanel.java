@@ -334,12 +334,11 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
 			//Random start
 			Player randomPlayer = plays[rand.nextInt(server.allPlayers.size())];
 			p.setData("startPlayer", randomPlayer);
-			try {
-				Thread.sleep(1111); //Really need names to update properly
-			} catch (InterruptedException ex) {
-			}
 		}
-
+		try {
+			Thread.sleep(1111); //Fixes a bug, but I'm not sure why
+		} catch (InterruptedException ex) {
+		}
 		server.sendToAllTCP(p);
 
 		this.networkGamePanel = new NetworkGamePanel(

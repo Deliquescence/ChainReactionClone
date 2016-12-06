@@ -121,11 +121,10 @@ public class Game extends JPanel {
 	}
 
 	private boolean setCurrentPlayerByIndex(int index) {
-		this.currentPlayerIndex = index;
-
 		if (!playerIsAlive(players[index])) {
 			return false;
 		}
+		this.currentPlayerIndex = index;
 		this.currentPlayer = players[this.currentPlayerIndex];
 		this.gamePanel.setPlayerStatus(currentPlayer.getColor(), currentPlayer.getDisplayName() + "'s Turn");
 
