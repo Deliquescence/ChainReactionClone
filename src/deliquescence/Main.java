@@ -28,14 +28,14 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package Deliquescence;
+package deliquescence;
 
-import Deliquescence.Network.BrowserPanel;
-import Deliquescence.Network.NetworkSetupPanel;
-import Deliquescence.Panel.ColorConfigPanel;
-import Deliquescence.Panel.ConfigPanel;
-import Deliquescence.Panel.GameManager;
-import Deliquescence.Panel.LocalGameSetup;
+import deliquescence.network.BrowserPanel;
+import deliquescence.network.NetworkSetupPanel;
+import deliquescence.panel.ColorConfigPanel;
+import deliquescence.panel.ConfigPanel;
+import deliquescence.panel.GameManager;
+import deliquescence.panel.LocalGameSetup;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;

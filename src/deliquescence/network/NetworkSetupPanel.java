@@ -28,9 +28,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package Deliquescence.Network;
+package deliquescence.network;
 
-import Deliquescence.Panel.GameManager;
+import deliquescence.panel.GameManager;
 import com.esotericsoftware.minlog.Log;
 import java.awt.Dimension;
 import java.io.IOException;
@@ -137,10 +137,10 @@ public class NetworkSetupPanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         LocalPlayersSlider = new javax.swing.JSlider();
         jSeparator1 = new javax.swing.JSeparator();
-        gameSliders1 = new Deliquescence.Panel.GameSliders();
+        gameSliders1 = new deliquescence.panel.GameSliders();
         doneButton = new javax.swing.JButton();
         RightPanel = new javax.swing.JPanel();
-        gameSettings1 = new Deliquescence.Panel.GameSettings();
+        gameSettings1 = new deliquescence.panel.GameSettings();
 
         setMinimumSize(new java.awt.Dimension(100, 102));
         setPreferredSize(new java.awt.Dimension(100, 102));
@@ -205,8 +205,8 @@ public class NetworkSetupPanel extends javax.swing.JPanel {
     private javax.swing.JSlider LocalPlayersSlider;
     private javax.swing.JPanel RightPanel;
     private javax.swing.JButton doneButton;
-    private Deliquescence.Panel.GameSettings gameSettings1;
-    private Deliquescence.Panel.GameSliders gameSliders1;
+    private deliquescence.panel.GameSettings gameSettings1;
+    private deliquescence.panel.GameSliders gameSliders1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSplitPane jSplitPane1;

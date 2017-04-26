@@ -28,10 +28,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package Deliquescence.Panel;
+package deliquescence.panel;
 
-import Deliquescence.Config;
-import Deliquescence.Refreshable;
+import deliquescence.Config;
+import deliquescence.Refreshable;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -64,7 +64,7 @@ public class ColorConfigPanel extends javax.swing.JPanel implements Refreshable 
         for (int i = 1; i <= Config.getInt("MAX_PLAYERS"); i++) {
             final JButton playerButton = new JButton();
             playerButton.setName(Integer.toString(i));
-            playerButton.setText(Deliquescence.Config.getDefaultPlayerName(i));
+            playerButton.setText(deliquescence.Config.getDefaultPlayerName(i));
             playerButton.setMaximumSize(new Dimension(400, 20));
 
             playerButton.addActionListener(new ActionListener() {

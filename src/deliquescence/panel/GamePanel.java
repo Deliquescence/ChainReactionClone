@@ -28,10 +28,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package Deliquescence.Panel;
+package deliquescence.panel;
 
-import Deliquescence.Game;
-import Deliquescence.Player;
+import deliquescence.Game;
+import deliquescence.Player;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;

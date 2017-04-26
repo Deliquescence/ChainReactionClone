@@ -28,10 +28,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package Deliquescence.Panel;
+package deliquescence.panel;
 
-import Deliquescence.Config;
-import Deliquescence.Refreshable;
+import deliquescence.Config;
+import deliquescence.Refreshable;
 import java.awt.Dimension;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -80,7 +80,7 @@ public class PlayerNames extends javax.swing.JPanel implements Refreshable {
             } catch (Exception e) {
             }
             if (temp == null || "".equals(temp.getText())) { //temp.getText() == ""
-                temp = new JTextField(Deliquescence.Config.getDefaultPlayerName(i));
+                temp = new JTextField(deliquescence.Config.getDefaultPlayerName(i));
             }
             final JTextField textField = temp;
             playerTextFields[i] = textField;
@@ -142,7 +142,7 @@ public class PlayerNames extends javax.swing.JPanel implements Refreshable {
     @Override
     public void refreshConfig() {
         try {
-            numPlayers = Deliquescence.Config.getInt("MAX_PLAYERS");
+            numPlayers = deliquescence.Config.getInt("MAX_PLAYERS");
         } catch (NullPointerException e) {//config not loaded
             numPlayers = 8;
         }

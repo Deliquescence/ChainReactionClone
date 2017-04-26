@@ -28,11 +28,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package Deliquescence.Network;
+package deliquescence.network;
 
-import Deliquescence.Panel.GameManager;
-import Deliquescence.Panel.GamePanel;
-import Deliquescence.Player;
+import deliquescence.panel.GameManager;
+import deliquescence.panel.GamePanel;
+import deliquescence.Player;
 
 /**
  *

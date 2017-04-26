@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package Deliquescence.Panel;
+package deliquescence.panel;
 
 /**
  * This panel is meant to be a subpanel. It contains components for choosing settings in a game.
