@@ -28,11 +28,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package Deliquescence.Network;
+package deliquescence.Network;
 
-import Deliquescence.Config;
-import Deliquescence.Panel.GameManager;
-import Deliquescence.Panel.GamePanel;
+import deliquescence.Config;
+import deliquescence.Panel.GameManager;
+import deliquescence.Panel.GamePanel;
 import com.esotericsoftware.minlog.Log;
 import java.io.IOException;
 import java.net.InetAddress;

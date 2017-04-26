@@ -28,10 +28,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package Deliquescence.Panel;
+package deliquescence.Panel;
 
-import Deliquescence.Config;
-import Deliquescence.Refreshable;
+import deliquescence.Config;
+import deliquescence.Refreshable;
 
 /**
  * This panel is meant to be a subpanel. It contains sliders for choosing numeric settings in a game.

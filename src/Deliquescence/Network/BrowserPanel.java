@@ -28,11 +28,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package Deliquescence.Network;
+package deliquescence.Network;
 
-import Deliquescence.Config;
-import Deliquescence.Panel.GameManager;
-import Deliquescence.Refreshable;
+import deliquescence.Config;
+import deliquescence.Panel.GameManager;
+import deliquescence.Refreshable;
 import com.esotericsoftware.minlog.Log;
 import java.net.InetAddress;
 import java.net.UnknownHostException;

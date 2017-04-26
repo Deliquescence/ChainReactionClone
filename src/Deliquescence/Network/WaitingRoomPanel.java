@@ -28,12 +28,12 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package Deliquescence.Network;
+package deliquescence.Network;
 
-import Deliquescence.Config;
-import static Deliquescence.Network.PacketTitle.GameStartPacket;
-import Deliquescence.Panel.GameManager;
-import Deliquescence.Player;
+import deliquescence.Config;
+import static deliquescence.Network.PacketTitle.GameStartPacket;
+import deliquescence.Panel.GameManager;
+import deliquescence.Player;
 import com.esotericsoftware.minlog.Log;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -411,7 +411,7 @@ public class WaitingRoomPanel extends javax.swing.JPanel {
 				} catch (Exception e) {
 				}
 				if (temp == null || "".equals(temp.getText())) { //temp.getText() == ""
-					temp = new JTextField(Deliquescence.Config.getDefaultPlayerName(i));
+					temp = new JTextField(deliquescence.Config.getDefaultPlayerName(i));
 				}
 				final JTextField textField = temp;
 				playerTextFields[i] = textField;

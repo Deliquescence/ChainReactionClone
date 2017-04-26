@@ -1,4 +1,4 @@
-package Deliquescence.Network;
+package deliquescence.Network;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.Serializer;

@@ -28,9 +28,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package Deliquescence;
+package deliquescence;
 
-import Deliquescence.Panel.GamePanel;
+import deliquescence.Panel.GamePanel;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
