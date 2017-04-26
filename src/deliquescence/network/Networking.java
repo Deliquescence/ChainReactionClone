@@ -36,10 +36,6 @@ import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.minlog.Log;
 import java.util.UUID;
 
-/**
- *
- * @author Deliquescence <Deliquescence1@gmail.com>
- */
 public class Networking {
 
     static public void register(EndPoint endPoint) {

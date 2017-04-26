@@ -43,8 +43,6 @@ import javax.swing.SwingUtilities;
 
 /**
  * The starting point for ChainReactionClone
- *
- * @author Josh
  */
 public class Main extends JFrame implements Refreshable {
 

@@ -37,10 +37,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import javax.swing.JTextField;
 
-/**
- *
- * @author Deliquescence <Deliquescence1@gmail.com>
- */
 public class PlayerNames extends javax.swing.JPanel implements Refreshable {
 
     private JTextField[] playerTextFields;

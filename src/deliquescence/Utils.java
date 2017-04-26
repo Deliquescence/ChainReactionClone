@@ -33,11 +33,16 @@ package deliquescence;
 import java.util.Collection;
 
 /**
- *
- * @author Josh Baird
+ * Random utilities
  */
 public class Utils {
 
+	/**
+	 * Given a collection of Players, make an array of their display names
+	 *
+	 * @param players the collection to convert
+	 * @return a String array of display names
+	 */
 	public static String[] playersToStrings(Collection<Player> players) {
 		String[] names = new String[players.size()];
 		int i = 0;
@@ -48,6 +53,13 @@ public class Utils {
 		return names;
 	}
 
+	/**
+	 * Given an array of Strings, make an array of players with those names.
+	 * Note the array is 1-indexed.
+	 *
+	 * @param names array of names
+	 * @return an array of players
+	 */
 	public static Player[] namesToPlayers(String[] names) {
 		Player[] players = new Player[names.length];
 		for (int i = 0; i < players.length; i++) {

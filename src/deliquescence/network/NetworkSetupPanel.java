@@ -38,10 +38,6 @@ import java.util.concurrent.Callable;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Deliquescence <Deliquescence1@gmail.com>
- */
 public class NetworkSetupPanel extends javax.swing.JPanel {
 
     GameManager gameManager;

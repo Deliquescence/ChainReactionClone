@@ -43,10 +43,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-/**
- *
- * @author Deliquescence <Deliquescence1@gmail.com>
- */
 public class GameClient extends Client {
 
 	public NetworkGameSettings settings;

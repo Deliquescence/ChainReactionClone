@@ -41,7 +41,6 @@ import javax.swing.BoxLayout;
 /**
  * Displays waiting room panel or game panel
  *
- * @author Josh
  */
 public class NetworkGameViewer extends javax.swing.JPanel {
 

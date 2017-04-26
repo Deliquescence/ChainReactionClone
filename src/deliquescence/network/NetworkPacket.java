@@ -33,10 +33,6 @@ package deliquescence.network;
 import java.io.Serializable;
 import com.esotericsoftware.kryo.util.ObjectMap;
 
-/**
- *
- * @author Deliquescence <Deliquescence1@gmail.com>
- */
 public class NetworkPacket implements Serializable {
 
     public PacketTitle packetTitle;

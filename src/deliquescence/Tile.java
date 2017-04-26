@@ -32,8 +32,6 @@ package deliquescence;
 
 /**
  * A tile of the board. Contains owner, number of particles, etc.
- *
- * @author Josh
  */
 public class Tile implements Cloneable {
 

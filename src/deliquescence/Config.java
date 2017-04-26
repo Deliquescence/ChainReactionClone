@@ -44,8 +44,6 @@ import javax.swing.ImageIcon;
 
 /**
  * This allows various settings be be stored and retrieved.
- *
- * @author Josh
  */
 public class Config {
 

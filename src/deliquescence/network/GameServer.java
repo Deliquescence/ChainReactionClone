@@ -42,10 +42,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-/**
- *
- * @author Deliquescence <Deliquescence1@gmail.com>
- */
 public class GameServer extends Server {
 
 	private NetworkGameSettings settings;

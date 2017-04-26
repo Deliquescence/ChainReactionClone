@@ -44,7 +44,6 @@ import javax.swing.JLabel;
 /**
  * A panel with buttons to change each player's color.
  *
- * @author Josh
  */
 public class ColorConfigPanel extends javax.swing.JPanel implements Refreshable {
 

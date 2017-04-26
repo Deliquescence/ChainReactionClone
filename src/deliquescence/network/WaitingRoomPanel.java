@@ -48,10 +48,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-/**
- *
- * @author Josh
- */
 public class WaitingRoomPanel extends javax.swing.JPanel {
 
 	InetAddress serverAddress;

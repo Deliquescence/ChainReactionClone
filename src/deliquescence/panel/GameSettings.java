@@ -32,8 +32,6 @@ package deliquescence.panel;
 
 /**
  * This panel is meant to be a subpanel. It contains components for choosing settings in a game.
- *
- * @author Josh
  */
 public class GameSettings extends javax.swing.JPanel {
 

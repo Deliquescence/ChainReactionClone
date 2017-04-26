@@ -30,10 +30,6 @@
  */
 package deliquescence.network;
 
-/**
- *
- * @author Deliquescence <Deliquescence1@gmail.com>
- */
 public enum PacketTitle {
 
     NetworkGameSettingsPacket, GameStartPacket, turnPacket, namePacket, requestNamesPacket, debugPacket, readyStatusPacket;

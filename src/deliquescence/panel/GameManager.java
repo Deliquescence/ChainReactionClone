@@ -37,8 +37,6 @@ import javax.swing.JPanel;
 /**
  * A panel to contain both game setup panels and actual {@link GamePanel}s.
  * Tabs are used to accomplish this.
- *
- * @author Josh
  */
 public class GameManager extends JPanel {
 

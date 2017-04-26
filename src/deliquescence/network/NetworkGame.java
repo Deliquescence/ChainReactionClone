@@ -35,10 +35,6 @@ import deliquescence.panel.GamePanel;
 import deliquescence.Player;
 import deliquescence.Tile;
 
-/**
- *
- * @author Deliquescence <Deliquescence1@gmail.com>
- */
 public class NetworkGame extends Game {
 
     GameServer server;

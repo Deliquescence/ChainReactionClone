@@ -35,8 +35,6 @@ import java.util.UUID;
 
 /**
  * A player in the game. Contains name, ID, if the player is alive, etc.
- *
- * @author Josh
  */
 public class Player implements Comparable<Player> {
 

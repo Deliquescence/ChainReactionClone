@@ -52,7 +52,6 @@ import javax.swing.SwingConstants;
 /**
  * A panel with fields for setting configuration values.
  *
- * @author Josh
  */
 public class ConfigPanel extends JPanel implements Refreshable {
 

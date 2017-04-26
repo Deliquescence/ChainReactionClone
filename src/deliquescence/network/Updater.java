@@ -36,7 +36,6 @@ import java.util.concurrent.Callable;
 /**
  * Class for creating updaters to run things in the background
  *
- * @author Josh Baird
  */
 public class Updater {
 

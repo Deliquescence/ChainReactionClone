@@ -36,8 +36,6 @@ import deliquescence.Utils;
 /**
  * A panel for setting up a local game.
  * Subpanels {@link GameSliders} and {@link GameSettings}
- *
- * @author Josh
  */
 public class LocalGameSetup extends javax.swing.JPanel {
 

@@ -35,8 +35,6 @@ import deliquescence.Refreshable;
 
 /**
  * This panel is meant to be a subpanel. It contains sliders for choosing numeric settings in a game.
- *
- * @author Josh
  */
 public class GameSliders extends javax.swing.JPanel implements Refreshable {
 

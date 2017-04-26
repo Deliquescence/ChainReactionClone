@@ -41,8 +41,6 @@ import java.awt.image.ShortLookupTable;
 
 /**
  * Contains various utilities involving colors.
- *
- * @author Josh
  */
 public class Colorizer {
 

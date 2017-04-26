@@ -43,8 +43,6 @@ import javax.swing.Timer;
 
 /**
  * This panel has the game board, as well as the other display features and buttons for playing the game.
- *
- * @author Josh
  */
 public class GamePanel extends javax.swing.JPanel {
 

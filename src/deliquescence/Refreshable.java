@@ -31,9 +31,7 @@
 package deliquescence;
 
 /**
- * Used to refresh config values
- *
- * @author Josh
+ * Used to refresh config values.
  */
 public interface Refreshable {
 
