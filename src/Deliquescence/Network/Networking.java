@@ -28,9 +28,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package deliquescence.Network;
+package deliquescence.network;
 
-import static deliquescence.Network.PacketTitle.NetworkGameSettingsPacket;
+import static deliquescence.network.PacketTitle.NetworkGameSettingsPacket;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.minlog.Log;
@@ -48,13 +48,13 @@ public class Networking {
 
         Kryo kryo = endPoint.getKryo();
 
-        kryo.register(deliquescence.Network.PacketTitle.class);
+        kryo.register(deliquescence.network.PacketTitle.class);
         kryo.register(java.util.HashMap.class);
         kryo.register(java.util.ArrayList.class);
         kryo.register(NetworkPacket.class);
         kryo.register(NetworkGameSettings.class);
         kryo.register(deliquescence.Tile.class);
-        kryo.register(deliquescence.Network.NetworkGame.class);
+        kryo.register(deliquescence.network.NetworkGame.class);
         kryo.register(UUID.class, new UUIDSerializer());
         kryo.register(com.esotericsoftware.kryo.util.ObjectMap.class);
         kryo.register(deliquescence.Player.class);

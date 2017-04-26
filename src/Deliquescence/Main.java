@@ -30,12 +30,12 @@
  */
 package deliquescence;
 
-import deliquescence.Network.BrowserPanel;
-import deliquescence.Network.NetworkSetupPanel;
-import deliquescence.Panel.ColorConfigPanel;
-import deliquescence.Panel.ConfigPanel;
-import deliquescence.Panel.GameManager;
-import deliquescence.Panel.LocalGameSetup;
+import deliquescence.network.BrowserPanel;
+import deliquescence.network.NetworkSetupPanel;
+import deliquescence.panel.ColorConfigPanel;
+import deliquescence.panel.ConfigPanel;
+import deliquescence.panel.GameManager;
+import deliquescence.panel.LocalGameSetup;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;

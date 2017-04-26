@@ -28,10 +28,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package deliquescence.Network;
+package deliquescence.network;
 
 import deliquescence.Game;
-import deliquescence.Panel.GamePanel;
+import deliquescence.panel.GamePanel;
 import deliquescence.Player;
 import deliquescence.Tile;
 

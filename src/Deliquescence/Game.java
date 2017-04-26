@@ -30,7 +30,7 @@
  */
 package deliquescence;
 
-import deliquescence.Panel.GamePanel;
+import deliquescence.panel.GamePanel;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;

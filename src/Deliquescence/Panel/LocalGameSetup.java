@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package deliquescence.Panel;
+package deliquescence.panel;
 
 import deliquescence.Config;
 import deliquescence.Utils;
@@ -65,11 +65,11 @@ public class LocalGameSetup extends javax.swing.JPanel {
         buttonGroup1 = new javax.swing.ButtonGroup();
         SplitPane = new javax.swing.JSplitPane();
         NumbersPanel = new javax.swing.JPanel();
-        gameSlidersPanel = new deliquescence.Panel.GameSliders();
+        gameSlidersPanel = new deliquescence.panel.GameSliders();
         StartButton = new javax.swing.JButton();
         PlayerNamesPanel = new javax.swing.JPanel();
-        gameSettingsPanel = new deliquescence.Panel.GameSettings();
-        playerNames1 = new deliquescence.Panel.PlayerNames();
+        gameSettingsPanel = new deliquescence.panel.GameSettings();
+        playerNames1 = new deliquescence.panel.PlayerNames();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
@@ -131,8 +131,8 @@ public class LocalGameSetup extends javax.swing.JPanel {
     private javax.swing.JSplitPane SplitPane;
     private javax.swing.JButton StartButton;
     private javax.swing.ButtonGroup buttonGroup1;
-    private deliquescence.Panel.GameSettings gameSettingsPanel;
-    private deliquescence.Panel.GameSliders gameSlidersPanel;
-    private deliquescence.Panel.PlayerNames playerNames1;
+    private deliquescence.panel.GameSettings gameSettingsPanel;
+    private deliquescence.panel.GameSliders gameSlidersPanel;
+    private deliquescence.panel.PlayerNames playerNames1;
     // End of variables declaration//GEN-END:variables
 }

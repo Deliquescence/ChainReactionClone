@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package deliquescence.Network;
+package deliquescence.network;
 
 import deliquescence.Player;
 import com.esotericsoftware.kryonet.Client;
